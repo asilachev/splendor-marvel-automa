@@ -1,0 +1,78 @@
+/* Design tokens. See docs/design.md → Visual language. */
+:root {
+  color-scheme: dark;
+
+  --bg: #0b0d1a;
+  --surface: #151935;
+  --surface-2: #1f2550;
+  --border: #2c3366;
+  --text: #eef0ff;
+  --text-muted: #a3a9cf;
+  --accent: #f2c14e;
+  --accent-text: #1a1400;
+  --danger: #ff6b6b;
+  --success: #4ade80;
+
+  /* Infinity Stones (token-board order) + Time. */
+  --stone-power: #9b5de5;
+  --stone-mind: #f7d046;
+  --stone-space: #3a86ff;
+  --stone-reality: #ef233c;
+  --stone-soul: #fb8500;
+  --stone-time: #2dc653;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --tap: 48px;
+  --gap: 12px;
+  --gutter: 16px;
+  --max-width: 480px;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
+  line-height: 1.4;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter)
+    max(var(--gutter), env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}

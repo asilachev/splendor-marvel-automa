@@ -60,4 +60,15 @@ BGG file page. **Please don't post this app there.** See the
 
 ## Development
 
-Contributor and agent guidance, including workflow and conventions, is in [AGENTS.md](AGENTS.md).
+[![CI](https://github.com/asilachev/splendor-marvel-automa/actions/workflows/ci.yml/badge.svg)](https://github.com/asilachev/splendor-marvel-automa/actions/workflows/ci.yml)
+
+```sh
+npm ci
+npm run dev        # http://localhost:5173 (use `npm run dev -- --host` to open it on your phone)
+npm test           # Vitest
+npm run build      # production build in dist/
+```
+
+Built with Vite, React and TypeScript, with a pure TypeScript automa engine in `src/engine`.
+Contributor and agent guidance, including commands, layout, workflow and conventions, is in
+[AGENTS.md](AGENTS.md).
