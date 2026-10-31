@@ -125,3 +125,22 @@ the PWA icons in #9 are rendered from it.
 **Never** use the official Splendor or Marvel logos, box art, card art or the automa PDF's artwork,
 here or in the app. They are trademarks and copyrighted art, and they would block opening the repo
 (#17).
+
+## Prior art
+
+An existing single-file Marvel automa helper, a Claude artifact by lajlev that the owner shared,
+inspired several UI details. We took the ideas, not the code:
+
+- the phase-coloured turn track;
+- the flipped card drawn with all three bands and the active one lit;
+- the left-to-right stack with "bottom, returned first";
+- quick manual stack fixes;
+- a rules reminder on the game screen.
+
+We go further in a few ways:
+
+- recruited cards are captured, so colours, points, Time and the Avengers tile are automatic;
+- the colour-substitution prompt is exact;
+- the full tiebreaker chain is applied;
+- every ruling is a setting;
+- games are seeded and replayable.
