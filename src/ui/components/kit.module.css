@@ -245,6 +245,7 @@
 
 .tile > span {
   max-width: 100%;
+  font-size: clamp(0.6rem, 2.85vw, 0.7rem);
   overflow-wrap: break-word;
   hyphens: auto;
   text-align: center;

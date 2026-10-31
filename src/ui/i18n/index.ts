@@ -8,7 +8,7 @@ import en from './locales/en.json'
  * when chosen. See `locales/README.md` for the message format.
  */
 
-/** The app's languages. Serbian is written in Latin script. */
+/** The app's languages. Serbian is written in Cyrillic, which the Bangers font covers (#57). */
 export type Lang = 'en' | 'ru' | 'sr' | 'es' | 'de'
 
 export const LANGS: readonly {
@@ -20,7 +20,7 @@ export const LANGS: readonly {
 }[] = [
   { code: 'en', name: 'English', tag: 'en' },
   { code: 'ru', name: 'Русский', tag: 'ru' },
-  { code: 'sr', name: 'Srpski', tag: 'sr-Latn' },
+  { code: 'sr', name: 'Српски', tag: 'sr-Cyrl' },
   { code: 'es', name: 'Español', tag: 'es' },
   { code: 'de', name: 'Deutsch', tag: 'de' },
 ]

@@ -28,6 +28,9 @@ export function Credits({ tone = 'dark' }: { tone?: 'dark' | 'paper' }) {
           </a>{' '}
           {t('credits.retheme.after')}
         </li>
+        <li>
+          <strong>{t('credits.fonts.name')}</strong>: {t('credits.fonts.text')}
+        </li>
       </ul>
       <h2 className={styles.title}>{t('credits.copyrightTitle')}</h2>
       {t.list('credits.notices').map((notice) => (
