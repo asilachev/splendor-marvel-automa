@@ -29,7 +29,7 @@
   "hud": {
     "thanos": "ТАНОС",
     "you": "ВЫ",
-    "points": "{n}/{goal} ОЧК.",
+    "points": "{n}/{goal} очков",
     "round": "РАУНД {n}",
     "left": "ЕЩЁ {n}",
     "lastRound": "ПОСЛЕДНИЙ РАУНД",

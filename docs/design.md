@@ -233,7 +233,9 @@ Movement only when it means something, and then short and smooth.
     its number («ур. 2»), © with its year, and a dash never starts a line.
   - Russian also uses «ёлочки» with „лапки“ inside, «тай-брейк» as the dictionary spells it,
     «1 — Сила» for numbered lists, and «Реальность, ур. 2» for a card (`common.card` lets each
-    language order level and colour).
+    language order level and colour). The HUD writes points in full, «12/16 очков», not «ОЧК.»
+    (#76); lowercase is how Russian writes a unit after a number, and it fits at 360 px where
+    uppercase «ОЧКОВ» doesn't.
 - **Fonts:** one display font for every language: **Bangers Cyrillic** (#57), in
   `src/ui/assets/fonts/`. It covers Latin, Latin-1 and Cyrillic, but lacks Latin Č Ć Đ, so Serbian
   is written in Cyrillic, which is also its official script. Body text is Inter (Latin and Cyrillic
