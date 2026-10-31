@@ -1,7 +1,7 @@
 name: Pages
 
 # The landing page (site/) on GitHub Pages, in five languages:
-# https://asilachev.github.io/splendor-marvel-automa/ (#61, #69).
+# https://thanos.silachev.com/ (#61, #69).
 # Each language's page shows the app in that language, so the screenshots are captured here from
 # the app's source. Pull requests build the site to prove it; master deploys it.
 on:

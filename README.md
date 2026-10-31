@@ -11,11 +11,11 @@ It is a *companion* to the physical game, not a digital version. The market, the
 stay on the table. The app replaces the automa deck, the token placement board and all of Thanos's
 bookkeeping.
 
-**[Project page](https://asilachev.github.io/splendor-marvel-automa/)**: a short tour with
-screenshots, in English, [Русский](https://asilachev.github.io/splendor-marvel-automa/ru/),
-[Српски](https://asilachev.github.io/splendor-marvel-automa/sr/),
-[Español](https://asilachev.github.io/splendor-marvel-automa/es/) and
-[Deutsch](https://asilachev.github.io/splendor-marvel-automa/de/).
+**[Project page](https://thanos.silachev.com/)**: a short tour with
+screenshots, in English, [Русский](https://thanos.silachev.com/ru/),
+[Српски](https://thanos.silachev.com/sr/),
+[Español](https://thanos.silachev.com/es/) and
+[Deutsch](https://thanos.silachev.com/de/).
 
 > **Status:** in development. Work is planned in
 > [issues](https://github.com/asilachev/splendor-marvel-automa/issues) and
@@ -109,7 +109,7 @@ BGG file page. **Please don't post this app there.** See the
 The app is a static site. Host it on Vercel or on your own server with Docker: both serve the same
 build with the same caching and security headers. Either way it needs HTTPS, which installing to the
 home screen, offline mode and keeping the screen awake all require. Both also tell search engines not
-to index the app (`X-Robots-Tag: noindex`); the [project page](https://asilachev.github.io/splendor-marvel-automa/)
+to index the app (`X-Robots-Tag: noindex`); the [project page](https://thanos.silachev.com/)
 is its public face.
 
 ### Vercel

@@ -16,7 +16,7 @@ import { typeset } from '../src/ui/i18n/typography.ts'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const out = `${root}_site/`
-const SITE_URL = 'https://asilachev.github.io/splendor-marvel-automa/'
+const SITE_URL = 'https://thanos.silachev.com/'
 const STORAGE_KEY = 'thanos-site:lang'
 
 /** The app's languages, in the app's order; English lives at the root. */

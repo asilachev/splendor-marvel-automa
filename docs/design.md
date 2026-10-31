@@ -113,7 +113,12 @@ ordered stack by hand is the fiddliest part of the paper automa.
 ## Landing page (#61, #66, #69)
 
 `site/` is a static page on GitHub Pages, in the app's five languages:
-https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`, `es/` and `de/`.
+https://thanos.silachev.com/ (English), then `ru/`, `sr/`, `es/` and `de/`.
+
+- **Domain:** a GitHub Pages custom domain (a CNAME to `asilachev.github.io`, HTTPS enforced);
+  the old `asilachev.github.io/splendor-marvel-automa/` address redirects to it. The owner's copy of
+  the app runs on Vercel at `app.thanos.silachev.com`. The page doesn't link to it, because of the
+  community note in `docs/automa.md`.
 
 - **Languages (#69):**
   - `site/index.html` is a template; each language's texts are in `site/locales/<lang>.json`.
