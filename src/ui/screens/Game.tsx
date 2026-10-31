@@ -168,9 +168,9 @@ export function Game({
           <h2>
             Thanos’s tokens ({state.stack.length})
             <RuleTip title="Thanos’s stack">
-              Order matters: new tokens go on top, and returns come from the bottom (oldest first).
-              A loose pile on the table is fine, because the app remembers the order. Use Fix if the
-              table and the app disagree.
+              Keep his tokens in colour piles on the table. The app remembers the order they arrived
+              in, because returns always come from the oldest; the recruit step names exactly which
+              ones go back. Use Fix if the table and the app disagree.
             </RuleTip>
           </h2>
           {!over ? (
