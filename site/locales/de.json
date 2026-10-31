@@ -1,0 +1,178 @@
+{
+  "meta": {
+    "title": "Thanos Automa · Splendor Marvel solo spielen",
+    "description": "Ein kostenloser Begleiter fürs Handy, mit dem du Splendor Marvel solo gegen das von Fans gemachte Thanos-Automa spielst. Er führt sein Deck, seine Chips und sein Rennen zum Infinity-Handschuh, während das Spiel auf deinem Tisch liegt.",
+    "ogDescription": "Auf deinem Tisch liegt das Spiel. Die App steuert Thanos: sein Deck, seine Chips, sein Rennen zum Handschuh."
+  },
+  "nav": {
+    "sections": "Abschnitte",
+    "how": "So wird gespielt",
+    "features": "Funktionen",
+    "languages": "Sprachen",
+    "get": "Spiel kaufen",
+    "run": "Selbst hosten",
+    "language": "Sprache"
+  },
+  "hero": {
+    "caption": "Splendor Marvel · solo",
+    "lead": "Spiele <strong>Splendor Marvel</strong> solo gegen das von Fans gemachte Thanos-Automa. Auf deinem Tisch liegt das Spiel – diese Handy-App steuert Thanos: sein Deck, seine Chips und sein Rennen zum Infinity-Handschuh.",
+    "guide": "Anleitung (Englisch)",
+    "github": "Auf GitHub ansehen",
+    "highlights": "Das Wichtigste",
+    "badges": ["Kostenlos, Code auf GitHub", "Funktioniert offline", "5 Sprachen", "Ohne Konto"],
+    "burst": "Er beginnt immer!"
+  },
+  "strip": {
+    "title": "Ein Begleiter, kein digitales Spiel",
+    "table": {
+      "sfx": "Klack!",
+      "title": "Auf deinem Tisch",
+      "items": ["Der Markt", "Der Chip-Vorrat", "Deine Karten"],
+      "text": "Deine Züge spielst du wie gewohnt, mit dem echten Spiel."
+    },
+    "app": {
+      "sfx": "Tipp!",
+      "title": "In der App",
+      "items": ["Das Automa-Deck", "Die Chip-Tafel", "Thanos’ ganze Buchhaltung"],
+      "text": "Thanos spielt seine Züge über dein Handy."
+    }
+  },
+  "how": {
+    "caption": "So läuft eine Runde",
+    "title": "Vier Tipper pro Runde",
+    "steps": [
+      {
+        "alt": "Thanos ist am Zug: die Rückseite der Automa-Karte, zum Aufdecken tippen",
+        "title": "Deck seine Karte auf",
+        "text": "Thanos beginnt immer. Die App mischt sein Deck in jeder Phase und liest den richtigen Abschnitt der Karte."
+      },
+      {
+        "alt": "Thanos wirbt an: die Marktübersicht, die Chips, die er zurückgibt, und welcher Stein auf der Karte ist",
+        "title": "Tu, was er sagt",
+        "text": "Welche Chips er nimmt, welche Karte er anwirbt, der Farbersatz und welche Chips zuerst zurückgehen: Du bewegst sie nur auf dem Tisch."
+      },
+      {
+        "alt": "Am Tisch: eine Checkliste seines Zugs, dann dein Zug",
+        "title": "Spiel deinen Zug",
+        "text": "Hak die Checkliste am Tisch ab, spiel wie gewohnt und trag die angeworbene Karte ein: Stufe, Farbe, Punkte und Avengers-Symbole."
+      },
+      {
+        "alt": "Du gewinnst: Du hast den Infinity-Handschuh vollendet",
+        "title": "Das Rennen zum Handschuh",
+        "text": "Am Ende jeder Runde prüft die App bei beiden den Infinity-Handschuh, mit den offiziellen Tiebreakern. Vollende ihn in 30 Runden – sonst: SCHNIPP."
+      }
+    ]
+  },
+  "features": {
+    "caption": "Was sie kann",
+    "title": "Thanos auf Autopilot",
+    "items": [
+      {
+        "title": "Führt sein Deck",
+        "text": "Mischt in jeder Phase, liest Grün, Gelb, dann Rot und behält die 30 Runden im Blick."
+      },
+      {
+        "title": "Sagt dir genau, was er tut",
+        "text": "Chips in gedruckter Reihenfolge, das Feld, aus dem er anwirbt, Farbersatz und die ältesten Chips zuerst zurück."
+      },
+      {
+        "title": "Führt seine Buchhaltung",
+        "text": "Seine Chip-Stapel, Karten, Punkte, das Avengers-Plättchen und den Zeit-Stein."
+      },
+      {
+        "title": "Prüft den Handschuh",
+        "text": "Jede Runde, für beide, mit den offiziellen Tiebreakern und den Automa-Regeln für Gleichstand."
+      },
+      {
+        "title": "Alles rückgängig",
+        "text": "Jeder Schritt lässt sich rückgängig machen, und das Spiel wird nach jedem Tippen gespeichert."
+      },
+      {
+        "title": "Gemacht für den Tisch",
+        "text": "Lässt sich auf dem Home-Bildschirm installieren, läuft offline und hält den Bildschirm während des Spiels an."
+      },
+      {
+        "title": "Regeln, wo du sie brauchst",
+        "text": "Tippe auf das „i“ neben einem Schritt, um die Regel dahinter zu lesen – direkt am Tisch."
+      },
+      {
+        "title": "Auslegungen für die Lücken",
+        "text": "Wo das Automa-PDF schweigt, folgen die Standards den Klarstellungen auf BoardGameGeek, und du kannst sie ändern."
+      }
+    ]
+  },
+  "gallery": {
+    "caption": "Jeder Bildschirm",
+    "title": "Genauer hingeschaut",
+    "items": [
+      {
+        "alt": "Neues Spiel: Checkliste für den Aufbau und Schwierigkeit",
+        "label": "Aufbauen und Schwierigkeit wählen"
+      },
+      {
+        "alt": "Thanos nimmt Chips; tippe auf einen Chip, wenn sein Stapel leer ist",
+        "label": "Er nimmt Chips"
+      },
+      { "alt": "Farbersatz: Diese Farbe hat er schon", "label": "Farbersatz" },
+      {
+        "alt": "Karte eintragen: Stufe, Bonusfarbe, Punkte und Avengers-Symbole",
+        "label": "Deine Karte eintragen"
+      },
+      { "alt": "Deck gemischt: Phase 2 beginnt", "label": "Neue Phase, neuer Abschnitt" },
+      {
+        "alt": "Thanos’ Beute: Chip-Stapel, Rückgabereihenfolge und seine Karten",
+        "label": "Seine Beute"
+      },
+      { "alt": "Das Spielprotokoll, neueste Runde zuerst", "label": "Das Spielprotokoll" },
+      {
+        "alt": "SCHNIPP: Runde 30 endete ohne deinen Infinity-Handschuh",
+        "label": "Oder … SCHNIPP."
+      }
+    ]
+  },
+  "languages": {
+    "caption": "Fünf Sprachen",
+    "title": "Spricht deine Sprache",
+    "text": "Sie startet in der Sprache deines Handys, und du kannst jederzeit wechseln. Alle Texte sind übersetzt, auch die Regeln und Thanos’ Sprüche. Und diese Seite auch."
+  },
+  "get": {
+    "caption": "Du brauchst die Schachtel",
+    "title": "Hol dir das Spiel",
+    "text": "Die App steuert nur Thanos. Gespielt wird mit dem echten <strong>Splendor Marvel</strong> von Marc André, erschienen bei Space Cowboys.",
+    "publisher": {
+      "kicker": "Verlag",
+      "name": "Space Cowboys",
+      "more": "Die offizielle Spielseite (Englisch)"
+    },
+    "store": {
+      "kicker": "Wo kaufen",
+      "name": "Asmodee-Händlersuche",
+      "more": "Finde einen Laden in deiner Nähe"
+    },
+    "bgg": {
+      "kicker": "Bewertungen und Angebote",
+      "name": "BoardGameGeek",
+      "more": "Bewertungen, Foren und Marktplatz"
+    }
+  },
+  "run": {
+    "caption": "Selbst betreiben",
+    "title": "Deine eigene Kopie",
+    "text": "Es ist eine statische Web-App ohne Servercode, Konten oder Tracking. Bau das Docker-Image oder die statischen Dateien und liefere sie per HTTPS aus, damit Handys sie installieren können.",
+    "docker": "Docker",
+    "static": "Statische Dateien",
+    "serve": "# den Ordner dist/ per HTTPS ausliefern"
+  },
+  "credits": {
+    "title": "Mitwirkende",
+    "game": "<strong>Splendor Marvel</strong>: Spiel von Marc André, erschienen bei <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Einen Laden findest du mit der <a href=\"{{links.store}}\">Asmodee-Händlersuche</a>.",
+    "automa": "<strong>Solo-Automa</strong>: entworfen von <a href=\"{{links.automa}}\">Dukefanblue2005</a> auf BoardGameGeek.",
+    "retheme": "<strong>Marvel-Fassung des Automa</strong>: von <a href=\"{{links.retheme}}\">Shamus</a> auf BoardGameGeek.",
+    "fonts": "<strong>Schriften</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; kyrillische Erweiterung von 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
+    "trademarks": "Splendor und das Splendor-Logo sind Marken von Space Cowboys (Asmodee). MARVEL, das MARVEL-Logo und alle zugehörigen Figuren und Namen sind ™ &amp; © MARVEL. Die Screenshots zeigen die Logos von Splendor und MARVEL und die Rückseite der Automa-Karten, die ihren Inhabern gehören.",
+    "unofficial": "<strong>Inoffizielles Fan-Projekt.</strong> Weder verbunden mit noch unterstützt von Space Cowboys, Asmodee oder Marvel. Zum Spielen brauchst du das echte Spiel."
+  },
+  "footer": {
+    "tagline": "Thanos Automa · ein Solo-Begleiter für Splendor Marvel, von Fans gemacht"
+  }
+}

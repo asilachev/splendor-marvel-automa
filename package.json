@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "screenshots": "vite build && node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/screenshots.mjs",
-    "site": "node scripts/build-site.mjs",
+    "site": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/build-site.mjs",
+    "site:shots": "vite build && node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/screenshots.mjs --lang ru,sr,es,de --only 02,04,05,06,07,08,09,10,11,12,14,15",
     "test": "vitest run",
     "test:watch": "vitest",
     "reference": "gh release download reference-docs --dir docs/reference --pattern \"*.pdf\" --clobber"

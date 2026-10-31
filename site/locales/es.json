@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "title": "Thanos Automa · juega a Splendor Marvel en solitario",
+    "description": "Un compañero gratuito para el móvil con el que jugar a Splendor Marvel en solitario contra el automa de Thanos creado por fans. Lleva su mazo, sus fichas y su carrera hacia el Guantelete del Infinito, mientras el juego sigue en tu mesa.",
+    "ogDescription": "El juego está en tu mesa. Esta app mueve a Thanos: su mazo, sus fichas y su carrera hacia el Guantelete."
+  },
+  "nav": {
+    "sections": "Secciones",
+    "how": "Cómo se juega",
+    "features": "Funciones",
+    "languages": "Idiomas",
+    "get": "Consigue el juego",
+    "run": "Instálalo tú",
+    "language": "Idioma"
+  },
+  "hero": {
+    "caption": "Splendor Marvel · solitario",
+    "lead": "Juega a <strong>Splendor Marvel</strong> en solitario contra el automa de Thanos creado por fans. El juego está en tu mesa; esta app para el móvil mueve a Thanos: su mazo, sus fichas y su carrera hacia el Guantelete del Infinito.",
+    "guide": "Lee la guía (en inglés)",
+    "github": "Ver en GitHub",
+    "highlights": "Lo esencial",
+    "badges": ["Gratis, código en GitHub", "Funciona sin conexión", "5 idiomas", "Sin cuentas"],
+    "burst": "¡Siempre juega primero!"
+  },
+  "strip": {
+    "title": "Un compañero, no un juego digital",
+    "table": {
+      "sfx": "¡Clac!",
+      "title": "En tu mesa",
+      "items": ["El mercado", "La reserva de fichas", "Tus cartas"],
+      "text": "Juegas tus turnos como siempre, con el juego de verdad."
+    },
+    "app": {
+      "sfx": "¡Tap!",
+      "title": "En la app",
+      "items": ["El mazo del automa", "El tablero de fichas", "Toda la contabilidad de Thanos"],
+      "text": "Thanos juega sus turnos a través de tu móvil."
+    }
+  },
+  "how": {
+    "caption": "Cómo va una ronda",
+    "title": "Cuatro toques por ronda",
+    "steps": [
+      {
+        "alt": "Thanos hace su jugada: el dorso de la carta del automa, toca para revelarla",
+        "title": "Revela su carta",
+        "text": "Thanos siempre juega primero. La app baraja su mazo en cada fase y lee la sección correcta de la carta."
+      },
+      {
+        "alt": "Thanos recluta: el mapa del mercado, las fichas que devuelve y qué gema tiene la carta",
+        "title": "Haz lo que dice",
+        "text": "Qué fichas toma, qué carta recluta, la sustitución de color y qué fichas vuelven primero: tú solo las mueves en la mesa."
+      },
+      {
+        "alt": "En la mesa: una lista de su jugada y luego tu jugada",
+        "title": "Juega tu turno",
+        "text": "Marca la lista de la mesa, juega como siempre y anota la carta que reclutaste: su nivel, color, puntos y símbolos de Vengadores."
+      },
+      {
+        "alt": "Victoria: completaste el Guantelete del Infinito",
+        "title": "La carrera al Guantelete",
+        "text": "Al final de cada ronda, la app comprueba el Guantelete del Infinito de los dos, con los desempates oficiales. Complétalo en 30 rondas o… ¡CHAS!"
+      }
+    ]
+  },
+  "features": {
+    "caption": "Qué hace",
+    "title": "Thanos, en piloto automático",
+    "items": [
+      {
+        "title": "Lleva su mazo",
+        "text": "Lo baraja en cada fase, lee la sección verde, la amarilla y luego la roja, y lleva la cuenta de las 30 rondas."
+      },
+      {
+        "title": "Te dice exactamente qué hace",
+        "text": "Fichas en el orden impreso, el hueco del que recluta, la sustitución de color y las fichas más antiguas primero de vuelta."
+      },
+      {
+        "title": "Lleva sus cuentas",
+        "text": "Sus montones de fichas, cartas, puntos, la loseta de los Vengadores y la Gema del Tiempo."
+      },
+      {
+        "title": "Comprueba el Guantelete",
+        "text": "Cada ronda, para los dos, con los desempates oficiales y las reglas del automa para empates."
+      },
+      {
+        "title": "Deshaz lo que sea",
+        "text": "Cada paso se puede deshacer, y la partida se guarda tras cada toque."
+      },
+      {
+        "title": "Hecho para la mesa",
+        "text": "Se instala en tu pantalla de inicio, funciona sin conexión y mantiene la pantalla encendida durante la partida."
+      },
+      {
+        "title": "Reglas cuando las necesitas",
+        "text": "Toca la «i» junto a un paso para leer la regla que sigue, sin levantarte de la mesa."
+      },
+      {
+        "title": "Decisiones para los huecos",
+        "text": "Donde el PDF del automa no dice nada, se siguen por defecto las aclaraciones de BoardGameGeek, y puedes cambiarlas."
+      }
+    ]
+  },
+  "gallery": {
+    "caption": "Cada pantalla",
+    "title": "Más de cerca",
+    "items": [
+      {
+        "alt": "Nueva partida: lista de preparación y dificultad",
+        "label": "Prepara y elige la dificultad"
+      },
+      {
+        "alt": "Thanos toma fichas; toca una ficha si se agotó en la reserva",
+        "label": "Toma fichas"
+      },
+      {
+        "alt": "Sustitución de color: ya tiene ese color",
+        "label": "Sustitución de color"
+      },
+      {
+        "alt": "Anota tu carta: nivel, color de bonificación, puntos y símbolos de Vengadores",
+        "label": "Anota tu carta"
+      },
+      { "alt": "Mazo barajado: empieza la fase 2", "label": "Nueva fase, nueva sección" },
+      {
+        "alt": "El botín de Thanos: montones de fichas, orden de devolución y sus cartas",
+        "label": "Su botín"
+      },
+      {
+        "alt": "El registro de la partida, con la ronda más reciente arriba",
+        "label": "El registro"
+      },
+      {
+        "alt": "¡CHAS!: la ronda 30 terminó sin tu Guantelete del Infinito",
+        "label": "O… ¡CHAS!"
+      }
+    ]
+  },
+  "languages": {
+    "caption": "Cinco idiomas",
+    "title": "Habla tu idioma",
+    "text": "Arranca en el idioma de tu móvil, y puedes cambiarlo cuando quieras. Todos los textos están traducidos, incluidas las reglas y las frases de Thanos. Y también esta página."
+  },
+  "get": {
+    "caption": "Necesitas la caja",
+    "title": "Consigue el juego",
+    "text": "La app solo mueve a Thanos. Tú juegas con el <strong>Splendor Marvel</strong> de verdad, diseñado por Marc André y publicado por Space Cowboys.",
+    "publisher": {
+      "kicker": "Editorial",
+      "name": "Space Cowboys",
+      "more": "La página oficial del juego (en inglés)"
+    },
+    "store": {
+      "kicker": "Dónde comprarlo",
+      "name": "Tiendas Asmodee",
+      "more": "Encuentra una tienda cerca de ti"
+    },
+    "bgg": {
+      "kicker": "Opiniones y ofertas",
+      "name": "BoardGameGeek",
+      "more": "Valoraciones, foros y mercado"
+    }
+  },
+  "run": {
+    "caption": "Instálalo tú",
+    "title": "Tu propia copia",
+    "text": "Es una app web estática, sin código de servidor, cuentas ni rastreo. Crea la imagen de Docker, o los archivos estáticos, y sírvelos por HTTPS para que los móviles puedan instalarla.",
+    "docker": "Docker",
+    "static": "Archivos estáticos",
+    "serve": "# sirve la carpeta dist/ por HTTPS"
+  },
+  "credits": {
+    "title": "Créditos",
+    "game": "<strong>Splendor Marvel</strong>: juego de Marc André, publicado por <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Busca una tienda en el <a href=\"{{links.store}}\">localizador de tiendas de Asmodee</a>.",
+    "automa": "<strong>Automa en solitario</strong>: diseñado por <a href=\"{{links.automa}}\">Dukefanblue2005</a> en BoardGameGeek.",
+    "retheme": "<strong>Versión Marvel del automa</strong>: de <a href=\"{{links.retheme}}\">Shamus</a> en BoardGameGeek.",
+    "fonts": "<strong>Tipografías</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, licencia SIL Open Font License 1.1; extensión cirílica de 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
+    "trademarks": "Splendor y el logotipo de Splendor son marcas de Space Cowboys (Asmodee). MARVEL, el logotipo de MARVEL y todos los personajes y nombres relacionados son ™ y © MARVEL. Las capturas muestran los logotipos de Splendor y MARVEL y el dorso de las cartas del automa, que pertenecen a sus dueños.",
+    "unofficial": "<strong>Proyecto no oficial hecho por fans.</strong> No tiene relación con Space Cowboys, Asmodee ni Marvel, ni está avalado por ellos, y necesitas el juego físico para jugar."
+  },
+  "footer": {
+    "tagline": "Thanos Automa · un compañero en solitario para Splendor Marvel hecho por fans"
+  }
+}

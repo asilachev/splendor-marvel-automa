@@ -1,0 +1,181 @@
+{
+  "meta": {
+    "title": "Thanos Automa · play Splendor Marvel solo",
+    "description": "A free phone companion for playing Splendor Marvel solo against the fan-made Thanos automa. It runs his deck, his tokens and his race to the Infinity Gauntlet, while your table holds the game.",
+    "ogDescription": "Your table holds the game. This app runs Thanos: his deck, his tokens, his race to the Gauntlet."
+  },
+  "nav": {
+    "sections": "Sections",
+    "how": "How it plays",
+    "features": "Features",
+    "languages": "Languages",
+    "get": "Get the game",
+    "run": "Run it",
+    "language": "Language"
+  },
+  "hero": {
+    "caption": "Splendor Marvel · solo",
+    "lead": "Play <strong>Splendor Marvel</strong> solo against the fan-made Thanos automa. Your table holds the game. This phone app runs Thanos: his deck, his tokens and his race to the Infinity Gauntlet.",
+    "guide": "Read the guide",
+    "github": "View on GitHub",
+    "highlights": "Highlights",
+    "badges": ["Free, source on GitHub", "Works offline", "5 languages", "No accounts"],
+    "burst": "He always goes first!"
+  },
+  "strip": {
+    "title": "A companion, not a digital game",
+    "table": {
+      "sfx": "Clack!",
+      "title": "On your table",
+      "items": ["The market", "The token supply", "Your cards"],
+      "text": "You play your turns as usual, with the real game."
+    },
+    "app": {
+      "sfx": "Tap!",
+      "title": "In the app",
+      "items": ["The automa deck", "The token board", "Thanos’s bookkeeping"],
+      "text": "Thanos plays his turns through your phone."
+    }
+  },
+  "how": {
+    "caption": "How a round goes",
+    "title": "Four taps a round",
+    "steps": [
+      {
+        "alt": "Thanos makes his move: the automa card back, tap to reveal",
+        "title": "Flip his card",
+        "text": "Thanos always goes first. The app shuffles his deck for each phase and reads the right section of the card."
+      },
+      {
+        "alt": "Thanos recruits: the market map, the tokens he returns, and which stone is on the card",
+        "title": "Do what he says",
+        "text": "Which tokens he takes, which card he recruits, the colour substitution, and which tokens go back first: you just move them on the table."
+      },
+      {
+        "alt": "At the table: a checklist of his move, then your move",
+        "title": "Play your turn",
+        "text": "Tick off the table checklist, play as usual, and log the card you recruited: its level, colour, points and Avengers tags."
+      },
+      {
+        "alt": "You win: you completed the Infinity Gauntlet",
+        "title": "Race to the Gauntlet",
+        "text": "At the end of every round the app checks both sides for the Infinity Gauntlet, with the official tiebreakers. Complete it within 30 rounds, or it’s a SNAP."
+      }
+    ]
+  },
+  "features": {
+    "caption": "What it does",
+    "title": "Thanos, fully automated",
+    "items": [
+      {
+        "title": "Runs his deck",
+        "text": "Shuffles each phase, reads green, yellow, then red, and keeps the 30-round clock."
+      },
+      {
+        "title": "Tells you exactly what he does",
+        "text": "Tokens in printed order, the slot he recruits, colour substitution and the oldest tokens back first."
+      },
+      {
+        "title": "Keeps his bookkeeping",
+        "text": "His token piles, cards, points, the Avengers tile and the Time stone."
+      },
+      {
+        "title": "Checks the Gauntlet",
+        "text": "Every round, for both sides, with the official tiebreakers and the automa’s rules for ties."
+      },
+      {
+        "title": "Undo anything",
+        "text": "Every step can be undone, and the game is saved after every tap."
+      },
+      {
+        "title": "Made for the table",
+        "text": "Installs to your home screen, works offline and keeps the screen awake during a game."
+      },
+      {
+        "title": "Rules where you need them",
+        "text": "Tap the “i” next to a step to read the rule it follows, right at the table."
+      },
+      {
+        "title": "Rulings for the gaps",
+        "text": "Where the automa PDF is silent, the defaults follow the BoardGameGeek clarifications, and you can change them."
+      }
+    ]
+  },
+  "gallery": {
+    "caption": "Every screen",
+    "title": "A closer look",
+    "items": [
+      {
+        "alt": "New game setup: table checklist and difficulty",
+        "label": "Set up and pick a difficulty"
+      },
+      {
+        "alt": "Thanos takes tokens; tap a token if its pile is empty",
+        "label": "He takes tokens"
+      },
+      {
+        "alt": "Colour substitution: he already has that colour",
+        "label": "Colour substitution"
+      },
+      {
+        "alt": "Log your card: level, bonus colour, points and Avengers tags",
+        "label": "Log your card"
+      },
+      { "alt": "Deck reshuffled: phase 2 begins", "label": "New phase, new section" },
+      {
+        "alt": "Thanos’s hoard: token piles, return order and his cards",
+        "label": "His hoard"
+      },
+      { "alt": "The game log, newest round first", "label": "The game log" },
+      {
+        "alt": "SNAP: round 30 ended without your Infinity Gauntlet",
+        "label": "Or… SNAP."
+      }
+    ]
+  },
+  "languages": {
+    "caption": "Five languages",
+    "title": "Speaks your language",
+    "text": "It starts in your phone’s language, and you can switch any time. Every text, including the rules and Thanos’s lines, is translated. So is this page."
+  },
+  "get": {
+    "caption": "You need the box",
+    "title": "Get the game",
+    "text": "The app only runs Thanos. You play with the physical <strong>Splendor Marvel</strong>, designed by Marc André and published by Space Cowboys.",
+    "publisher": {
+      "kicker": "Publisher",
+      "name": "Space Cowboys",
+      "more": "The official Splendor Marvel page"
+    },
+    "store": {
+      "kicker": "Where to buy",
+      "name": "Asmodee store locator",
+      "more": "Find a shop near you that sells it"
+    },
+    "bgg": {
+      "kicker": "Reviews and offers",
+      "name": "BoardGameGeek",
+      "more": "Ratings, forums and the marketplace"
+    }
+  },
+  "run": {
+    "caption": "Run it yourself",
+    "title": "Host your own copy",
+    "text": "It’s a static web app with no server code, accounts or tracking. Build the Docker image, or the static files, and serve them over HTTPS so phones can install it.",
+    "docker": "Docker",
+    "static": "Static files",
+    "serve": "# serve the dist/ folder over HTTPS"
+  },
+  "credits": {
+    "title": "Credits",
+    "game": "<strong>Splendor Marvel</strong>: game by Marc André, published by <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Find a copy with the <a href=\"{{links.store}}\">Asmodee store locator</a>.",
+    "automa": "<strong>Solo automa</strong>: designed by <a href=\"{{links.automa}}\">Dukefanblue2005</a> on BoardGameGeek.",
+    "retheme": "<strong>Marvel re-theme of the automa</strong>: by <a href=\"{{links.retheme}}\">Shamus</a> on BoardGameGeek.",
+    "fonts": "<strong>Fonts</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; Cyrillic extension 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
+    "trademarks": "Splendor and the Splendor logo are trademarks of Space Cowboys (Asmodee). MARVEL, the MARVEL logo and all related characters and names are ™ &amp; © MARVEL. Screenshots show the Splendor and MARVEL logos and the automa card back, which belong to their owners.",
+    "unofficial": "<strong>Unofficial fan project.</strong> It isn’t affiliated with or endorsed by Space Cowboys, Asmodee or Marvel, and you need the physical game to play."
+  },
+  "footer": {
+    "tagline": "Thanos Automa · a fan-made Splendor Marvel solo companion"
+  }
+}
