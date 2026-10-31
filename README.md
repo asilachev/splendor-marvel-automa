@@ -124,6 +124,8 @@ The free Hobby plan covers a non-commercial project like this one.
    HTTPS is automatic.
 3. **Updates are automatic.** Every push to `master` deploys to production, and every pull request
    gets a preview URL.
+4. **Analytics** (optional). Turn on *Web Analytics* in the Vercel project. Builds made on Vercel
+   then count page views: anonymous, no cookies. Builds made anywhere else contain no analytics.
 
 ### Docker (self-hosted)
 

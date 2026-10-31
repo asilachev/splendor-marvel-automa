@@ -162,7 +162,7 @@
   "run": {
     "caption": "Run it yourself",
     "title": "Host your own copy",
-    "text": "It’s a static web app with no server code, accounts or tracking. Build the Docker image, or the static files, and serve them over HTTPS so phones can install it.",
+    "text": "It’s a static web app with no server code or accounts. Build the Docker image, or the static files, and serve them over HTTPS so phones can install it.",
     "docker": "Docker",
     "static": "Static files",
     "serve": "# serve the dist/ folder over HTTPS"
@@ -174,6 +174,7 @@
     "retheme": "<strong>Marvel re-theme of the automa</strong>: by <a href=\"{{links.retheme}}\">Shamus</a> on BoardGameGeek.",
     "fonts": "<strong>Fonts</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; Cyrillic extension 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor and the Splendor logo are trademarks of Space Cowboys (Asmodee). MARVEL, the MARVEL logo and all related characters and names are ™ &amp; © MARVEL. Screenshots show the Splendor and MARVEL logos and the automa card back, which belong to their owners.",
+    "privacy": "<strong>Privacy.</strong> No accounts and no cookies. The app at app.thanos.silachev.com counts visits anonymously with Vercel Web Analytics; copies you host yourself count nothing.",
     "unofficial": "<strong>Unofficial fan project.</strong> It isn’t affiliated with or endorsed by Space Cowboys, Asmodee or Marvel, and you need the physical game to play."
   },
   "footer": {

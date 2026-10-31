@@ -104,6 +104,10 @@ ordered stack by hand is the fiddliest part of the paper automa.
     integration deploys `master` and previews pull requests; nothing in GitHub Actions.
   - Both send `X-Robots-Tag: noindex`: the app is a tool, and the landing page is its public face.
     A change to the headers or caching goes into both `docker/` and `vercel.ts`.
+  - **Analytics (#87):** Vercel builds load Vercel Web Analytics: anonymous, cookieless page views,
+    no custom events. Its script and endpoint are on the app's origin, so the CSP is unchanged.
+    `vite.config.ts` sets `__VERCEL_ANALYTICS__` from `VERCEL=1`, so every other build (Docker,
+    local) drops the code entirely. The landing page's credits say so in a privacy line.
   - The app must be served over **HTTPS**, because PWA install, offline mode and the screen wake
     lock all require a secure context.
 - **Why not Next.js:** nothing here runs on a server. A static build is simpler to cache offline and
