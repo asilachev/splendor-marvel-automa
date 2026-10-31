@@ -1,25 +1,31 @@
-/* Design tokens: cosmic "Infinity Gauntlet" theme. See docs/design.md → Visual language. */
+/* v2 "Versus" theme tokens. Design: Pencil file splendor-marvel-automa.pen → Components & states. */
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
+    format('woff2-variations');
+}
+
 :root {
   color-scheme: dark;
 
-  --bg: #06070f;
-  --surface: rgb(20 22 48 / 82%);
-  --surface-2: rgb(38 42 88 / 72%);
-  --surface-solid: #151735;
-  --border: rgb(255 214 120 / 16%);
-  --border-strong: rgb(255 214 120 / 38%);
-  --text: #f4f1ff;
-  --text-muted: #aaa7d0;
-  --danger: #ff6b6b;
-  --success: #4ade80;
+  --ink: #0f0b1a;
+  --ink-2: #1e1636;
+  --ink-3: #2a2148;
+  --paper: #fff4dc;
+  --paper-ink: #1a1222;
+  --paper-muted: #5b4f75;
+  --muted: #b9acd9;
+  --line: rgb(255 255 255 / 20%);
 
-  /* Gauntlet gold */
-  --gold-1: #fff0b8;
-  --gold-2: #f2c14e;
-  --gold-3: #b07a18;
-  --gold: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 45%, var(--gold-3) 100%);
-  --accent: var(--gold-2);
-  --accent-text: #1d1300;
+  --gold: #ffc533;
+  --gold-deep: #b07a18;
+  --purple: #7b2ff7;
+  --blue: #2f7cf6;
+  --red: #ef3b36;
+  --green: #2fb36b;
 
   /* Infinity Stones (token-board order 1–5) + Time */
   --stone-power: #8e44d6;
@@ -29,24 +35,28 @@
   --stone-soul: #f07f1a;
   --stone-time: #2fb36b;
 
-  /* Automa card phases (as printed) */
+  /* Automa card phases and market levels, as printed */
   --phase-1: #8bc34a;
   --phase-2: #ffeb3b;
   --phase-3: #f44336;
+  --level-1: #3aa655;
+  --level-2: #e8891a;
+  --level-3: #2f6fbf;
 
-  --radius: 16px;
-  --radius-sm: 10px;
+  --font-display: 'Bangers', 'Impact', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Comic hard shadows */
+  --shadow-1: 2px 2px 0 #000;
+  --shadow-2: 3px 3px 0 #000;
+  --shadow-3: 5px 5px 0 #000;
+  --shadow-4: 8px 8px 0 #000;
+
+  --radius: 10px;
   --tap: 48px;
   --gutter: 16px;
-  --max-width: 480px;
 
-  --font-display: 'Bebas Neue', 'Impact', 'Arial Narrow', sans-serif;
-  font-family:
-    system-ui,
-    -apple-system,
-    'Segoe UI',
-    Roboto,
-    sans-serif;
+  font-family: var(--font-body);
   line-height: 1.4;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
@@ -62,45 +72,26 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  color: var(--text);
-  background-color: var(--bg);
+  color: #fff;
+  background-color: var(--ink);
+  /* No pull-to-refresh or rubber-banding mid-game in standalone mode. */
+  overscroll-behavior: none;
 }
 
-/* Nebula glows over deep space, plus a faint star field. */
 body {
   min-height: 100dvh;
-  background-image:
-    radial-gradient(1000px 520px at 0% -10%, rgb(124 58 237 / 28%), transparent 60%),
-    radial-gradient(800px 480px at 110% 15%, rgb(37 99 235 / 22%), transparent 60%),
-    radial-gradient(700px 520px at 50% 115%, rgb(234 179 8 / 14%), transparent 60%);
+  background-image: radial-gradient(
+    900px 520px at 50% -12%,
+    rgb(123 47 247 / 24%),
+    transparent 62%
+  );
   background-attachment: fixed;
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.55;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 72% 8%, #fff 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 40% 62%, #ffe9a8 50%, transparent 51%),
-    radial-gradient(1px 1px at 88% 44%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 25% 86%, #cfe0ff 50%, transparent 51%),
-    radial-gradient(1.5px 1.5px at 60% 30%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 5% 55%, #fff 50%, transparent 51%),
-    radial-gradient(1px 1px at 95% 92%, #ffe9a8 50%, transparent 51%);
-  background-size: 320px 420px;
-}
-
 #root {
+  max-width: 480px;
   min-height: 100dvh;
-  max-width: var(--max-width);
   margin: 0 auto;
-  padding: max(var(--gutter), env(safe-area-inset-top)) var(--gutter)
-    max(var(--gutter), env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
 }
@@ -108,18 +99,20 @@ body::before {
 button {
   font: inherit;
   color: inherit;
+  touch-action: manipulation;
 }
 
 h1,
 h2,
 h3 {
+  margin: 0;
   font-family: var(--font-display);
   font-weight: 400;
   letter-spacing: 0.04em;
 }
 
 :focus-visible {
-  outline: 3px solid var(--gold-2);
+  outline: 3px solid var(--gold);
   outline-offset: 2px;
 }
 

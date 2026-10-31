@@ -103,31 +103,24 @@ ordered stack by hand is the fiddliest part of the paper automa.
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
 
-## Visual language
+## Visual language (v2 "Versus")
 
-- **Theme.** Cosmic "Infinity Gauntlet": deep space with nebula glows and a faint star field,
-  gauntlet-gold accents, and glassy panels.
-- **Type.** Bebas Neue (OFL, bundled via `@fontsource`, so it works offline and under the CSP) for
-  headings, numbers and buttons; the system font for body text.
-- **Stones** are drawn as game-like tokens: a coloured disc with a white symbol.
-  - Power: circle. Mind: hexagon. Space: square. Reality: triangle. Soul: sun. Time: green diamond.
-  - The symbols keep colours distinguishable for colour-blind players.
-  - Pickers show the token-board numbers 1–5, matching the automa cards.
-- **The automa card face** is drawn to resemble the printed card:
-  - green, yellow and red phase strips;
-  - metallic bands;
-  - token wheels with the printed numbers;
-  - a black slot badge with a green check;
-  - a crossed-out discard wheel;
-  - the card number and a ★ on star cards.
-- **The flip.** The face flips from the official card back. The card shrinks once flipped, so the
-  action panel stays near the top.
-- **Thanos's side** is tinted purple and yours blue. A side that has completed the Gauntlet glows
-  green.
-- **Layout.** Tap targets are at least 48 px, and it is comfortable at 360 px wide. Animations respect
-  reduced motion.
-- **Rule tips** (#31) are small "i" buttons next to the rule they explain. A tap toggles an inline note,
-  because hover doesn't exist on phones.
+The approved design is the Pencil file `splendor-marvel-automa.pen`. It holds 30 screens in 7 flows, a
+Components & states board, a user-flow map and a PWA checklist.
+
+- **Versus HUD.** Thanos (portrait from the card back) against you. Health-bar points fill toward 16,
+  with six stone sockets per side and a round clock that turns red in the last round.
+- **One step on screen at a time:** reveal, then take or recruit, then the table checklist plus your
+  move, then end of round. The step's primary action and the comic dock (Undo, Hoard, Log, Rules) stay
+  pinned at the bottom, above the home indicator.
+- **Comic styling.** Bangers display type, Inter for body text, black outlines, hard offset shadows,
+  gold, blue and red caption boxes, and a paper panel with a speech bubble for Thanos's move.
+- **Stones** are tokens: a coloured disc, a black outline and a white symbol. Pickers show the
+  token-board numbers 1–5.
+- **Sheets.** Hoard (colour piles with a fix mode), Log, Rules & settings (keep the screen awake,
+  credits), and Log your card. One dialog: abandon the game.
+- **Motion.** The card flip and the sheet rise both respect reduced motion. Touch targets are at least
+  44 px.
 
 ## Logo and official art
 

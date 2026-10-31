@@ -15,6 +15,7 @@ import {
 } from '../engine/index.ts'
 import { App } from './App.tsx'
 import { loadSettings, saveGame } from './state/persistence.ts'
+import { loadPrefs } from './state/prefs.ts'
 
 const actionAt = (seed: number, round: number): AutomaAction =>
   cardForRound(newGame(seed, DEFAULT_SETTINGS).setup, round).action
@@ -47,209 +48,216 @@ function thanosNeutral(state: GameState): GameEvent[] {
   ]
 }
 
-const run = (seed: number, events: GameEvent[], settings = DEFAULT_SETTINGS) =>
-  events.reduce(applyEvent, newGame(seed, settings))
+const run = (seed: number, events: GameEvent[]) =>
+  events.reduce(applyEvent, newGame(seed, DEFAULT_SETTINGS))
+
+/** Events up to the player step of `round`, Thanos playing neutrally, you logging nothing. */
+function playTo(seed: number, round: number): GameEvent[] {
+  let events: GameEvent[] = []
+  for (;;) {
+    events = [...events, ...thanosNeutral(run(seed, events))]
+    if (run(seed, events).round === round) return events
+    events.push({ type: 'endRound' })
+  }
+}
+
+const takeSeed = seedWhere((s) => actionAt(s, 1).kind === 'take')
 
 beforeEach(() => localStorage.clear())
 
-describe('home and setup (#8)', () => {
-  it('starts a game with the chosen settings and remembers them', async () => {
+describe('home, setup and rulings (#44)', () => {
+  it('starts a first game with the chosen settings and shows the credits', async () => {
     const user = userEvent.setup()
     render(<App />)
-    expect(screen.getByRole('heading', { name: 'Thanos Automa' })).toBeInTheDocument()
-    // Credits and copyright notes are always visible, not inside the rules accordion (#35).
+    expect(screen.getByRole('heading', { name: 'THANOS AUTOMA' })).toBeInTheDocument()
     const credits = screen.getByRole('contentinfo', { name: 'Credits and copyright' })
-    expect(credits).toBeVisible()
     expect(within(credits).getByRole('link', { name: 'Dukefanblue2005' })).toBeVisible()
-    expect(within(credits).getByRole('link', { name: 'Shamus' })).toBeVisible()
-    expect(credits).toHaveTextContent('© 2020 Space Cowboys')
     expect(credits).toHaveTextContent('™ & © MARVEL')
-    expect(credits).toHaveTextContent('personal, non-commercial use only')
 
-    await user.click(screen.getByRole('button', { name: 'New game' }))
-    expect(screen.getByText(/Return 3 tokens of each colour/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'START YOUR FIRST GAME' }))
+    expect(screen.getByRole('heading', { name: 'NEW GAME' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /^24/ }))
-    await user.click(screen.getByRole('button', { name: /12 tokens/ }))
-    await user.click(screen.getByRole('button', { name: 'Start game' }))
+    await user.click(screen.getByRole('button', { name: /12 TOKENS/ }))
+    await user.click(screen.getByRole('button', { name: /Rulings for gaps/ }))
+    await user.click(screen.getByRole('button', { name: 'Rule: Which cards count' }))
+    expect(screen.getByRole('note')).toHaveTextContent(/Shamus clarified on BGG/)
+    await user.click(screen.getByRole('button', { name: 'SAVE RULINGS' }))
+    await user.click(screen.getByRole('button', { name: 'START GAME' }))
 
-    expect(screen.getByText('/ 24')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Flip Thanos’s card/ })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'THANOS MAKES HIS MOVE' })).toBeInTheDocument()
+    expect(screen.getByText('ROUND 1')).toBeInTheDocument()
+    expect(screen.getByText('23 LEFT')).toBeInTheDocument()
     expect(loadSettings()).toMatchObject({ phaseLengths: [8, 8, 8], stackCap: 12 })
+  })
+
+  it('asks before a new game replaces the one in progress', async () => {
+    const user = userEvent.setup()
+    resume(takeSeed, [{ type: 'reveal' }])
+    await user.click(screen.getByRole('button', { name: 'Rules' }))
+    await user.click(screen.getByRole('button', { name: /BACK TO HOME/ }))
+    await user.click(screen.getByRole('button', { name: 'NEW GAME' }))
+    const dialog = screen.getByRole('alertdialog', { name: 'ABANDON THIS GAME?' })
+    await user.click(within(dialog).getByRole('button', { name: 'KEEP PLAYING' }))
+    expect(screen.queryByRole('alertdialog')).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'NEW GAME' }))
+    await user.click(screen.getByRole('button', { name: 'START OVER' }))
+    expect(screen.getByRole('heading', { name: 'NEW GAME' })).toBeInTheDocument()
   })
 })
 
-describe('Thanos’s turn (#6)', () => {
-  it('takes tokens in order, skipping an empty pile', async () => {
-    const seed = seedWhere((s) => actionAt(s, 1).kind === 'take')
-    const action = actionAt(seed, 1) as Extract<AutomaAction, { kind: 'take' }>
-    const [first, ...rest] = action.tokens
+describe('Thanos’s turn (#41)', () => {
+  it('takes tokens, skipping an empty pile, then shows the table checklist', async () => {
+    const action = actionAt(takeSeed, 1) as Extract<AutomaAction, { kind: 'take' }>
     const user = userEvent.setup()
-    resume(seed, [])
+    resume(takeSeed, [])
 
-    await user.click(screen.getByRole('button', { name: /Flip Thanos’s card/ }))
+    await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
+    expect(
+      screen.getByRole('heading', { name: /TAP A TOKEN IF ITS PILE IS EMPTY/ }),
+    ).toBeInTheDocument()
     const tokens = screen.getByRole('group', { name: 'Tokens to take' })
     await user.click(within(tokens).getAllByRole('button')[0]!)
-    expect(within(tokens).getAllByRole('button')[0]).toHaveAttribute('aria-pressed', 'false')
-    await user.click(screen.getByRole('button', { name: /^Done/ }))
+    await user.click(
+      screen.getByRole('button', { name: `DONE · ADD ${action.tokens.length - 1} TO HIS PILES` }),
+    )
 
-    expect(screen.getByRole('heading', { name: 'Your turn' })).toBeInTheDocument()
-    expect(screen.getByText(`Thanos’s tokens (${rest.length})`)).toBeInTheDocument()
-    expect(first).toBeDefined()
+    expect(screen.getByText('AT THE TABLE')).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /pile was empty — skipped/ })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: `Hoard · ${action.tokens.length - 1}` }),
+    ).toBeInTheDocument()
   })
 
   it('recruits with colour substitution and returns the oldest tokens', async () => {
-    // Round 1 takes tokens, round 2 gains a card that returns 3.
     const seed = seedWhere((s) => {
       const a1 = actionAt(s, 1)
       const a2 = actionAt(s, 2)
       return a1.kind === 'take' && a1.tokens.length === 3 && a2.kind === 'gain' && a2.discard === 3
     })
-    const start = newGame(seed, DEFAULT_SETTINGS)
-    const events: GameEvent[] = [...thanosNeutral(start)]
-    // You recruit nothing; Thanos already owns a Mind card (via a correction) to force substitution.
-    events.push({
-      type: 'addCard',
-      side: 'thanos',
-      card: { level: 1, colour: 'mind', points: 0, tags: 0 },
-    })
-    events.push({ type: 'endRound' })
+    const events: GameEvent[] = [
+      ...thanosNeutral(newGame(seed, DEFAULT_SETTINGS)),
+      { type: 'addCard', side: 'thanos', card: { level: 1, colour: 'mind', points: 0, tags: 0 } },
+      { type: 'endRound' },
+    ]
     const user = userEvent.setup()
     resume(seed, events)
 
-    await user.click(screen.getByRole('button', { name: /Flip Thanos’s card/ }))
-    expect(screen.getByText(/Return to the supply, oldest first/)).toBeInTheDocument()
-
-    const picker = screen.getByRole('group', { name: /^Colour of the card in/ })
-    await user.click(within(picker).getByRole('button', { name: /Mind/ }))
-    expect(screen.getByText(/Thanos already has/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
+    expect(screen.getByText('HE RETURNS')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'HE TAKES IT' })).toBeDisabled()
+    await user.click(
+      within(screen.getByRole('group', { name: /^Colour of the card in/ })).getByRole('button', {
+        name: /Mind/,
+      }),
+    )
+    expect(screen.getByRole('heading', { name: 'HE ALREADY HAS MIND!' })).toBeInTheDocument()
     const instead = screen.getByRole('group', { name: 'Colour of the card Thanos takes instead' })
     expect(within(instead).getByRole('button', { name: /Mind/ })).toBeDisabled()
     await user.click(within(instead).getByRole('button', { name: /Soul/ }))
-
     await user.click(
-      within(screen.getByRole('group', { name: 'Infinity points on the card' })).getByRole(
-        'button',
-        { name: '2' },
-      ),
+      within(screen.getByRole('group', { name: 'Points' })).getByRole('button', { name: '2' }),
     )
     await user.click(
-      within(screen.getByRole('group', { name: 'Avengers tags on the card' })).getByRole('button', {
-        name: '1',
-      }),
+      within(screen.getByRole('group', { name: 'Avengers' })).getByRole('button', { name: '1' }),
     )
-    await user.click(screen.getByRole('button', { name: 'Thanos takes it' }))
+    await user.click(screen.getByRole('button', { name: 'HE TAKES IT' }))
 
-    const todo = screen.getByRole('list', { name: 'Do this on the table' })
-    expect(
-      within(todo).getByText(/Thanos took L1 Soul \(2 pts, 1 Avengers tag\)/),
-    ).toBeInTheDocument()
-    expect(within(todo).getByText(/^Return .+ to the supply\.$/)).toBeInTheDocument()
-    expect(screen.getByText('Thanos’s tokens (0)')).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /Return to the supply/ })).toBeInTheDocument()
+    expect(screen.getByRole('checkbox', { name: /Refill slot/ })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Hoard · 0' })).toBeInTheDocument()
   })
 })
 
-describe('your turn and the end of the game (#7)', () => {
-  it('logs your recruit and ends the round', async () => {
-    const seed = seedWhere((s) => actionAt(s, 1).kind === 'take')
+describe('your turn, round end and game over (#41, #42)', () => {
+  it('logs your card in the sheet and ends the round', async () => {
     const user = userEvent.setup()
-    resume(seed, thanosNeutral(newGame(seed, DEFAULT_SETTINGS)))
-
-    await user.click(screen.getByRole('button', { name: /Log a recruited card/ }))
+    resume(takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    await user.click(screen.getByRole('button', { name: /I RECRUITED/ }))
+    const sheet = screen.getByRole('dialog', { name: 'LOG YOUR CARD' })
     await user.click(
-      within(screen.getByRole('group', { name: 'Level' })).getByRole('button', { name: '3' }),
+      within(within(sheet).getByRole('group', { name: 'Level' })).getByRole('button', {
+        name: '3',
+      }),
     )
     await user.click(
-      within(screen.getByRole('group', { name: 'Bonus colour' })).getByRole('button', {
+      within(within(sheet).getByRole('group', { name: 'Bonus colour' })).getByRole('button', {
         name: /Space/,
       }),
     )
     await user.click(
-      within(screen.getByRole('group', { name: 'Infinity points' })).getByRole('button', {
+      within(within(sheet).getByRole('group', { name: 'Points' })).getByRole('button', {
         name: '4',
       }),
     )
-    await user.click(screen.getByRole('button', { name: 'Add card' }))
+    await user.click(within(sheet).getByRole('button', { name: 'ADD CARD' }))
     expect(screen.getByText('Logged: L3 Space (4 pts)')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    expect(screen.getByText('ROUND 2')).toBeInTheDocument()
+  })
 
-    await user.click(screen.getByRole('button', { name: 'End round 1' }))
-    expect(screen.getByRole('button', { name: /Flip Thanos’s card/ })).toBeInTheDocument()
-    expect(screen.getByText('Round 2')).toBeInTheDocument()
+  it('announces the reshuffle at the start of phase 2', async () => {
+    const user = userEvent.setup()
+    resume(5, playTo(5, 10))
+    await user.click(screen.getByRole('button', { name: 'END ROUND 10' }))
+    expect(screen.getByRole('heading', { name: 'DECK RESHUFFLED!' })).toBeInTheDocument()
+    expect(screen.getByText('PHASE 2 BEGINS')).toBeInTheDocument()
   })
 
   it('shows your win when you complete the Gauntlet', async () => {
-    const seed = seedWhere((s) => actionAt(s, 1).kind === 'take')
     const events: GameEvent[] = [
-      ...thanosNeutral(newGame(seed, DEFAULT_SETTINGS)),
+      ...thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)),
       ...STONES.map((colour, i): GameEvent => ({
         type: 'playerRecruit',
         card: { level: i === 0 ? 3 : 1, colour, points: i === 0 ? 4 : 3, tags: 0 },
       })),
     ]
     const user = userEvent.setup()
-    resume(seed, events)
-    await user.click(screen.getByRole('button', { name: 'End round 1' }))
-    expect(screen.getByRole('heading', { name: 'You win!' })).toBeInTheDocument()
+    resume(takeSeed, events)
+    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    expect(screen.getByRole('heading', { name: 'YOU WIN!' })).toBeInTheDocument()
     expect(screen.getByText('You completed the Infinity Gauntlet in round 1.')).toBeInTheDocument()
   })
 
-  it('shows your loss when the last round ends without your Gauntlet', async () => {
-    const seed = 3
-    let events: GameEvent[] = []
-    let state = newGame(seed, DEFAULT_SETTINGS)
-    while (true) {
-      const thanos = thanosNeutral(state)
-      events = [...events, ...thanos]
-      state = run(seed, events)
-      if (state.round === 30) break
-      events.push({ type: 'endRound' })
-      state = run(seed, events)
-    }
+  it('shows SNAP after the last round, and undo steps back with a toast', async () => {
     const user = userEvent.setup()
-    resume(seed, events)
-    await user.click(screen.getByRole('button', { name: 'End round 30' }))
-    expect(screen.getByRole('heading', { name: 'Thanos wins' })).toBeInTheDocument()
+    resume(3, playTo(3, 30))
+    await user.click(screen.getByRole('button', { name: 'END ROUND 30' }))
+    expect(screen.getByRole('heading', { name: 'SNAP.' })).toBeInTheDocument()
     expect(screen.getByText('Round 30 ended without your Infinity Gauntlet.')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: 'Undo the last step' }))
-    expect(screen.getByRole('button', { name: 'End round 30' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'UNDO THE LAST STEP' }))
+    expect(screen.getByRole('button', { name: 'END ROUND 30' })).toBeInTheDocument()
+    expect(screen.getByText('Undone — stepped back one action.')).toBeInTheDocument()
   })
 })
 
-describe('rule tips (#31)', () => {
-  it('explains the automa rules where they apply', async () => {
-    const seed = seedWhere((s) => actionAt(s, 1).kind === 'gain')
+describe('dock sheets (#43)', () => {
+  it('fixes Thanos’s piles in the hoard and toggles settings in the rules sheet', async () => {
     const user = userEvent.setup()
-    resume(seed, [])
-    for (const title of [
-      'Phases',
-      'Thanos’s turn',
-      'Infinity Gauntlet',
-      'Avengers Assemble tile',
-      'Thanos’s stack',
-    ]) {
-      expect(screen.getByRole('button', { name: `Rule: ${title}` })).toBeInTheDocument()
-    }
-    await user.click(screen.getByRole('button', { name: /Flip Thanos’s card/ }))
-    for (const title of [
-      'Gaining a card',
-      'Returning tokens',
-      'Colour substitution',
-      'Empty slot',
-    ]) {
-      expect(screen.getByRole('button', { name: `Rule: ${title}` })).toBeInTheDocument()
-    }
-    await user.click(screen.getByRole('button', { name: 'Rule: Infinity Gauntlet' }))
-    expect(screen.getByRole('note')).toHaveTextContent(
-      /16\+ Infinity Points.*can’t complete it before round 21/,
-    )
+    resume(takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    const n = (actionAt(takeSeed, 1) as Extract<AutomaAction, { kind: 'take' }>).tokens.length
+
+    await user.click(screen.getByRole('button', { name: `Hoard · ${n}` }))
+    const hoard = screen.getByRole('dialog', { name: 'THANOS’S HOARD' })
+    await user.click(within(hoard).getByRole('button', { name: 'FIX' }))
+    await user.click(within(hoard).getByRole('button', { name: 'Add a Soul token' }))
+    expect(within(hoard).getByText(`TOKENS · ${n + 1}`)).toBeInTheDocument()
+    await user.click(within(hoard).getByRole('button', { name: 'Close THANOS’S HOARD' }))
+
+    await user.click(screen.getByRole('button', { name: 'Rules' }))
+    const rules = screen.getByRole('dialog', { name: 'RULES & HELP' })
+    await user.click(within(rules).getByRole('button', { name: /Taking tokens/ }))
+    expect(within(rules).getByText(/no 10-token limit/)).toBeInTheDocument()
+    const sw = within(rules).getByRole('switch', { name: 'Keep the screen awake' })
+    expect(sw).toHaveAttribute('aria-checked', 'true')
+    await user.click(sw)
+    expect(loadPrefs().wakeLock).toBe(false)
+    expect(within(rules).getByRole('contentinfo', { name: 'Credits and copyright' })).toBeVisible()
   })
 
-  it('explains where each setup ruling comes from', async () => {
+  it('explains rules with tips on the game screen', async () => {
     const user = userEvent.setup()
-    render(<App />)
-    await user.click(screen.getByRole('button', { name: 'New game' }))
-    await user.click(screen.getByText('Rulings for gaps in the automa'))
-    await user.click(screen.getByRole('button', { name: 'Rule: Which cards count' }))
-    expect(screen.getByRole('note')).toHaveTextContent(/Shamus clarified on BGG/)
+    resume(takeSeed, [])
+    await user.click(screen.getByRole('button', { name: 'Rule: Thanos’s turn' }))
+    expect(screen.getByRole('note')).toHaveTextContent(/flips the next automa card/)
   })
 })
