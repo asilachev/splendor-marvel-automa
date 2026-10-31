@@ -5,7 +5,7 @@ export interface ToastInput {
   readonly text: string
   readonly tone?: 'gold' | 'muted' | 'green'
   readonly action?: { readonly label: string; readonly run: () => void }
-  /** Milliseconds; 0 keeps it until dismissed or replaced. Default 3500. */
+  /** Milliseconds; 0 keeps it, with a dismiss button, until dismissed or replaced. Default 3500. */
   readonly duration?: number
   /** Toasts with the same key replace each other. */
   readonly key?: string

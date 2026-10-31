@@ -80,6 +80,7 @@ src/
     components/  comic kit: Token, Button, Caption, chips, stone tiles, sheets, dialog, toasts, Versus HUD, dock, cards
     game/        game screen: steps (reveal, take, recruit, table, phase change, game over) and dock sheets
     home/        home, setup and rulings
+    pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)

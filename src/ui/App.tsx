@@ -5,6 +5,15 @@ import { Toaster } from './components/Toaster.tsx'
 import { Game } from './game/Game.tsx'
 import { Home } from './home/Home.tsx'
 import { Setup } from './home/Setup.tsx'
+import {
+  isIosSafari,
+  isStandalone,
+  requestPersistentStorage,
+  useInstallPrompt,
+  useSplash,
+} from './pwa/pwa.ts'
+import { InstallCard, InstallSheet, Splash } from './pwa/Pwa.tsx'
+import { usePwaToasts } from './pwa/usePwaToasts.tsx'
 import { loadSettings } from './state/persistence.ts'
 import { loadPrefs, savePrefs, type Prefs } from './state/prefs.ts'
 import { useGame } from './state/useGame.ts'
@@ -21,11 +30,14 @@ export function App() {
 
 function Shell() {
   const game = useGame()
-  const [screen, setScreen] = useState<Screen>(() =>
-    game.state && game.state.step !== 'over' ? 'game' : 'home',
-  )
+  // Every launch opens on Home; a saved game shows CONTINUE (design: 7.3 splash → 1.2).
+  const [screen, setScreen] = useState<Screen>('home')
   const [prefs, setPrefs] = useState<Prefs>(loadPrefs)
   const [confirmAbandon, setConfirmAbandon] = useState(false)
+  const splash = useSplash()
+  const installPrompt = useInstallPrompt()
+  const [iosNotInstalled] = useState(() => isIosSafari() && !isStandalone())
+  usePwaToasts()
   const updatePrefs = (p: Partial<Prefs>) =>
     setPrefs((prev) => {
       const next = { ...prev, ...p }
@@ -42,6 +54,7 @@ function Shell() {
         initial={loadSettings()}
         onBack={() => setScreen('home')}
         onStart={(settings) => {
+          requestPersistentStorage()
           game.start(settings)
           setScreen('game')
         }}
@@ -65,6 +78,11 @@ function Shell() {
       <Home
         state={game.state}
         corruptSave={game.recoveredFromCorruptSave}
+        install={
+          installPrompt.available ? (
+            <InstallCard onInstall={() => void installPrompt.install()} />
+          ) : null
+        }
         onContinue={() => setScreen('game')}
         onNewGame={newGame}
       />
@@ -95,6 +113,10 @@ function Shell() {
           </Button>
         </Dialog>
       ) : null}
+      {screen === 'home' && iosNotInstalled && !prefs.installHintSeen ? (
+        <InstallSheet onClose={() => updatePrefs({ installHintSeen: true })} />
+      ) : null}
+      {splash === 'off' ? null : <Splash leaving={splash === 'leaving'} />}
     </>
   )
 }

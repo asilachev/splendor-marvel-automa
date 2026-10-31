@@ -408,6 +408,11 @@
   }
 }
 
+.sheet:focus,
+.dialog:focus {
+  outline: none;
+}
+
 .grabber {
   width: 44px;
   height: 5px;
@@ -536,6 +541,20 @@
 
 .toast span {
   flex: 1;
+}
+
+.toastClose {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: -6px -8px -6px 0;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
 }
 
 .toastAction {

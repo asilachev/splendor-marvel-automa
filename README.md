@@ -80,13 +80,13 @@ The app is a static site, served by unprivileged nginx in a Docker image of abou
    `docker compose up -d`. It serves on port 8080.
 3. **Add HTTPS.** Put it behind your reverse proxy (Caddy, Traefik, nginx…) with HTTPS. Installing
    to the home screen, offline mode and keeping the screen awake all require a secure context.
-4. **Update** with `docker compose pull && docker compose up -d`. Phones pick up the new version the
-   next time the app opens.
+4. **Update** with `docker compose pull && docker compose up -d`. The next time the app opens, phones
+   show "A new version is ready · RELOAD". The game is saved after every tap, so reloading is safe.
 
 To build from source instead, run `docker build -t thanos-automa . && docker run -p 8080:8080 thanos-automa`.
 
-**On your phone:** open the URL, then use Share → *Add to Home Screen* (iOS) or *Install app*
-(Android/Chrome).
+**On your phone:** open the URL. On Android/Chrome, tap **INSTALL** on the card on Home. On an
+iPhone, follow the sheet: Share → *Add to Home Screen*.
 
 ## Development
 

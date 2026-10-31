@@ -64,9 +64,9 @@ ordered stack by hand is the fiddliest part of the paper automa.
 
 | Screen | Purpose |
 | --- | --- |
-| Home | Continue the saved game · New game · Rules & credits |
-| Setup | Variant, difficulty and rulings settings · 2-player setup checklist · Start |
-| Game | Header (round, phase progress, both sides' summaries) · current step · Undo · Log |
+| Home | Where every launch opens · Continue the saved game · New game · Install card · Credits |
+| Setup | 2-player setup checklist · difficulty · rulings sub-screen · Start |
+| Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Rules |
 | Game over | Result, why, rounds taken, final tallies · New game |
 | History (v1) | Past games, win rate, average rounds to win |
 
@@ -102,6 +102,28 @@ ordered stack by hand is the fiddliest part of the paper automa.
 - **Why not Next.js:** nothing here runs on a server. A static build is simpler to cache offline and
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
+
+## PWA (flow 7)
+
+- **Launch.** Every launch opens on Home, and a saved game shows CONTINUE · ROUND N (7.3 → 1.2).
+  When launched from the home screen, a splash of about a second comes first (7.3).
+- **Install.**
+  - Chrome/Android: the app keeps the `beforeinstallprompt` event and shows an Install card on Home
+    (7.2).
+  - iPhone/iPad Safari, when not installed: an Add to Home Screen sheet, shown once (7.1). Closing it
+    sets the `installHintSeen` pref.
+- **Updates.** The service worker is in prompt mode, so a new version waits for "A new version is
+  ready · RELOAD" (7.4) and never reloads the page mid-game. Reloading is safe: the game is saved
+  after every tap.
+- **Offline.** The service worker precaches everything: the shell, the bundled fonts, the art and the
+  icons. When the network drops, a toast says "You're offline — everything still works." (7.4).
+- **Storage.** Starting a game asks for `navigator.storage.persist()`, so the browser doesn't evict the
+  saved game.
+- **Standalone layout (7.5):**
+  - `viewport-fit=cover` with safe-area padding and a black-translucent status bar;
+  - `overscroll-behavior: none` and `touch-action: manipulation`;
+  - manifest theme and background colour `#0f0b1a`.
+- **Focus.** Sheets and dialogs take focus, keep Tab inside, and give focus back when they close.
 
 ## Visual language (v2 "Versus")
 
