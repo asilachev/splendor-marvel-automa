@@ -170,21 +170,35 @@ Movement only when it means something, and then short and smooth.
 - **Picking a language** closes the selector. On Home it's the globe button; in the Menu, a
   "Language · English" row opens the same sheet. Escape closes only the top layer.
 - **Terms** follow each language's MCU and board-game usage:
-  - stones: Сила/Разум/Пространство/Реальность/Душа; Moć/Um/Prostor/Stvarnost/Duša;
+  - stones: Сила/Разум/Пространство/Реальность/Душа; Моћ/Ум/Простор/Стварност/Душа;
     Poder/Mente/Espacio/Realidad/Alma; Macht/Gedanken/Raum/Realität/Seele;
-  - the Infinity Gauntlet: Перчатка Бесконечности, Rukavica beskonačnosti, Guantelete del Infinito,
+  - the Infinity Gauntlet: Перчатка Бесконечности, Рукавица бесконачности, Guantelete del Infinito,
     Infinity-Handschuh;
-  - the Avengers Assemble tile: «Мстители, общий сбор!», „Osvetnici, okupite se!“,
+  - the Avengers Assemble tile: «Мстители, общий сбор!», „Осветници, окупите се!“,
     «¡Vengadores, reuníos!», „Avengers Assemble“.
-- **Address:** Russian and Serbian use the formal «Вы»/«Vi», which also keeps past tenses
-  gender-neutral. Spanish and German use the informal «tú»/«du».
+  - There is no Russian edition of Splendor Marvel, so the Russian terms follow the Russian MCU
+    releases.
+- **Address:** Russian and Serbian use the polite plural «вы»/«ви», which also keeps past tenses
+  gender-neutral. Russian writes it lowercase, as interface texts addressed to everyone do. Spanish
+  and German use the informal «tú»/«du».
+- **Typography (#65):** the files use ordinary spaces. `src/ui/i18n/typography.ts` adds the
+  non-breaking spaces a language needs when a text is shown, in the app and in the screenshot
+  script alike.
+  - Russian (Мильчин, «Справочник издателя и автора»): a one- or two-letter word stays with the
+    next word, a number with its word, «же», «ли», «бы» with the word before, an abbreviation with
+    its number («ур. 2»), © with its year, and a dash never starts a line.
+  - Russian also uses «ёлочки» with „лапки“ inside, «тай-брейк» as the dictionary spells it,
+    «1 — Сила» for numbered lists, and «Реальность, ур. 2» for a card (`common.card` lets each
+    language order level and colour).
 - **Fonts:** one display font for every language: **Bangers Cyrillic** (#57), in
   `src/ui/assets/fonts/`. It covers Latin, Latin-1 and Cyrillic, but lacks Latin Č Ć Đ, so Serbian
   is written in Cyrillic, which is also its official script. Body text is Inter (Latin and Cyrillic
   subsets). Both are precached for offline use. Credits are in the app's Credits section and the
   README; provenance is in `src/ui/assets/fonts/README.md`.
 - **Fitting:** every screen was checked at 360 px in all five languages. The HUD never wraps, long
-  buttons balance onto two lines when needed, and long stone names hyphenate.
+  buttons balance onto two lines when needed, and long stone names hyphenate. On game over the
+  HUD's centre badge is a little narrower, so two-digit scores still fit beside it (#65).
+  `npm run screenshots -- --lang ru --width 360 --out <dir>` captures any language at any width.
 
 ## PWA (flow 7)
 

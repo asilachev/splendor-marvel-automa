@@ -108,13 +108,14 @@ describe('language files (#54, #58)', () => {
   })
 
   it('uses each language’s plural rules', () => {
+    // Russian numbers keep their word on the same line (#65).
     expect([1, 2, 5, 11, 21, 22].map((n) => T.ru('common.points', { n }))).toEqual([
-      '1 очко',
-      '2 очка',
-      '5 очков',
-      '11 очков',
-      '21 очко',
-      '22 очка',
+      '1\u00a0очко',
+      '2\u00a0очка',
+      '5\u00a0очков',
+      '11\u00a0очков',
+      '21\u00a0очко',
+      '22\u00a0очка',
     ])
     expect(T.sr('common.points', { n: 3 })).toBe('3 поена')
     expect(T.en('common.points', { n: 1 })).toBe('1 pt')
@@ -124,11 +125,13 @@ describe('language files (#54, #58)', () => {
   it('builds Thanos’s lines in each language', () => {
     const card: RecruitedCard = { level: 2, colour: 'reality', points: 2, tags: 1 }
     expect(cardLabel(T.en, card)).toBe('L2 Reality (2 pts, 1 Avengers tag)')
-    expect(cardLabel(T.ru, card)).toBe('У2 Реальность (2 очка, 1 символ Мстителей)')
+    expect(cardLabel(T.ru, card)).toBe(
+      'Реальность, ур.\u00a02 (2\u00a0очка, 1\u00a0символ Мстителей)',
+    )
     expect(takeSpeech(T.de, ['mind', 'soul'])).toBe('GEDANKEN. SEELE. MEINS.')
     const gain = { kind: 'gain', row: 'C', column: 3, discard: 2 } as const
     expect(recruitSpeech(T.en, gain)).toBe('THE 3RD CARD OF THE BOTTOM ROW IS MINE.')
-    expect(recruitSpeech(T.ru, gain)).toBe('3-Я КАРТА НИЖНЕГО РЯДА — МОЯ.')
+    expect(recruitSpeech(T.ru, gain)).toBe('3-Я КАРТА НИЖНЕГО РЯДА\u00a0— МОЯ.')
     expect(recruitSpeech(T.es, gain)).toBe('LA 3.ª CARTA DE LA FILA DE ABAJO ES MÍA.')
     expect(recruitSpeech(T.de, gain)).toBe('DIE 3. KARTE DER UNTEREN REIHE GEHÖRT MIR.')
     expect(recruitSpeech(T.sr, gain)).toBe('3. КАРТА ДОЊЕГ РЕДА ЈЕ МОЈА.')

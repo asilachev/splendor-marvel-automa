@@ -8,6 +8,7 @@
     "rule": "Правило: {title}",
     "keepPlaying": "НАСТАВИ ИГРУ",
     "level": "Н{level}",
+    "card": "Н{level} {stone}",
     "points": "{n, plural, one {# поен} few {# поена} other {# поена}}",
     "tags": "{n, plural, one {# симбол Осветника} few {# симбола Осветника} other {# симбола Осветника}}",
     "time": "Време",

@@ -8,6 +8,7 @@
     "rule": "Regla: {title}",
     "keepPlaying": "SEGUIR JUGANDO",
     "level": "N{level}",
+    "card": "N{level} {stone}",
     "points": "{n, plural, one {# pt} many {# pts} other {# pts}}",
     "tags": "{n, plural, one {# símbolo de Vengadores} many {# símbolos de Vengadores} other {# símbolos de Vengadores}}",
     "time": "Tiempo",

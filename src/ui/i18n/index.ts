@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 import { formatMessage, parseMessage, type Node, type Vars } from './icu.ts'
 import en from './locales/en.json'
+import { typeset, typesetAll } from './typography.ts'
 
 /**
  * Translations (#54, #58). Every text lives in one JSON file per language under `locales/`;
@@ -113,6 +114,8 @@ export function createTranslator(lang: Lang, catalog: Catalog): Translate {
   const rules = new Intl.PluralRules(LANGS.find((l) => l.code === lang)?.tag ?? lang)
   const plural = (n: number) => rules.select(n)
   const parsed = new Map<string, readonly Node[]>()
+  const lists = new Map<string, unknown>()
+  // Texts come out typeset for the language, e.g. with Russian non-breaking spaces (#65).
   const t = ((key: MessageKey, vars: Vars = {}) => {
     let ast = parsed.get(key)
     if (!ast) {
@@ -120,9 +123,12 @@ export function createTranslator(lang: Lang, catalog: Catalog): Translate {
       ast = typeof message === 'string' ? parseMessage(message) : [key]
       parsed.set(key, ast)
     }
-    return formatMessage(ast, vars, plural)
+    return typeset(lang, formatMessage(ast, vars, plural))
   }) as Translate
-  t.list = (key) => (lookup(catalog, key) ?? lookup(en, key)) as never
+  t.list = (key) => {
+    if (!lists.has(key)) lists.set(key, typesetAll(lang, lookup(catalog, key) ?? lookup(en, key)))
+    return lists.get(key) as never
+  }
   return t
 }
 

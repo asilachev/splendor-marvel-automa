@@ -27,7 +27,9 @@ export function cardLabel(t: Translate, card: RecruitedCard): string {
     card.points ? t('common.points', { n: card.points }) : null,
     card.tags ? t('common.tags', { n: card.tags }) : null,
   ].filter((x): x is string => x !== null)
-  return `${t('common.level', { level: card.level })} ${t(`stone.${card.colour}`)}${extras.length ? ` (${extras.join(', ')})` : ''}`
+  // The language orders level and colour: "L2 Reality", «Реальность, ур. 2» (#65).
+  const name = t('common.card', { level: card.level, stone: t(`stone.${card.colour}`) })
+  return `${name}${extras.length ? ` (${extras.join(', ')})` : ''}`
 }
 
 /** One line per log entry, for the game log. */
