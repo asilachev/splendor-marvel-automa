@@ -91,11 +91,13 @@ GitHub Issues hold the plan, organised with milestones and labels: `engine`, `ui
    first.
 2. **Branch** from `master` with the name `<issue-number>-<short-slug>`, for example `3-thanos-turn`.
 3. **Commit** in small steps. Use imperative messages ("Add FIFO discard to token stack") and
-   reference the issue (`#3`).
+   reference the issue (`#3`). **Never add `Co-Authored-By` or any other attribution trailer**:
+   keep the history clean.
 4. **Open a PR** whose body says `Closes #<n>`. Summarise what changed, how it was tested, and any rule
    decisions with links to the docs.
 5. **CI must be green.** It runs lint, format check, typecheck, tests and build. **Squash-merge** into
-   `master`, then delete the branch.
+   `master`, then delete the branch. The squash commit uses the PR title as its subject and a short
+   summary as its body, with no trailers.
 6. **Track new work** you discover as a new issue. Don't widen the PR you're working on.
 
 ### Definition of done
