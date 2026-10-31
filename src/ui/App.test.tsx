@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import userEvent, { type UserEvent } from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import {
   applyEvent,
@@ -25,10 +25,16 @@ function seedWhere(pred: (seed: number) => boolean): number {
   throw new Error('no seed')
 }
 
-/** Saves a game so <App /> resumes it, like a reload at the table. */
-function resume(seed: number, events: GameEvent[], settings: Settings = DEFAULT_SETTINGS) {
+/** Saves a game, then relaunches and taps CONTINUE on Home (design: 7.3 → 1.2). */
+async function resume(
+  user: UserEvent,
+  seed: number,
+  events: GameEvent[],
+  settings: Settings = DEFAULT_SETTINGS,
+) {
   saveGame({ version: 1, seed, settings, events })
   render(<App />)
+  await user.click(screen.getByRole('button', { name: /^CONTINUE · ROUND/ }))
 }
 
 /** Events that play Thanos's action for the current round with neutral choices. */
@@ -92,7 +98,7 @@ describe('home, setup and rulings (#44)', () => {
 
   it('asks before a new game replaces the one in progress', async () => {
     const user = userEvent.setup()
-    resume(takeSeed, [{ type: 'reveal' }])
+    await resume(user, takeSeed, [{ type: 'reveal' }])
     await user.click(screen.getByRole('button', { name: 'Rules' }))
     await user.click(screen.getByRole('button', { name: /BACK TO HOME/ }))
     await user.click(screen.getByRole('button', { name: 'NEW GAME' }))
@@ -109,7 +115,7 @@ describe('Thanos’s turn (#41)', () => {
   it('takes tokens, skipping an empty pile, then shows the table checklist', async () => {
     const action = actionAt(takeSeed, 1) as Extract<AutomaAction, { kind: 'take' }>
     const user = userEvent.setup()
-    resume(takeSeed, [])
+    await resume(user, takeSeed, [])
 
     await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
     expect(
@@ -140,7 +146,7 @@ describe('Thanos’s turn (#41)', () => {
       { type: 'endRound' },
     ]
     const user = userEvent.setup()
-    resume(seed, events)
+    await resume(user, seed, events)
 
     await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
     expect(screen.getByText('HE RETURNS')).toBeInTheDocument()
@@ -171,7 +177,7 @@ describe('Thanos’s turn (#41)', () => {
 describe('your turn, round end and game over (#41, #42)', () => {
   it('logs your card in the sheet and ends the round', async () => {
     const user = userEvent.setup()
-    resume(takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
     await user.click(screen.getByRole('button', { name: /I RECRUITED/ }))
     const sheet = screen.getByRole('dialog', { name: 'LOG YOUR CARD' })
     await user.click(
@@ -197,7 +203,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
 
   it('announces the reshuffle at the start of phase 2', async () => {
     const user = userEvent.setup()
-    resume(5, playTo(5, 10))
+    await resume(user, 5, playTo(5, 10))
     await user.click(screen.getByRole('button', { name: 'END ROUND 10' }))
     expect(screen.getByRole('heading', { name: 'DECK RESHUFFLED!' })).toBeInTheDocument()
     expect(screen.getByText('PHASE 2 BEGINS')).toBeInTheDocument()
@@ -212,7 +218,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
       })),
     ]
     const user = userEvent.setup()
-    resume(takeSeed, events)
+    await resume(user, takeSeed, events)
     await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
     expect(screen.getByRole('heading', { name: 'YOU WIN!' })).toBeInTheDocument()
     expect(screen.getByText('You completed the Infinity Gauntlet in round 1.')).toBeInTheDocument()
@@ -220,7 +226,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
 
   it('shows SNAP after the last round, and undo steps back with a toast', async () => {
     const user = userEvent.setup()
-    resume(3, playTo(3, 30))
+    await resume(user, 3, playTo(3, 30))
     await user.click(screen.getByRole('button', { name: 'END ROUND 30' }))
     expect(screen.getByRole('heading', { name: 'SNAP.' })).toBeInTheDocument()
     expect(screen.getByText('Round 30 ended without your Infinity Gauntlet.')).toBeInTheDocument()
@@ -233,7 +239,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
 describe('dock sheets (#43)', () => {
   it('fixes Thanos’s piles in the hoard and toggles settings in the rules sheet', async () => {
     const user = userEvent.setup()
-    resume(takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
     const n = (actionAt(takeSeed, 1) as Extract<AutomaAction, { kind: 'take' }>).tokens.length
 
     await user.click(screen.getByRole('button', { name: `Hoard · ${n}` }))
@@ -256,7 +262,7 @@ describe('dock sheets (#43)', () => {
 
   it('explains rules with tips on the game screen', async () => {
     const user = userEvent.setup()
-    resume(takeSeed, [])
+    await resume(user, takeSeed, [])
     await user.click(screen.getByRole('button', { name: 'Rule: Thanos’s turn' }))
     expect(screen.getByRole('note')).toHaveTextContent(/flips the next automa card/)
   })

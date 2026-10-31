@@ -1,3 +1,4 @@
+import { X } from 'lucide-react'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import styles from './kit.module.css'
 import { ToastContext, type ToastApi, type ToastInput } from './toast.ts'
@@ -48,6 +49,16 @@ export function Toaster({ children }: { children: ReactNode }) {
                 }}
               >
                 {t.action.label}
+              </button>
+            ) : null}
+            {t.duration === 0 ? (
+              <button
+                type="button"
+                className={styles.toastClose}
+                aria-label="Dismiss"
+                onClick={() => dismissId(t.id)}
+              >
+                <X size={18} />
               </button>
             ) : null}
           </div>

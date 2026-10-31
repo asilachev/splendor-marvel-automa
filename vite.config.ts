@@ -6,9 +6,10 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   plugins: [
     react(),
-    // Installable, offline-first PWA (issue #9). The service worker precaches the whole build.
+    // Installable, offline-first PWA (#9, #45). The service worker precaches the whole build and
+    // waits for RELOAD (prompt mode) instead of reloading mid-game.
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
         name: 'Thanos Automa: Splendor Marvel solo companion',
@@ -16,12 +17,13 @@ export default defineConfig({
         description:
           'Companion app for playing Splendor Marvel solo against the fan-made Thanos automa.',
         lang: 'en',
+        id: '/',
         start_url: '/',
         scope: '/',
         display: 'standalone',
         orientation: 'portrait',
-        background_color: '#0b0d1a',
-        theme_color: '#0b0d1a',
+        background_color: '#0f0b1a',
+        theme_color: '#0f0b1a',
         icons: [
           { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
           { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },

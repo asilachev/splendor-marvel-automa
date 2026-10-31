@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useEffect, type ButtonHTMLAttributes, type ReactNode } from 'react'
+import { useEffect, useRef, type ButtonHTMLAttributes, type ReactNode, type RefObject } from 'react'
 import { STONES, type Stone } from '../../engine/index.ts'
 import { STONE_LABEL } from '../format.ts'
 import styles from './kit.module.css'
@@ -212,6 +212,45 @@ function useEscape(onClose: () => void) {
   }, [onClose])
 }
 
+const FOCUSABLE =
+  'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+/**
+ * Moves focus into a sheet or dialog, keeps Tab inside it, and gives focus back to the opener on
+ * close (PWA checklist: dialogs and sheets are focus-trapped).
+ */
+function useFocusTrap(ref: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+    node.focus({ preventScroll: true })
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+      const items = [...node.querySelectorAll<HTMLElement>(FOCUSABLE)]
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (!first || !last) {
+        e.preventDefault()
+      } else if (
+        e.shiftKey &&
+        (document.activeElement === first || document.activeElement === node)
+      ) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+    node.addEventListener('keydown', onKey)
+    return () => {
+      node.removeEventListener('keydown', onKey)
+      opener?.focus({ preventScroll: true })
+    }
+  }, [ref])
+}
+
 /** Bottom sheet over a scrim (Hoard, Log, Rules, Log your card, Install). */
 export function Sheet({
   title,
@@ -223,6 +262,8 @@ export function Sheet({
   children: ReactNode
 }) {
   useEscape(onClose)
+  const ref = useRef<HTMLElement>(null)
+  useFocusTrap(ref)
   return (
     <div className={styles.layer}>
       <button
@@ -232,7 +273,14 @@ export function Sheet({
         tabIndex={-1}
         onClick={onClose}
       />
-      <section className={styles.sheet} role="dialog" aria-modal="true" aria-label={title}>
+      <section
+        ref={ref}
+        className={styles.sheet}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        tabIndex={-1}
+      >
         <div className={styles.grabber} aria-hidden="true" />
         <header className={styles.sheetHead}>
           <h2>{title}</h2>
@@ -266,6 +314,8 @@ export function Dialog({
   children: ReactNode
 }) {
   useEscape(onClose)
+  const ref = useRef<HTMLElement>(null)
+  useFocusTrap(ref)
   return (
     <div className={styles.layer} data-center="true">
       <button
@@ -275,7 +325,14 @@ export function Dialog({
         tabIndex={-1}
         onClick={onClose}
       />
-      <section className={styles.dialog} role="alertdialog" aria-modal="true" aria-label={title}>
+      <section
+        ref={ref}
+        className={styles.dialog}
+        role="alertdialog"
+        aria-modal="true"
+        aria-label={title}
+        tabIndex={-1}
+      >
         <h2>{title}</h2>
         {children}
       </section>

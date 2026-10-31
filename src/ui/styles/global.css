@@ -78,6 +78,11 @@ body {
   overscroll-behavior: none;
 }
 
+html {
+  /* No double-tap zoom at the table (design 7.5). */
+  touch-action: manipulation;
+}
+
 body {
   min-height: 100dvh;
   background-image: radial-gradient(
@@ -121,6 +126,7 @@ h3 {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
