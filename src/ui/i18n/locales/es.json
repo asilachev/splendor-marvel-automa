@@ -446,6 +446,10 @@
       "before": "de",
       "after": "en BoardGameGeek."
     },
+    "fonts": {
+      "name": "Tipografías",
+      "text": "Bangers Cyrillic — © 2011 Vernon Adams (Bangers, licencia SIL Open Font License 1.1; extensión cirílica de 2016). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1)."
+    },
     "copyrightTitle": "Derechos de autor y marcas",
     "notices": [
       "Splendor y el logotipo de Splendor son marcas de Space Cowboys (Asmodee). Reglas del juego e ilustraciones de la caja © 2020 Space Cowboys.",

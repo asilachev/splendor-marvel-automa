@@ -64,7 +64,8 @@ describe('language files (#54, #58)', () => {
   })
 
   it('names every language in itself', () => {
-    expect(LANGS.map((l) => l.name)).toEqual(['English', 'Русский', 'Srpski', 'Español', 'Deutsch'])
+    expect(LANGS.map((l) => l.name)).toEqual(['English', 'Русский', 'Српски', 'Español', 'Deutsch'])
+    expect(LANGS.find((l) => l.code === 'sr')?.tag).toBe('sr-Cyrl')
   })
 
   it('has exactly English’s keys in every file', () => {
@@ -115,7 +116,7 @@ describe('language files (#54, #58)', () => {
       '21 очко',
       '22 очка',
     ])
-    expect(T.sr('common.points', { n: 3 })).toBe('3 poena')
+    expect(T.sr('common.points', { n: 3 })).toBe('3 поена')
     expect(T.en('common.points', { n: 1 })).toBe('1 pt')
     expect(T.en('take.cta', { n: 0 })).toBe('DONE · NOTHING TO TAKE')
   })
@@ -130,7 +131,7 @@ describe('language files (#54, #58)', () => {
     expect(recruitSpeech(T.ru, gain)).toBe('3-Я КАРТА НИЖНЕГО РЯДА — МОЯ.')
     expect(recruitSpeech(T.es, gain)).toBe('LA 3.ª CARTA DE LA FILA DE ABAJO ES MÍA.')
     expect(recruitSpeech(T.de, gain)).toBe('DIE 3. KARTE DER UNTEREN REIHE GEHÖRT MIR.')
-    expect(recruitSpeech(T.sr, gain)).toBe('3. KARTA DONJEG REDA JE MOJA.')
+    expect(recruitSpeech(T.sr, gain)).toBe('3. КАРТА ДОЊЕГ РЕДА ЈЕ МОЈА.')
   })
 
   it('describes results in every language', () => {

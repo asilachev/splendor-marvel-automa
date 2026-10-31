@@ -33,7 +33,7 @@ bookkeeping.
   - works offline;
   - keeps the screen awake.
 - **Explains the rules in place.** Tap the "i" next to a rule to read it at the table.
-- **Speaks five languages:** English, Русский, Srpski, Español and Deutsch. It follows your phone's
+- **Speaks five languages:** English, Русский, Српски, Español and Deutsch. It follows your phone's
   language, and the globe button on Home switches it.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
   is no card database and no game art.
@@ -73,6 +73,15 @@ points, and checks the Infinity Gauntlet for both sides. The
   ([Splendor Automa](https://boardgamegeek.com/filepage/201926)).
 - **The Marvel re-theme of the automa** is by **Shamus** on BGG
   ([Splendor Marvel Solo Automa V1](https://boardgamegeek.com/filepage/215783)).
+
+**Fonts:**
+- **Bangers Cyrillic** is the display font for every language: Bangers © 2011 Vernon Adams, under the
+  SIL Open Font License 1.1, with a Cyrillic extension (2016) from
+  [online-fonts.com](https://online-fonts.com/fonts/bangers-cyrillic). Original Bangers:
+  [googlefonts/bangers](https://github.com/googlefonts/bangers). Provenance is in
+  [`src/ui/assets/fonts/README.md`](src/ui/assets/fonts/README.md).
+- **Inter** is the body font: © 2016 The Inter Project Authors, under the SIL Open Font License 1.1
+  ([rsms/inter](https://github.com/rsms/inter)).
 
 The Splendor and MARVEL logos and the automa card-back art in `src/ui/assets/official/` belong to
 their owners. They are used here for personal, non-commercial use only.

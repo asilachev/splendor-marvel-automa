@@ -30,6 +30,8 @@ change to a rule or ruling updates the docs in the same PR.
 - **Companion, not a digital game.**
   - Never add a card database, card art, card names or a digital market.
   - A recruited card is only `{ level, colour, points, tags }`.
+- **Fonts.** One display font, Bangers Cyrillic (`src/ui/assets/fonts/`, provenance in its README), for
+  every language. Don't add a second display face. Body text is Inter.
 - **Official art.** Only the owner-approved assets in `src/ui/assets/official/` may be used: the
   Splendor and MARVEL logos and the automa card back. They are imported only through `OFFICIAL_ART`.
   - Don't add any other official art.
@@ -81,7 +83,7 @@ src/
     components/  comic kit: Token, Button, Caption, chips, stone tiles, sheets, dialog, toasts, Versus HUD, dock, cards
     game/        game screen: steps (reveal, take, recruit, table, phase change, game over) and dock sheets
     home/        home, setup and rulings
-    i18n/        translations: locales/{en,ru,sr,es,de}.json (ICU messages), loader, t(), language detection
+    i18n/        translations: locales/{en,ru,sr,es,de}.json (ICU; Serbian in Cyrillic), loader, t(), detection
     pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup

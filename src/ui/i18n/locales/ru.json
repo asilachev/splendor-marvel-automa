@@ -28,7 +28,7 @@
   "hud": {
     "thanos": "ТАНОС",
     "you": "ВЫ",
-    "points": "{n} / {goal} ОЧК.",
+    "points": "{n}/{goal} ОЧК.",
     "round": "РАУНД {n}",
     "left": "ЕЩЁ {n}",
     "lastRound": "ПОСЛЕДНИЙ РАУНД",
@@ -445,6 +445,10 @@
       "name": "Marvel-версия автомы",
       "before": "автор —",
       "after": "на BoardGameGeek."
+    },
+    "fonts": {
+      "name": "Шрифты",
+      "text": "Bangers Cyrillic — © 2011 Vernon Adams (Bangers, лицензия SIL Open Font License 1.1; кириллическое расширение 2016 года). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1)."
     },
     "copyrightTitle": "Авторские права и товарные знаки",
     "notices": [

@@ -6,7 +6,7 @@ Every text in the app lives here, in one file per language:
 | --- | --- |
 | `en.json` | English: the source, bundled with the app, and the fallback for missing texts |
 | `ru.json` | Русский |
-| `sr.json` | Srpski (Latin script) |
+| `sr.json` | Српски (Cyrillic script) |
 | `es.json` | Español |
 | `de.json` | Deutsch |
 
@@ -46,6 +46,8 @@ Messages use a small part of [ICU MessageFormat](https://unicode-org.github.io/i
 - **Branch values.** The app passes `true`/`false` for yes/no choices, `1`/`2`/`3` for the phase, `A`/`B`/`C` for the market row, and `thanos`/`player` for a side.
 - **Grammar.** A language can put whole sentences in each branch, so it never has to glue pieces together. That's how the Russian and German phase colours change by grammatical case.
 - **Apostrophes.** Use the typographic ’ rather than '.
+- **Long words.** A soft hyphen (U+00AD) marks where a long word may break in narrow tiles; it's invisible otherwise. Serbian «Ствар­ност» has one.
+- **Fonts.** Headings use Bangers Cyrillic, which covers Latin, Latin-1 and Cyrillic, but not the Latin letters Č Ć Đ. That's why Serbian is in Cyrillic.
 - **Uppercase.** Buttons and headings are written in uppercase in the file itself, as they should appear.
 
 ## Adding a language

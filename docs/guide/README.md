@@ -7,7 +7,7 @@ keeps his tokens and cards in order, and checks the Infinity Gauntlet at the end
 You need the physical game and a phone. The app has no card data. When someone recruits a card, you
 tap its colour, points and Avengers tags.
 
-The app speaks English, Русский, Srpski, Español and Deutsch. It starts in your phone's language;
+The app speaks English, Русский, Српски, Español and Deutsch. It starts in your phone's language;
 change it with the globe button at the top of the home screen, or under **Menu → Language**.
 
 **Contents**

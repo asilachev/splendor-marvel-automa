@@ -133,7 +133,7 @@ Movement only when it means something, and then short and smooth.
 
 ## Languages (#54)
 
-- **Languages:** English, Russian, Serbian (Latin script), Spanish and German. The browser's language
+- **Languages:** English, Russian, Serbian (Cyrillic script, #57), Spanish and German. The browser's language
   is used on first launch. The picker is the globe button at the top of Home and the Language row in
   the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen readers and
   hyphenation use the right language.
@@ -155,10 +155,11 @@ Movement only when it means something, and then short and smooth.
     «¡Vengadores, reuníos!», „Avengers Assemble“.
 - **Address:** Russian and Serbian use the formal «Вы»/«Vi», which also keeps past tenses
   gender-neutral. Spanish and German use the informal «tú»/«du».
-- **Fonts:** Bangers has no Cyrillic, so Russian headings fall back glyph by glyph to Oswald Bold,
-  scaled to 90 %. Serbian diacritics use Bangers' and Inter's Latin-extended subsets, and Russian body
-  text uses Inter's Cyrillic subset. Each subset loads only when its script is on screen, and all are
-  precached for offline use.
+- **Fonts:** one display font for every language: **Bangers Cyrillic** (#57), in
+  `src/ui/assets/fonts/`. It covers Latin, Latin-1 and Cyrillic, but lacks Latin Č Ć Đ, so Serbian
+  is written in Cyrillic, which is also its official script. Body text is Inter (Latin and Cyrillic
+  subsets). Both are precached for offline use. Credits are in the app's Credits section and the
+  README; provenance is in `src/ui/assets/fonts/README.md`.
 - **Fitting:** every screen was checked at 360 px in all five languages. The HUD never wraps, long
   buttons balance onto two lines when needed, and long stone names hyphenate.
 
