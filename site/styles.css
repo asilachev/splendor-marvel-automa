@@ -318,13 +318,12 @@ h3 {
     background-color 0.12s ease;
 }
 
-/* Hover and focus outline the language, with a slight lift: no fill, no tilt (#73). */
+/* Hover and focus only outline the language and add the hard shadow: no fill, no movement (#73). */
 .lang ul a:hover,
 .lang ul a:focus-visible {
   border-color: #000;
   color: #000;
   box-shadow: 3px 3px 0 #000;
-  transform: translate(-1px, -1px);
   outline: none;
 }
 
