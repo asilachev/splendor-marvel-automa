@@ -32,8 +32,9 @@ const dirOf = (code) => (code === 'en' ? '' : `${code}/`)
 /** Asmodee's store locator has country pages for some of our languages; the rest get the default. */
 const STORE = { de: 'de/', es: 'es/' }
 const links = (code) => ({
-  // The owner's copy of the app, on Vercel (#83).
-  app: 'https://app.thanos.silachev.com/',
+  // The owner's copy of the app, on Vercel (#83). It opens in this page's language, and keeps it
+  // as the app's choice (#85).
+  app: `https://app.thanos.silachev.com/?lang=${code}`,
   github: 'https://github.com/asilachev/splendor-marvel-automa',
   guide: 'https://github.com/asilachev/splendor-marvel-automa/blob/master/docs/guide/README.md',
   publisher: 'https://www.spacecowboys-games.com/game/splendor-marvel/',

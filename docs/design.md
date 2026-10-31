@@ -133,8 +133,11 @@ https://thanos.silachev.com/ (English), then `ru/`, `sr/`, `es/` and `de/`.
     current one in gold. Every page lists the others with `hreflang`.
   - On a first visit the English page opens the browser's language. A language picked on the page
     is remembered (`localStorage`), so English stays English for a Russian browser that picked it.
-  - The guide is English only, so its button says so in other languages, e.g. «Руководство
-    (англ.)». The store locator opens Asmodee's German and Spanish pages for `de` and `es`.
+  - "Open the app" carries the page's language (`?lang=ru`), so the app opens in it and keeps it
+    (#85). The landing page and the app are separate sites, so this link is how the choice
+    travels.
+  - The guide is English only, so its link says so in other languages. The store locator opens
+    Asmodee's German and Spanish pages for `de` and `es`.
 
 - **Look:**
   - The app's visual language: gold, Bangers and Inter, hard shadows.
@@ -217,6 +220,9 @@ Movement only when it means something, and then short and smooth.
   is used on first launch. The picker is the globe button at the top of Home and the Language row in
   the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen readers and
   hyphenation use the right language.
+- **A language in the link (#85):** `?lang=ru` picks Russian and saves it, as if picked in the app;
+  the address bar then drops the parameter. The landing page's "Open the app" uses it. Unsupported
+  values are ignored. Without a saved choice the app keeps following the browser's language.
 - **Translation files:** `src/ui/i18n/locales/{en,ru,sr,es,de}.json`, one per language, in ICU
   message syntax: `{round}`, `select` and `plural` with `#` (#58). English is bundled as the
   fallback, and each other file loads only when its language is chosen, as its own chunk precached
