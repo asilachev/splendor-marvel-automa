@@ -61,10 +61,12 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run typecheck` | `tsc -b`, strict |
 | `npm run build` | Typecheck, then production build into `dist/` |
 | `npm run preview` | Serve the production build |
+| `docker build -t thanos-automa .` | Build the production image (nginx on port 8080); `docker compose up -d` runs the published one |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the private release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
-and on every push to `master`. Run the same commands before pushing.
+and on every push to `master`. Run the same commands before pushing. `.github/workflows/docker.yml`
+builds the image on PRs and publishes it to GHCR from `master`.
 
 ## Code layout
 
