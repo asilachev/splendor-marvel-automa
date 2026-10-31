@@ -19,7 +19,7 @@ The app is a **companion**:
 | [`docs/rules.md`](docs/rules.md) | Summary of the official rules, with rulebook page references |
 | [`docs/automa.md`](docs/automa.md) | Automa rules, the **card list**, BGG clarifications, and the **rulings table** (defaults for every gap in the PDF) |
 | [`docs/design.md`](docs/design.md) | UX flow, screens, engine state and events, visual language |
-| [`docs/reference/`](docs/reference/) | Source PDFs: the official rulebook and the automa |
+| [`docs/reference/`](docs/reference/) | Source PDFs: the official rulebook and the automa. They are gitignored; `npm run reference` downloads them from the private [`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs) (needs `gh` auth) |
 
 When behaviour depends on a rule, cite the doc section in code comments or tests. If the code needs a
 rule the docs don't cover, or contradicts them, **stop and raise it in the issue**. Don't guess. Any
@@ -40,9 +40,9 @@ change to a rule or ruling updates the docs in the same PR.
   - Game state is a pure function of `(seed, settings, events)`.
 - **Credit** Marc André and Space Cowboys (game), Dukefanblue2005 (automa) and Shamus (Marvel
   re-theme) wherever credits appear.
-- **Visibility.** The repo is **private** because `docs/reference/` contains copyrighted PDFs. Don't
-  make it public, and don't post links to the app on BGG; see the community note in
-  `docs/automa.md`.
+- **Visibility.** The repo is **private**. Never commit the copyrighted PDFs; they live in the
+  `reference-docs` release. Don't post links to the app on BGG; see the community note in
+  `docs/automa.md`. Going public has its own checklist (#17).
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
 
@@ -61,6 +61,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run typecheck` | `tsc -b`, strict |
 | `npm run build` | Typecheck, then production build into `dist/` |
 | `npm run preview` | Serve the production build |
+| `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the private release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
 and on every push to `master`. Run the same commands before pushing.

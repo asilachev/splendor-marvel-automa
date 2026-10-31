@@ -1,7 +1,8 @@
 # Solo Automa V1 (Thanos)
 
-The automa this app runs. A copy of the PDF is in
-[`reference/splendor-marvel-solo-automa-v1.pdf`](reference/splendor-marvel-solo-automa-v1.pdf).
+The automa this app runs. A copy of the PDF, `splendor-marvel-solo-automa-v1.pdf`, is in the
+[`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs);
+`npm run reference` downloads it into `docs/reference/`.
 
 **Credits**
 
