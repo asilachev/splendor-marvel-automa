@@ -8,28 +8,54 @@
 
 /* Home */
 .hero {
-  margin-top: 6vh;
+  margin-top: 2vh;
   text-align: center;
 }
 
-.logo {
+.banner {
   display: block;
-  margin: 0 auto 12px;
-  border-radius: 20px;
+  width: min(100%, 360px);
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 45%);
 }
 
-.kicker {
-  margin: 0;
-  color: var(--accent);
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.heroCard {
+  position: relative;
+  width: 132px;
+  margin: 22px auto 6px;
+  transform: rotate(-6deg);
+  filter: drop-shadow(0 0 22px rgb(242 193 78 / 45%));
+}
+
+.heroCard img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.heroCard span {
+  position: absolute;
+  top: 17.5%;
+  left: 0;
+  right: 0;
+  color: #f4f6ff;
+  font-size: 0.5rem;
+  font-weight: 600;
+  line-height: 1.05;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 80%);
 }
 
 .title {
-  margin: 4px 0 10px;
-  font-size: 2.2rem;
-  line-height: 1.1;
+  margin: 12px 0 6px;
+  background: var(--gold);
+  background-clip: text;
+  color: transparent;
+  font-size: 3rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgb(0 0 0 / 60%));
 }
 
 .lead {
@@ -47,15 +73,23 @@
 /* Buttons */
 .primary {
   width: 100%;
-  min-height: 52px;
+  min-height: 54px;
   margin-top: 12px;
-  border: 0;
+  border: 1px solid rgb(255 240 184 / 60%);
   border-radius: var(--radius);
-  background: var(--accent);
+  background: var(--gold);
   color: var(--accent-text);
-  font-size: 1.05rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  letter-spacing: 0.06em;
+  box-shadow:
+    0 6px 18px rgb(176 122 24 / 40%),
+    inset 0 1px 0 rgb(255 255 255 / 60%);
   cursor: pointer;
+}
+
+.primary:active {
+  transform: translateY(1px);
 }
 
 .actions .primary {
@@ -66,7 +100,7 @@
   flex: 1;
   min-height: var(--tap);
   padding: 8px 14px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--surface-2);
   font-weight: 700;
@@ -78,8 +112,8 @@
   min-height: 44px;
   padding: 6px 12px;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  background: transparent;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 4%);
   font-weight: 600;
   cursor: pointer;
 }
@@ -96,17 +130,23 @@
   padding: 8px 4px;
   border: 0;
   background: none;
-  color: var(--accent);
+  color: var(--gold-2);
   font-size: 0.9rem;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.linkRow {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 /* Generic blocks */
 .notice {
   margin: 0;
   padding: 10px 12px;
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--gold-2);
   border-radius: 8px;
   background: var(--surface-2);
   font-size: 0.92rem;
@@ -119,17 +159,19 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(6px);
 }
 
 .box h2 {
   margin: 0 0 8px;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .boxHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .boxHeader h2 {
@@ -155,6 +197,13 @@
   font-size: 0.88rem;
 }
 
+.caption {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
 .credit {
   color: var(--text-muted);
   font-size: 0.78rem;
@@ -162,6 +211,13 @@
 
 .credit a {
   color: inherit;
+}
+
+.fieldLabel {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 /* Setup */
@@ -173,7 +229,7 @@
 
 .screenTitle {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 2rem;
 }
 
 .checklist {
@@ -192,8 +248,9 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 4px 0 8px;
-  background: var(--bg);
+  margin: 0 calc(-1 * var(--gutter));
+  padding: 6px var(--gutter) 10px;
+  background: linear-gradient(180deg, rgb(6 7 15 / 96%) 70%, rgb(6 7 15 / 0%));
 }
 
 .headerRow {
@@ -209,16 +266,15 @@
 }
 
 .round {
-  font-size: 1.8rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  letter-spacing: 0.05em;
   line-height: 1;
 }
 
 .round small {
   color: var(--text-muted);
-  font-size: 0.9rem;
-  font-weight: 400;
+  font-size: 1.1rem;
 }
 
 .phaseTag {
@@ -236,6 +292,11 @@
   color: var(--phase-3);
 }
 
+.sectionTitle {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+}
+
 .sides {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -245,36 +306,12 @@
 .stage {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.cardBack {
-  width: 100%;
-  min-height: 140px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 20px;
-  border: 2px dashed var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  cursor: pointer;
-}
-
-.cardBack strong {
-  font-size: 1.3rem;
-}
-
-.cardBack span {
-  color: var(--text-muted);
-  font-size: 0.9rem;
+  gap: 12px;
 }
 
 .panelTitle {
   margin: 0 0 4px;
-  font-size: 1.15rem;
+  font-size: 1.6rem;
 }
 
 .instruction {
@@ -295,13 +332,13 @@
 
 .tokenToggle {
   flex: 1;
-  min-height: 84px;
+  min-height: 92px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   cursor: pointer;
@@ -313,6 +350,7 @@
 }
 
 .tokenToggle[aria-pressed='false'] {
+  border-style: dashed;
   opacity: 0.55;
   text-decoration: line-through;
 }
@@ -342,7 +380,7 @@
   gap: 4px;
   margin: 0;
   padding: 10px 12px 10px 28px;
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--gold-2);
   border-radius: 8px;
   background: var(--surface-2);
   font-size: 0.92rem;
@@ -402,7 +440,7 @@
 /* Game over */
 .result {
   padding: 18px 14px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--surface);
   text-align: center;
@@ -410,15 +448,17 @@
 
 .result[data-winner='player'] {
   border-color: var(--success);
+  box-shadow: 0 0 24px rgb(74 222 128 / 30%);
 }
 
 .result[data-winner='thanos'] {
   border-color: var(--danger);
+  box-shadow: 0 0 24px rgb(255 107 107 / 30%);
 }
 
 .resultTitle {
   margin: 0 0 6px;
-  font-size: 1.8rem;
+  font-size: 2.6rem;
 }
 
 .result .sides {

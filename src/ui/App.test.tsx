@@ -166,7 +166,7 @@ describe('your turn and the end of the game (#7)', () => {
 
     await user.click(screen.getByRole('button', { name: 'End round 1' }))
     expect(screen.getByRole('button', { name: /Flip Thanos’s card/ })).toBeInTheDocument()
-    expect(screen.getByText('2')).toBeInTheDocument()
+    expect(screen.getByText('Round 2')).toBeInTheDocument()
   })
 
   it('shows your win when you complete the Gauntlet', async () => {
@@ -205,5 +205,44 @@ describe('your turn and the end of the game (#7)', () => {
 
     await user.click(screen.getByRole('button', { name: 'Undo the last step' }))
     expect(screen.getByRole('button', { name: 'End round 30' })).toBeInTheDocument()
+  })
+})
+
+describe('rule tips (#31)', () => {
+  it('explains the automa rules where they apply', async () => {
+    const seed = seedWhere((s) => actionAt(s, 1).kind === 'gain')
+    const user = userEvent.setup()
+    resume(seed, [])
+    for (const title of [
+      'Phases',
+      'Thanos’s turn',
+      'Infinity Gauntlet',
+      'Avengers Assemble tile',
+      'Thanos’s stack',
+    ]) {
+      expect(screen.getByRole('button', { name: `Rule: ${title}` })).toBeInTheDocument()
+    }
+    await user.click(screen.getByRole('button', { name: /Flip Thanos’s card/ }))
+    for (const title of [
+      'Gaining a card',
+      'Returning tokens',
+      'Colour substitution',
+      'Empty slot',
+    ]) {
+      expect(screen.getByRole('button', { name: `Rule: ${title}` })).toBeInTheDocument()
+    }
+    await user.click(screen.getByRole('button', { name: 'Rule: Infinity Gauntlet' }))
+    expect(screen.getByRole('note')).toHaveTextContent(
+      /16\+ Infinity Points.*can’t complete it before round 21/,
+    )
+  })
+
+  it('explains where each setup ruling comes from', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('button', { name: 'New game' }))
+    await user.click(screen.getByText('Rulings for gaps in the automa'))
+    await user.click(screen.getByRole('button', { name: 'Rule: Which cards count' }))
+    expect(screen.getByRole('note')).toHaveTextContent(/Shamus clarified on BGG/)
   })
 })

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import styles from './components.module.css'
 
 export interface Option<T> {
@@ -13,16 +14,22 @@ export function Segmented<T extends string | number>({
   value,
   onChange,
   compact = false,
+  tip,
 }: {
   label: string
   options: readonly Option<T>[]
   value: T | null
   onChange: (value: T) => void
   compact?: boolean
+  /** Optional rule tip shown next to the label. */
+  tip?: ReactNode
 }) {
   return (
     <div className={styles.field}>
-      <span className={styles.fieldLabel}>{label}</span>
+      <span className={styles.fieldLabel}>
+        {label}
+        {tip}
+      </span>
       <div
         className={compact ? styles.segmentedCompact : styles.segmented}
         role="group"

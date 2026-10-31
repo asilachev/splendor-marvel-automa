@@ -32,6 +32,7 @@ bookkeeping.
   - survives reloads;
   - works offline;
   - keeps the screen awake.
+- **Explains the rules in place.** Tap the "i" next to a rule to read it at the table.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
   is no card database and no game art.
 
@@ -56,6 +57,9 @@ bookkeeping.
   ([Splendor Automa](https://boardgamegeek.com/filepage/201926)).
 - **The Marvel re-theme of the automa** is by **Shamus** on BGG
   ([Splendor Marvel Solo Automa V1](https://boardgamegeek.com/filepage/215783)).
+
+The Splendor and MARVEL logos and the automa card-back art in `src/ui/assets/official/` belong to
+their owners. They are used here for personal, non-commercial use only.
 
 This is an unofficial personal fan project. It is not affiliated with or endorsed by Space Cowboys,
 Asmodee or Marvel, and you need the physical game to use it.

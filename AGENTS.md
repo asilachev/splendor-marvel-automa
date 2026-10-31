@@ -30,8 +30,11 @@ change to a rule or ruling updates the docs in the same PR.
 - **Companion, not a digital game.**
   - Never add a card database, card art, card names or a digital market.
   - A recruited card is only `{ level, colour, points, tags }`.
-- **No Marvel or Splendor artwork, logos or trade dress** in the app, and no art from the automa PDF.
-  Use our own icons, colours and type.
+- **Official art.** Only the owner-approved assets in `src/ui/assets/official/` may be used: the
+  Splendor/MARVEL banner and the automa card back. They are imported only through `OFFICIAL_ART`.
+  - Don't add any other official art.
+  - The folder must be removed or replaced before the repo goes public (#17).
+  - Everything else (icons, tokens, the card face) is our own drawing.
 - **Faithful to the automa.** Each gap in the PDF is a setting, and its default comes from the
   rulings table in `docs/automa.md`. Don't silently change a default.
 - **Engine purity.**

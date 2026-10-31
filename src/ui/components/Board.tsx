@@ -9,11 +9,14 @@ import {
   type SideStats,
   type Stone,
 } from '../../engine/index.ts'
+import { OFFICIAL_ART } from '../assets/official/index.ts'
 import { STONE_LABEL, slotOf } from '../format.ts'
 import styles from './components.module.css'
-import { StoneIcon } from './Stone.tsx'
+import { DiscardMark, StoneIcon, StoneWheel } from './Stone.tsx'
 
-/** One pip per round, coloured by phase; the current round is outlined. */
+const tokenNumber = (stone: Stone) => STONES.indexOf(stone) + 1
+
+/** One pip per round, coloured by phase; the current round glows gold. */
 export function TurnTrack({
   round,
   settings,
@@ -43,45 +46,111 @@ export function TurnTrack({
   )
 }
 
-function ActionSummary({ action, size }: { action: AutomaAction; size: number }) {
+const CHECK = (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.check}>
+    <path
+      d="M4 12.5l5 5L20 6.5"
+      fill="none"
+      stroke="#21c55d"
+      strokeWidth="4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+)
+
+/** One section of an automa card, drawn like the printed card. */
+function Section({ action, active }: { action: AutomaAction; active: boolean }) {
   if (action.kind === 'take') {
     return (
-      <span className={styles.actionTokens}>
-        {action.tokens.map((stone, i) => (
-          <StoneIcon key={i} stone={stone} size={size} />
-        ))}
-        <span className={styles.actionText}>Take</span>
+      <span className={styles.sectionBody} data-kind="take">
+        <StoneWheel stones={action.tokens} size={active ? 52 : 40} />
+        <span className={styles.takeNumbers}>{action.tokens.map(tokenNumber).join(',')}</span>
       </span>
     )
   }
   return (
-    <span className={styles.actionTokens}>
-      <span className={styles.slotBadge}>{slotOf(action)}</span>
-      <span className={styles.actionText}>
-        {action.discard === null ? 'no discard printed' : `return ${action.discard}`}
+    <span className={styles.sectionBody} data-kind="gain">
+      <span className={styles.slotBadge}>
+        {CHECK}
+        {slotOf(action)}
       </span>
+      {action.discard === null ? null : (
+        <DiscardMark count={action.discard} size={active ? 52 : 40} />
+      )}
     </span>
   )
 }
 
-/** The flipped automa card: all three sections, the current phase's highlighted. */
-export function AutomaCardView({ card, phase }: { card: AutomaCard; phase: Phase }) {
+/** The face of an automa card: three sections, the current phase's highlighted. */
+export function AutomaCardFace({ card, phase }: { card: AutomaCard; phase: Phase }) {
   return (
     <div className={styles.automaCard} role="group" aria-label={`Automa card ${card.id}`}>
       {card.actions.map((action, i) => {
         const bandPhase = (i + 1) as Phase
-        const active = bandPhase === phase
         return (
-          <div key={i} className={styles.band} data-active={active} data-phase={bandPhase}>
+          <div
+            key={i}
+            className={styles.band}
+            data-active={bandPhase === phase}
+            data-phase={bandPhase}
+          >
             <span className={styles.bandNumber}>{bandPhase}</span>
-            <ActionSummary action={action} size={active ? 30 : 18} />
+            <Section action={action} active={bandPhase === phase} />
+            {bandPhase === 3 ? (
+              <>
+                <span className={styles.cardNumber}>{String(card.id).padStart(2, '0')}</span>
+                {card.star ? (
+                  <span className={styles.cardStar} aria-label="Star card">
+                    ★
+                  </span>
+                ) : null}
+              </>
+            ) : null}
           </div>
         )
       })}
-      <span className={styles.cardId}>
-        #{String(card.id).padStart(2, '0')}
-        {card.star ? ' ★' : ''}
-      </span>
+    </div>
+  )
+}
+
+/**
+ * Thanos's card: the printed card back (official art, #30) that flips to the face when revealed.
+ * One instance spans the reveal and resolve steps so the flip animates.
+ */
+export function AutomaCardFlip({
+  card,
+  phase,
+  flipped,
+  onFlip,
+}: {
+  card: AutomaCard
+  phase: Phase
+  flipped: boolean
+  onFlip: () => void
+}) {
+  return (
+    <div className={styles.flipScene}>
+      <div className={styles.flipCard} data-flipped={flipped}>
+        <div className={styles.cardBackFace} inert={flipped}>
+          <button
+            type="button"
+            className={styles.cardBackButton}
+            onClick={onFlip}
+            aria-label="Flip Thanos’s card"
+          >
+            <img src={OFFICIAL_ART.cardBack} alt="" draggable={false} />
+            <span className={styles.soloAutoma} aria-hidden="true">
+              SOLO
+              <br />
+              AUTOMA
+            </span>
+          </button>
+        </div>
+        <div className={styles.cardFrontFace} inert={!flipped}>
+          <AutomaCardFace card={card} phase={phase} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -141,11 +210,11 @@ export function TokenStack({
               aria-label={`Remove ${STONE_LABEL[stone]} (position ${i + 1})`}
               onClick={() => onRemove(i)}
             >
-              <StoneIcon stone={stone} size={26} />
+              <StoneIcon stone={stone} size={34} />
             </button>
           ) : (
             <span key={i} className={styles.stackToken} title={STONE_LABEL[stone]}>
-              <StoneIcon stone={stone} size={26} />
+              <StoneIcon stone={stone} size={34} />
             </span>
           ),
         )}
@@ -165,7 +234,7 @@ export function TokenStack({
               aria-label={`Add ${STONE_LABEL[stone]} on top`}
               onClick={() => onAdd(stone)}
             >
-              <StoneIcon stone={stone} size={26} />
+              <StoneIcon stone={stone} size={34} />
             </button>
           ))}
         </div>
@@ -177,17 +246,19 @@ export function TokenStack({
 /** Points, colours, Time token, Avengers tags and tile for one side. */
 export function SideSummary({
   name,
+  side,
   stats,
   holdsTile,
 }: {
   name: string
+  side: 'thanos' | 'player'
   stats: SideStats
   holdsTile: boolean
 }) {
   return (
-    <div className={styles.side} data-gauntlet={stats.gauntlet}>
+    <div className={styles.side} data-side={side} data-gauntlet={stats.gauntlet}>
       <div className={styles.sideTop}>
-        <strong>{name}</strong>
+        <strong className={styles.sideName}>{name}</strong>
         <span className={styles.points}>
           {stats.points}
           <small>/16</small>
@@ -195,16 +266,16 @@ export function SideSummary({
       </div>
       <div
         className={styles.sideStones}
-        aria-label={`${name}: ${stats.colours.length} of 5 colours`}
+        aria-label={`${name}: ${stats.colours.length} of 5 colours${stats.hasTime ? ' and the Time token' : ''}`}
       >
         {STONES.map((stone) => (
-          <StoneIcon key={stone} stone={stone} size={18} hollow={!stats.colours.includes(stone)} />
+          <StoneIcon key={stone} stone={stone} size={22} hollow={!stats.colours.includes(stone)} />
         ))}
-        <StoneIcon stone="time" size={18} hollow={!stats.hasTime} />
+        <StoneIcon stone="time" size={22} hollow={!stats.hasTime} />
       </div>
       <div className={styles.sideMeta}>
         <span>
-          {stats.tags} tag{stats.tags === 1 ? '' : 's'}
+          {stats.tags} Avengers tag{stats.tags === 1 ? '' : 's'}
         </span>
         {holdsTile ? <span className={styles.tile}>Avengers tile</span> : null}
         {stats.gauntlet ? <span className={styles.ready}>Gauntlet ready</span> : null}
