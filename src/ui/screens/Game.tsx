@@ -37,6 +37,7 @@ import {
   STONE_LABEL,
   stoneList,
 } from '../format.ts'
+import { useWakeLock } from '../state/useWakeLock.ts'
 import { GameOver } from './GameOver.tsx'
 import { Rules } from './Rules.tsx'
 import styles from './screens.module.css'
@@ -62,6 +63,7 @@ export function Game({
   const over = state.step === 'over'
   const { phase } = currentRoundCard(state)
   const [fixingStack, setFixingStack] = useState(false)
+  useWakeLock(!over)
 
   return (
     <main className={styles.screen}>
