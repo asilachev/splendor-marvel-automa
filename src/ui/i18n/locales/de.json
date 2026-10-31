@@ -8,6 +8,7 @@
     "rule": "Regel: {title}",
     "keepPlaying": "WEITERSPIELEN",
     "level": "S{level}",
+    "card": "S{level} {stone}",
     "points": "{n, plural, one {# Pkt.} other {# Pkt.}}",
     "tags": "{n, plural, one {# Avengers-Symbol} other {# Avengers-Symbole}}",
     "time": "Zeit",

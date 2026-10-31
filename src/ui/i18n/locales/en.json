@@ -8,6 +8,7 @@
     "rule": "Rule: {title}",
     "keepPlaying": "KEEP PLAYING",
     "level": "L{level}",
+    "card": "L{level} {stone}",
     "points": "{n, plural, one {# pt} other {# pts}}",
     "tags": "{n, plural, one {# Avengers tag} other {# Avengers tags}}",
     "time": "Time",

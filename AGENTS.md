@@ -71,7 +71,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run build` | Typecheck, then production build into `dist/` |
 | `npm run preview` | Serve the production build |
 | `docker build -t thanos-automa .` | Build the production image (nginx on port 8080); `docker compose up -d` runs the published one |
-| `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688) |
+| `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688). Options after `--`: `--lang ru`, `--only 04,06`, `--out <dir>`, `--width 360` |
 | `npm run site` | Assemble the landing page into `_site/`: `site/` plus the guide screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
 

@@ -81,7 +81,7 @@ export function VersusHud({ state }: { state: GameState }) {
     <header className={styles.hud} aria-label={summary}>
       <div className={styles.fighters}>
         <Fighter side="thanos" stats={thanos} />
-        <div className={styles.clock} data-last={last}>
+        <div className={styles.clock} data-last={last} data-over={over}>
           <strong>{over ? t('hud.gameOver') : t('hud.round', { n: state.round })}</strong>
           <span>
             {over

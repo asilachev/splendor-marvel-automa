@@ -28,3 +28,4 @@ npm-debug.log*
 
 # reference PDFs: download with `npm run reference` (GitHub release "reference-docs")
 docs/reference/*.pdf
+.screenshots/
