@@ -47,3 +47,17 @@ export function savePrefs(prefs: Prefs, storage = browserStorage()): void {
     // Not critical.
   }
 }
+
+/**
+ * A link can carry a language, `?lang=ru`: the landing page's "Open the app" does (#85). A
+ * supported one becomes the saved choice, as if picked in the app; anything else is ignored.
+ * Returns the address without the parameter, to show instead, or null if there was none.
+ */
+export function takeLanguageFromUrl(href: string, storage = browserStorage()): string | null {
+  const url = new URL(href)
+  const lang = url.searchParams.get('lang')
+  if (lang === null) return null
+  if (isLang(lang)) savePrefs({ ...loadPrefs(storage), language: lang }, storage)
+  url.searchParams.delete('lang')
+  return `${url.pathname}${url.search}${url.hash}`
+}
