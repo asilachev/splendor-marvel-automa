@@ -1,7 +1,9 @@
 # syntax=docker/dockerfile:1
 # Static build served by unprivileged nginx on port 8080 (issue #10).
 
-FROM node:22-alpine AS build
+# The static files are the same on every architecture, so build them once on the builder's own
+# platform. Under emulation (arm64 on an amd64 runner) npm ci alone can run past CI's limit (#80).
+FROM --platform=$BUILDPLATFORM node:22-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
