@@ -92,6 +92,17 @@ ordered stack by hand is the fiddliest part of the paper automa.
 - **Persistence:** `{ version, seed, settings, events }` in `localStorage` under a versioned key.
   Every read and write is wrapped in try/catch.
 
+## Tech and hosting
+
+- **Stack:** Vite, React and TypeScript, built to static files in `dist/`. There is no server code.
+- **Hosting:** self-hosted as a Docker image, with nginx serving `dist/`.
+  - CI publishes the image to GHCR (issue #10).
+  - The server must serve the app over **HTTPS**, because PWA install, offline mode and the screen
+    wake lock all require a secure context.
+- **Why not Next.js:** nothing here runs on a server. A static build is simpler to cache offline and
+  simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
+  across devices. The engine is framework-agnostic, so only the UI shell would move.
+
 ## Visual language
 
 - **Stones** use colour plus shape, so they stay distinguishable for colour-blind players:
