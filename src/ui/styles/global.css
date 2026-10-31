@@ -1,8 +1,19 @@
 /* v2 "Versus" theme tokens. Design: Pencil file splendor-marvel-automa.pen → Components & states. */
+
+/* Bundled and precached fonts. `block` instead of `swap`: no reflow when they arrive (#52). */
+@font-face {
+  font-family: 'Bangers';
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  src: url('../../../node_modules/@fontsource/bangers/files/bangers-latin-400-normal.woff2')
+    format('woff2');
+}
+
 @font-face {
   font-family: 'Inter Variable';
   font-style: normal;
-  font-display: swap;
+  font-display: block;
   font-weight: 100 900;
   src: url('../../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
     format('woff2-variations');
@@ -81,6 +92,10 @@ body {
 html {
   /* No double-tap zoom at the table (design 7.5). */
   touch-action: manipulation;
+  /* Scrolling something into view keeps it clear of the pinned button and dock (#52). */
+  scroll-padding-bottom: 170px;
+  /* Locking the page behind a sheet doesn't shift it sideways on desktop. */
+  scrollbar-gutter: stable;
 }
 
 body {

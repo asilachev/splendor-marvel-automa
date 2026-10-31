@@ -1,6 +1,5 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@fontsource/bangers/latin-400.css'
 import './ui/styles/global.css'
 import { App } from './ui/App.tsx'
 import { listenForInstallPrompt } from './ui/pwa/pwa.ts'

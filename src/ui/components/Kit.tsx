@@ -1,12 +1,21 @@
 import { X } from 'lucide-react'
-import { useEffect, useRef, type ButtonHTMLAttributes, type ReactNode, type RefObject } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ButtonHTMLAttributes,
+  type ReactNode,
+  type RefObject,
+} from 'react'
+import { EXIT_MS, prefersReducedMotion } from '../motion.ts'
 import { STONES, type Stone } from '../../engine/index.ts'
 import { STONE_LABEL } from '../format.ts'
 import styles from './kit.module.css'
 import { Token } from './Token.tsx'
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'danger' | 'small'
+  variant?: 'primary' | 'secondary' | 'danger' | 'quietDanger' | 'small'
   icon?: ReactNode
 }
 
@@ -251,7 +260,60 @@ function useFocusTrap(ref: RefObject<HTMLElement | null>) {
   }, [ref])
 }
 
-/** Bottom sheet over a scrim (Hoard, Log, Rules, Log your card, Install). */
+/** Plays the exit animation, then calls `onClose` (at once under reduced motion). */
+function useAnimatedClose(onClose: () => void): [closing: boolean, close: () => void] {
+  const [closing, setClosing] = useState(false)
+  const timer = useRef<number | undefined>(undefined)
+  useEffect(() => () => window.clearTimeout(timer.current), [])
+  const close = useCallback(() => {
+    if (prefersReducedMotion()) {
+      onClose()
+      return
+    }
+    setClosing(true)
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(onClose, EXIT_MS)
+  }, [onClose])
+  return [closing, close]
+}
+
+let scrollLocks = 0
+
+/** Keeps the page behind a sheet or dialog still while it is open. */
+function useScrollLock() {
+  useEffect(() => {
+    const root = document.documentElement
+    if (scrollLocks++ === 0) root.style.overflow = 'hidden'
+    return () => {
+      if (--scrollLocks === 0) root.style.overflow = ''
+    }
+  }, [])
+}
+
+/**
+ * Expands and collapses smoothly (#52). Opening mounts the content and expands it in one go;
+ * closing collapses it first and unmounts it when the transition ends. Collapsed content is
+ * hidden from assistive technology and can't be focused.
+ */
+export function Collapse({ open, children }: { open: boolean; children: ReactNode }) {
+  const [mounted, setMounted] = useState(open)
+  if (open && !mounted) setMounted(true)
+  return (
+    <span
+      className={styles.collapse}
+      data-open={open}
+      onTransitionEnd={(e) => {
+        if (!open && e.target === e.currentTarget) setMounted(false)
+      }}
+    >
+      <span className={styles.collapseInner} aria-hidden={!open} inert={!open}>
+        {mounted ? children : null}
+      </span>
+    </span>
+  )
+}
+
+/** Bottom sheet over a scrim (Hoard, Log, Menu, Log your card, Install). */
 export function Sheet({
   title,
   onClose,
@@ -261,17 +323,19 @@ export function Sheet({
   onClose: () => void
   children: ReactNode
 }) {
-  useEscape(onClose)
+  const [closing, close] = useAnimatedClose(onClose)
+  useEscape(close)
+  useScrollLock()
   const ref = useRef<HTMLElement>(null)
   useFocusTrap(ref)
   return (
-    <div className={styles.layer}>
+    <div className={styles.layer} data-closing={closing}>
       <button
         type="button"
         className={styles.scrim}
         aria-label="Close"
         tabIndex={-1}
-        onClick={onClose}
+        onClick={close}
       />
       <section
         ref={ref}
@@ -288,7 +352,7 @@ export function Sheet({
             type="button"
             className={styles.close}
             aria-label={`Close ${title}`}
-            onClick={onClose}
+            onClick={close}
           >
             <X size={20} />
           </button>
@@ -313,17 +377,19 @@ export function Dialog({
   onClose: () => void
   children: ReactNode
 }) {
-  useEscape(onClose)
+  const [closing, close] = useAnimatedClose(onClose)
+  useEscape(close)
+  useScrollLock()
   const ref = useRef<HTMLElement>(null)
   useFocusTrap(ref)
   return (
-    <div className={styles.layer} data-center="true">
+    <div className={styles.layer} data-center="true" data-closing={closing}>
       <button
         type="button"
         className={styles.scrim}
         aria-label="Close"
         tabIndex={-1}
-        onClick={onClose}
+        onClick={close}
       />
       <section
         ref={ref}

@@ -3,6 +3,7 @@ import {
   ChevronRight,
   Flag,
   House,
+  OctagonX,
   Plus,
   Shuffle,
   Skull,
@@ -20,7 +21,15 @@ import {
 } from '../../engine/index.ts'
 import { TokenPiles } from '../components/Cards.tsx'
 import { Credits } from '../components/Credits.tsx'
-import { Button, NumberChips, Options, Sheet, SheetLabel, StonePicker } from '../components/Kit.tsx'
+import {
+  Button,
+  Collapse,
+  NumberChips,
+  Options,
+  Sheet,
+  SheetLabel,
+  StonePicker,
+} from '../components/Kit.tsx'
 import { Token } from '../components/Token.tsx'
 import { cardLabel, describeLog } from '../format.ts'
 import styles from './game.module.css'
@@ -171,27 +180,33 @@ const RULES: readonly [string, string][] = [
   ],
 ]
 
-/** 6.4 — rules, settings and credits. */
-export function RulesSheet({
+/** 6.4 — the menu: leave or end the game, then rules, settings, rulings and credits (#53). */
+export function MenuSheet({
   state,
   wakeLock,
   onWakeLock,
   onClose,
   onHome,
+  onEndGame,
 }: {
   state: GameState
   wakeLock: boolean
   onWakeLock: (on: boolean) => void
   onClose: () => void
   onHome: () => void
+  onEndGame: () => void
 }) {
   const [open, setOpen] = useState<number | null>(null)
   const s = state.setup.settings
   return (
-    <Sheet title="RULES & HELP" onClose={onClose}>
+    <Sheet title="MENU" onClose={onClose}>
       <Button variant="secondary" icon={<House size={20} />} onClick={onHome}>
         BACK TO HOME · GAME SAVED
       </Button>
+      <Button variant="quietDanger" icon={<OctagonX size={20} />} onClick={onEndGame}>
+        END THIS GAME
+      </Button>
+      <SheetLabel>RULES</SheetLabel>
       <div>
         {RULES.map(([title, text], i) => (
           <div key={title} className={styles.ruleRow}>
@@ -205,12 +220,11 @@ export function RulesSheet({
                 i
               </span>
               <span className={styles.ruleTitle}>{title}</span>
-              <ChevronRight
-                size={16}
-                style={{ transform: open === i ? 'rotate(90deg)' : undefined }}
-              />
+              <ChevronRight size={16} className={styles.ruleChevron} />
             </button>
-            {open === i ? <p className={styles.ruleBody}>{text}</p> : null}
+            <Collapse open={open === i}>
+              <span className={styles.ruleBody}>{text}</span>
+            </Collapse>
           </div>
         ))}
       </div>

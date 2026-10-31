@@ -6,9 +6,11 @@ export interface Prefs {
   readonly wakeLock: boolean
   /** The iOS "Add to Home Screen" sheet was shown or dismissed. */
   readonly installHintSeen: boolean
+  /** A game was started or ended on this device, so Home no longer shows the first-launch intro. */
+  readonly played: boolean
 }
 
-export const DEFAULT_PREFS: Prefs = { wakeLock: true, installHintSeen: false }
+export const DEFAULT_PREFS: Prefs = { wakeLock: true, installHintSeen: false, played: false }
 export const PREFS_KEY = 'thanos-automa:v1:prefs'
 
 export function loadPrefs(storage = browserStorage()): Prefs {
@@ -22,6 +24,7 @@ export function loadPrefs(storage = browserStorage()): Prefs {
       wakeLock: typeof v.wakeLock === 'boolean' ? v.wakeLock : DEFAULT_PREFS.wakeLock,
       installHintSeen:
         typeof v.installHintSeen === 'boolean' ? v.installHintSeen : DEFAULT_PREFS.installHintSeen,
+      played: typeof v.played === 'boolean' ? v.played : DEFAULT_PREFS.played,
     }
   } catch {
     return DEFAULT_PREFS

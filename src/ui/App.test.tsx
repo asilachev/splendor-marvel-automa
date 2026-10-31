@@ -1,6 +1,6 @@
 import { render, screen, within } from '@testing-library/react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   applyEvent,
   cardForRound,
@@ -14,7 +14,7 @@ import {
   type Settings,
 } from '../engine/index.ts'
 import { App } from './App.tsx'
-import { loadSettings, saveGame } from './state/persistence.ts'
+import { loadGame, loadSettings, saveGame } from './state/persistence.ts'
 import { loadPrefs } from './state/prefs.ts'
 
 const actionAt = (seed: number, round: number): AutomaAction =>
@@ -99,7 +99,7 @@ describe('home, setup and rulings (#44)', () => {
   it('asks before a new game replaces the one in progress', async () => {
     const user = userEvent.setup()
     await resume(user, takeSeed, [{ type: 'reveal' }])
-    await user.click(screen.getByRole('button', { name: 'Rules' }))
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
     await user.click(screen.getByRole('button', { name: /BACK TO HOME/ }))
     await user.click(screen.getByRole('button', { name: 'NEW GAME' }))
     const dialog = screen.getByRole('alertdialog', { name: 'ABANDON THIS GAME?' })
@@ -237,7 +237,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
 })
 
 describe('dock sheets (#43)', () => {
-  it('fixes Thanos’s piles in the hoard and toggles settings in the rules sheet', async () => {
+  it('fixes Thanos’s piles in the hoard and toggles settings in the menu', async () => {
     const user = userEvent.setup()
     await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
     const n = (actionAt(takeSeed, 1) as Extract<AutomaAction, { kind: 'take' }>).tokens.length
@@ -249,15 +249,15 @@ describe('dock sheets (#43)', () => {
     expect(within(hoard).getByText(`TOKENS · ${n + 1}`)).toBeInTheDocument()
     await user.click(within(hoard).getByRole('button', { name: 'Close THANOS’S HOARD' }))
 
-    await user.click(screen.getByRole('button', { name: 'Rules' }))
-    const rules = screen.getByRole('dialog', { name: 'RULES & HELP' })
-    await user.click(within(rules).getByRole('button', { name: /Taking tokens/ }))
-    expect(within(rules).getByText(/no 10-token limit/)).toBeInTheDocument()
-    const sw = within(rules).getByRole('switch', { name: 'Keep the screen awake' })
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    const menu = screen.getByRole('dialog', { name: 'MENU' })
+    await user.click(within(menu).getByRole('button', { name: /Taking tokens/ }))
+    expect(within(menu).getByText(/no 10-token limit/)).toBeInTheDocument()
+    const sw = within(menu).getByRole('switch', { name: 'Keep the screen awake' })
     expect(sw).toHaveAttribute('aria-checked', 'true')
     await user.click(sw)
     expect(loadPrefs().wakeLock).toBe(false)
-    expect(within(rules).getByRole('contentinfo', { name: 'Credits and copyright' })).toBeVisible()
+    expect(within(menu).getByRole('contentinfo', { name: 'Credits and copyright' })).toBeVisible()
   })
 
   it('explains rules with tips on the game screen', async () => {
@@ -265,5 +265,97 @@ describe('dock sheets (#43)', () => {
     await resume(user, takeSeed, [])
     await user.click(screen.getByRole('button', { name: 'Rule: Thanos’s turn' }))
     expect(screen.getByRole('note')).toHaveTextContent(/flips the next automa card/)
+  })
+})
+
+describe('ending a game (#53)', () => {
+  it('ends the game from the menu after confirming', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, [{ type: 'reveal' }])
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    await user.click(screen.getByRole('button', { name: 'END THIS GAME' }))
+    expect(screen.queryByRole('dialog', { name: 'MENU' })).toBeNull()
+    const dialog = screen.getByRole('alertdialog', { name: 'END THIS GAME?' })
+    expect(dialog).toHaveTextContent('You’re in round 1.')
+    await user.click(within(dialog).getByRole('button', { name: 'KEEP PLAYING' }))
+    expect(screen.getByRole('heading', { name: /TAP A TOKEN|WHICH STONE/ })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    await user.click(screen.getByRole('button', { name: 'END THIS GAME' }))
+    await user.click(screen.getByRole('button', { name: 'END GAME' }))
+    expect(screen.getByRole('heading', { name: 'THANOS AUTOMA' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^CONTINUE/ })).toBeNull()
+    expect(screen.getByRole('button', { name: 'NEW GAME' })).toBeInTheDocument()
+    expect(screen.getByText('Game ended.')).toBeInTheDocument()
+    expect(loadGame().game).toBeNull()
+  })
+
+  it('ends the game from Home', async () => {
+    const user = userEvent.setup()
+    saveGame({ version: 1, seed: takeSeed, settings: DEFAULT_SETTINGS, events: [] })
+    render(<App />)
+    await user.click(screen.getByRole('button', { name: 'End this game' }))
+    await user.click(screen.getByRole('button', { name: 'END GAME' }))
+    expect(screen.queryByRole('button', { name: /^CONTINUE/ })).toBeNull()
+    expect(loadGame().game).toBeNull()
+  })
+})
+
+describe('motion (#52)', () => {
+  it('opens every step at its top', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    vi.mocked(window.scrollTo).mockClear()
+    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    expect(window.scrollTo).toHaveBeenCalledWith(0, 0)
+  })
+
+  it('finishes the flip on the small card only right after a flip', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, [])
+    await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
+    expect(screen.getByRole('img', { name: /^Automa card/ })).toHaveAttribute(
+      'data-entering',
+      'true',
+    )
+    // After undo and a relaunch the card is already face up: no flip again.
+    await user.click(screen.getByRole('button', { name: 'Undo' }))
+    await user.click(screen.getByRole('button', { name: 'Flip Thanos’s card' }))
+    await user.click(screen.getByRole('button', { name: 'Menu' }))
+    await user.click(screen.getByRole('button', { name: /BACK TO HOME/ }))
+    await user.click(screen.getByRole('button', { name: /^CONTINUE/ }))
+    expect(screen.getByRole('img', { name: /^Automa card/ })).toHaveAttribute(
+      'data-entering',
+      'false',
+    )
+  })
+
+  it('keeps the undo toast in place when undoing more', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
+    await user.click(screen.getByRole('button', { name: 'Undo' }))
+    const toast = screen.getByText('Undone — stepped back one action.').parentElement
+    await user.click(screen.getByRole('button', { name: 'UNDO MORE' }))
+    expect(screen.getByText('Undone — stepped back one action.').parentElement).toBe(toast)
+    expect(screen.getByRole('button', { name: 'Flip Thanos’s card' })).toBeInTheDocument()
+  })
+
+  it('keeps the page still behind an open sheet', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, [])
+    await user.click(screen.getByRole('button', { name: 'Log' }))
+    expect(document.documentElement.style.overflow).toBe('hidden')
+    await user.click(screen.getByRole('button', { name: 'Close GAME LOG' }))
+    expect(document.documentElement.style.overflow).toBe('')
+  })
+
+  it('collapses a rule tip again', async () => {
+    const user = userEvent.setup()
+    await resume(user, takeSeed, [])
+    const tip = screen.getByRole('button', { name: 'Rule: Thanos’s turn' })
+    await user.click(tip)
+    expect(screen.getByRole('note')).toBeInTheDocument()
+    await user.click(tip)
+    expect(screen.queryByRole('note')).toBeNull()
   })
 })

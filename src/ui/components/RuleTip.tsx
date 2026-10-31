@@ -1,9 +1,11 @@
 import { useId, useState, type ReactNode } from 'react'
+import { Collapse } from './Kit.tsx'
 import styles from './kit.module.css'
 
 /**
  * A tap-to-open rule explanation: hover doesn't exist on phones, so an "i" button toggles a short
- * note inline. Wording follows docs/automa.md and docs/rules.md, in our own words.
+ * note, which expands below the line it belongs to. Wording follows docs/automa.md and
+ * docs/rules.md, in our own words.
  */
 export function RuleTip({ title, children }: { title: string; children: ReactNode }) {
   const [open, setOpen] = useState(false)
@@ -20,11 +22,11 @@ export function RuleTip({ title, children }: { title: string; children: ReactNod
       >
         i
       </button>
-      {open ? (
+      <Collapse open={open}>
         <span id={id} role="note" className={styles.tip}>
           <strong>{title}.</strong> {children}
         </span>
-      ) : null}
+      </Collapse>
     </>
   )
 }

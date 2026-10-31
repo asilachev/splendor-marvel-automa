@@ -66,7 +66,7 @@ ordered stack by hand is the fiddliest part of the paper automa.
 | --- | --- |
 | Home | Where every launch opens · Continue the saved game · New game · Install card · Credits |
 | Setup | 2-player setup checklist · difficulty · rulings sub-screen · Start |
-| Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Rules |
+| Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Menu |
 | Game over | Result, why, rounds taken, final tallies · New game |
 | History (v1) | Past games, win rate, average rounds to win |
 
@@ -102,6 +102,34 @@ ordered stack by hand is the fiddliest part of the paper automa.
 - **Why not Next.js:** nothing here runs on a server. A static build is simpler to cache offline and
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
+
+## Motion (#52)
+
+Movement only when it means something, and then short and smooth.
+
+- **Nothing jumps.** Selected tiles, chips and options draw their thicker ring with an inset shadow,
+  so they never change size. Checking a checklist item doesn't change its font weight. The HUD is a
+  three-column grid with tabular numbers, so the clock stays centred while scores change. Fonts are
+  bundled with `font-display: block`, so text doesn't reflow when they arrive.
+- **Scroll only when needed.** Every screen and step opens at its top, reset before paint. Points and
+  tags in the recruit step scroll into view (`nearest`) once a colour is picked. The page reserves
+  `scroll-padding-bottom` for the pinned footer. The page behind an open sheet or dialog doesn't move.
+- **No replays.** The small automa card finishes the flip only right after you flip the card back,
+  not on resume, after undo or at a phase change. A toast pushed again with the same key (UNDO MORE)
+  updates in place.
+- **Short transitions:** steps and stage changes fade in (160 ms, opacity only); sheets rise and sink;
+  dialogs pop and shrink; the scrim fades; toasts rise and fade out; tips and rule rows expand and
+  collapse (200 ms); HUD bars fill with a transform; the card flip uses 3D perspective.
+- **Reduced motion:** every animation ends at once, and delayed steps (the flip, exits) happen
+  immediately.
+
+## Ending a game (#53)
+
+- The dock's fourth item is **Menu**. It starts with BACK TO HOME · GAME SAVED and END THIS GAME,
+  followed by the rules, settings, this game's rulings and the credits.
+- Home with a game in progress shows CONTINUE · ROUND N, NEW GAME and an **End this game** link.
+- Both ask "END THIS GAME?" (END GAME / KEEP PLAYING), because ending clears the saved game. A new
+  game over a saved one asks "ABANDON THIS GAME?" (1.5).
 
 ## PWA (flow 7)
 
@@ -139,8 +167,8 @@ Components & states board, a user-flow map and a PWA checklist.
   gold, blue and red caption boxes, and a paper panel with a speech bubble for Thanos's move.
 - **Stones** are tokens: a coloured disc, a black outline and a white symbol. Pickers show the
   token-board numbers 1–5.
-- **Sheets.** Hoard (colour piles with a fix mode), Log, Rules & settings (keep the screen awake,
-  credits), and Log your card. One dialog: abandon the game.
+- **Sheets.** Hoard (colour piles with a fix mode), Log, Menu (back to home, end the game, rules,
+  keep the screen awake, credits), and Log your card. Dialogs: abandon or end the game.
 - **Motion.** The card flip and the sheet rise both respect reduced motion. Touch targets are at least
   44 px.
 

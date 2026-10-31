@@ -14,8 +14,9 @@ tap its colour, points and Avengers tags.
 3. [Thanos's turn](#3-thanoss-turn)
 4. [Your turn](#4-your-turn)
 5. [New phase, reshuffled deck](#5-new-phase-reshuffled-deck)
-6. [The dock: undo, hoard, log, rules](#6-the-dock-undo-hoard-log-rules)
+6. [The dock: undo, hoard, log, menu](#6-the-dock-undo-hoard-log-menu)
 7. [How the game ends](#7-how-the-game-ends)
+8. [Ending a game early](#8-ending-a-game-early)
 
 ## 1. Install the app
 
@@ -28,8 +29,8 @@ screen awake during a game.
 
 <table>
   <tr>
-    <td align="center" valign="top"><img src="screenshots/16-install-iphone.png" width="250" alt="Install sheet on iPhone: tap Share, then Add to Home Screen"><br><sub>iPhone: the install sheet</sub></td>
-    <td align="center" valign="top"><img src="screenshots/17-install-android.png" width="250" alt="Home screen with the Install card above CONTINUE"><br><sub>Android: the Install card</sub></td>
+    <td align="center" valign="top"><img src="screenshots/17-install-iphone.png" width="250" alt="Install sheet on iPhone: tap Share, then Add to Home Screen"><br><sub>iPhone: the install sheet</sub></td>
+    <td align="center" valign="top"><img src="screenshots/18-install-android.png" width="250" alt="Home screen with the Install card above CONTINUE"><br><sub>Android: the Install card</sub></td>
   </tr>
 </table>
 
@@ -113,7 +114,7 @@ each card. Every card is used once per phase.
   </tr>
 </table>
 
-## 6. The dock: undo, hoard, log, rules
+## 6. The dock: undo, hoard, log, menu
 
 The bar at the bottom is always there during a game.
 
@@ -121,14 +122,14 @@ The bar at the bottom is always there during a game.
 - **Hoard** shows his tokens as colour piles, which ones go back first, and his cards. If the table
   and the app ever disagree, tap **FIX** to correct his piles, his cards or the Avengers tile.
 - **Log** lists everything that happened, newest round first.
-- **Rules** has the rules at a glance, the keep-the-screen-awake switch, this game's rulings and the
-  credits. **BACK TO HOME** leaves the game; it stays saved.
+- **Menu** starts with **BACK TO HOME** (the game stays saved) and **END THIS GAME**. Below them:
+  the rules at a glance, the keep-the-screen-awake switch, this game's rulings and the credits.
 
 <table>
   <tr>
     <td align="center" valign="top"><img src="screenshots/11-hoard.png" width="250" alt="Thanos's hoard: token piles, return order and cards"><br><sub>Hoard</sub></td>
     <td align="center" valign="top"><img src="screenshots/12-log.png" width="250" alt="Game log, newest round first"><br><sub>Log</sub></td>
-    <td align="center" valign="top"><img src="screenshots/13-rules.png" width="250" alt="Rules and help, with one rule open"><br><sub>Rules & help</sub></td>
+    <td align="center" valign="top"><img src="screenshots/13-menu.png" width="250" alt="Menu: back to home, end this game, rules and settings"><br><sub>Menu</sub></td>
   </tr>
 </table>
 
@@ -150,6 +151,21 @@ Tap **NEW GAME** to play again, or **UNDO THE LAST STEP** if the ending came fro
   <tr>
     <td align="center" valign="top"><img src="screenshots/14-win.png" width="250" alt="You win: you completed the Infinity Gauntlet in round 22"><br><sub>You win</sub></td>
     <td align="center" valign="top"><img src="screenshots/15-snap.png" width="250" alt="SNAP: round 30 ended without your Infinity Gauntlet"><br><sub>SNAP: Thanos wins</sub></td>
+  </tr>
+</table>
+
+## 8. Ending a game early
+
+To stop the game in progress, open **Menu** and tap **END THIS GAME**, or tap **End this game** on
+the home screen. The app asks first, because ending a game clears it: Undo can't bring it back.
+Tap **END GAME** to confirm, or **KEEP PLAYING**.
+
+To pause instead, tap **BACK TO HOME** in the menu, or simply close the app. The game is saved after
+every tap, and **CONTINUE** picks it up again.
+
+<table>
+  <tr>
+    <td align="center" valign="top"><img src="screenshots/16-end-game.png" width="250" alt="End this game? End game or keep playing"><br><sub>End this game?</sub></td>
   </tr>
 </table>
 

@@ -1,6 +1,7 @@
-import { RotateCcw } from 'lucide-react'
-import { useState } from 'react'
+import { OctagonX, RotateCcw } from 'lucide-react'
+import { useLayoutEffect, useState } from 'react'
 import { Button, Dialog } from './components/Kit.tsx'
+import { useToasts } from './components/toast.ts'
 import { Toaster } from './components/Toaster.tsx'
 import { Game } from './game/Game.tsx'
 import { Home } from './home/Home.tsx'
@@ -20,6 +21,9 @@ import { useGame } from './state/useGame.ts'
 
 type Screen = 'home' | 'setup' | 'game'
 
+/** Confirmations that clear the saved game: a new game over it, or ending it (#53). */
+type Confirm = 'newGame' | 'endGame'
+
 export function App() {
   return (
     <Toaster>
@@ -33,7 +37,8 @@ function Shell() {
   // Every launch opens on Home; a saved game shows CONTINUE (design: 7.3 splash → 1.2).
   const [screen, setScreen] = useState<Screen>('home')
   const [prefs, setPrefs] = useState<Prefs>(loadPrefs)
-  const [confirmAbandon, setConfirmAbandon] = useState(false)
+  const [confirm, setConfirm] = useState<Confirm | null>(null)
+  const toasts = useToasts()
   const splash = useSplash()
   const installPrompt = useInstallPrompt()
   const [iosNotInstalled] = useState(() => isIosSafari() && !isStandalone())
@@ -45,7 +50,13 @@ function Shell() {
       return next
     })
   const inProgress = game.state !== null && game.state.step !== 'over'
-  const newGame = () => (inProgress ? setConfirmAbandon(true) : setScreen('setup'))
+  const newGame = () => (inProgress ? setConfirm('newGame') : setScreen('setup'))
+  const endGame = () => setConfirm('endGame')
+
+  // Each screen opens at its top, set before paint (#52).
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [screen])
 
   let view
   if (screen === 'setup') {
@@ -55,6 +66,7 @@ function Shell() {
         onBack={() => setScreen('home')}
         onStart={(settings) => {
           requestPersistentStorage()
+          updatePrefs({ played: true })
           game.start(settings)
           setScreen('game')
         }}
@@ -71,12 +83,14 @@ function Shell() {
         onWakeLock={(on) => updatePrefs({ wakeLock: on })}
         onHome={() => setScreen('home')}
         onNewGame={newGame}
+        onEndGame={endGame}
       />
     )
   } else {
     view = (
       <Home
         state={game.state}
+        firstLaunch={game.state === null && !prefs.played}
         corruptSave={game.recoveredFromCorruptSave}
         install={
           installPrompt.available ? (
@@ -85,6 +99,7 @@ function Shell() {
         }
         onContinue={() => setScreen('game')}
         onNewGame={newGame}
+        onEndGame={endGame}
       />
     )
   }
@@ -92,23 +107,40 @@ function Shell() {
   return (
     <>
       {view}
-      {confirmAbandon && game.state ? (
-        <Dialog title="ABANDON THIS GAME?" onClose={() => setConfirmAbandon(false)}>
+      {confirm && game.state ? (
+        <Dialog
+          title={confirm === 'endGame' ? 'END THIS GAME?' : 'ABANDON THIS GAME?'}
+          onClose={() => setConfirm(null)}
+        >
           <p>
-            You’re in round {game.state.round}. Starting over clears it — Undo can’t bring it back.
+            You’re in round {game.state.round}.{' '}
+            {confirm === 'endGame'
+              ? 'Ending it clears the saved game — Undo can’t bring it back.'
+              : 'Starting over clears it — Undo can’t bring it back.'}
           </p>
           <Button
             variant="danger"
-            icon={<RotateCcw size={20} />}
+            icon={confirm === 'endGame' ? <OctagonX size={20} /> : <RotateCcw size={20} />}
             onClick={() => {
-              setConfirmAbandon(false)
+              setConfirm(null)
               game.abandon()
-              setScreen('setup')
+              updatePrefs({ played: true })
+              if (confirm === 'endGame') {
+                setScreen('home')
+                toasts.push({
+                  key: 'ended',
+                  icon: <OctagonX size={20} />,
+                  text: 'Game ended.',
+                  tone: 'muted',
+                })
+              } else {
+                setScreen('setup')
+              }
             }}
           >
-            START OVER
+            {confirm === 'endGame' ? 'END GAME' : 'START OVER'}
           </Button>
-          <Button variant="secondary" onClick={() => setConfirmAbandon(false)}>
+          <Button variant="secondary" onClick={() => setConfirm(null)}>
             KEEP PLAYING
           </Button>
         </Dialog>

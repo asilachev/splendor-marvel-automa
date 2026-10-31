@@ -8,7 +8,7 @@ import { Token } from './Token.tsx'
 /** The printed automa card back (official art), tapped to reveal (design 2.1). */
 export function CardBack({ flipping, onFlip }: { flipping: boolean; onFlip: () => void }) {
   return (
-    <div className={styles.stage}>
+    <div className={styles.stage} data-flipping={flipping}>
       <button
         type="button"
         className={styles.cardBack}
@@ -32,11 +32,23 @@ export function CardBack({ flipping, onFlip }: { flipping: boolean; onFlip: () =
 
 const PHASE_STRIP = ['var(--phase-1)', 'var(--phase-2)', 'var(--phase-3)']
 
-/** Small face of the automa card: three bands, the current phase lit. */
-export function MiniCard({ card, phase }: { card: AutomaCard; phase: Phase }) {
+/**
+ * Small face of the automa card: three bands, the current phase lit. `entering` plays the second
+ * half of the flip, only right after the card back was flipped (not on resume or undo).
+ */
+export function MiniCard({
+  card,
+  phase,
+  entering = false,
+}: {
+  card: AutomaCard
+  phase: Phase
+  entering?: boolean
+}) {
   return (
     <div
       className={styles.miniCard}
+      data-entering={entering}
       role="img"
       aria-label={`Automa card ${card.id}, phase ${phase} section`}
     >
