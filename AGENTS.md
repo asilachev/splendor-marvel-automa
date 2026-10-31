@@ -73,6 +73,8 @@ src/
   engine/   pure TypeScript automa engine: no React, no DOM; *.test.ts runs on Node
   ui/       React components and styles; *.test.tsx runs on jsdom with Testing Library
   test/     shared test setup
+public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
+scripts/    repo tooling (logo/icon generator)
 docs/       rules, automa spec, design, reference PDFs
 ```
 
