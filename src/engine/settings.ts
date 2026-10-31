@@ -1,0 +1,54 @@
+/**
+ * Game settings. Every gap in the automa PDF is a setting; defaults come from
+ * docs/automa.md → Rulings this app uses. Change a default only together with that table.
+ */
+
+/** Number of automa cards drawn in phases 1, 2 and 3 (each 1–10; the deck has 10 cards). */
+export type PhaseLengths = readonly [number, number, number]
+
+export interface Settings {
+  /** Rounds per phase. Default 10/10/10 (30 rounds); community variants 10/9/8 and 8/8/8. */
+  readonly phaseLengths: PhaseLengths
+  /** Discard for a gain action that prints no number (card 12, phase 3). Default 0. */
+  readonly unprintedDiscard: number
+  /** Targeted slot is empty: take the first card in the row from the left, or take nothing. */
+  readonly emptySlot: 'firstInRow' | 'nothing'
+  /** Both sides complete the Gauntlet: official tiebreakers then Thanos, or Thanos outright. */
+  readonly ties: 'tiebreakersThenThanos' | 'thanosWins'
+  /** Which of Thanos's cards count: all (Shamus's clarification) or only scoring/Avengers cards. */
+  readonly countedCards: 'all' | 'scoringOnly'
+  /** Maximum tokens in Thanos's stack; the oldest beyond it go back to the supply. */
+  readonly stackCap: number | null
+}
+
+export const DEFAULT_SETTINGS: Settings = {
+  phaseLengths: [10, 10, 10],
+  unprintedDiscard: 0,
+  emptySlot: 'firstInRow',
+  ties: 'tiebreakersThenThanos',
+  countedCards: 'all',
+  stackCap: null,
+}
+
+export const PHASE_LENGTH_PRESETS = {
+  standard: [10, 10, 10],
+  shorter: [10, 9, 8],
+  shortest: [8, 8, 8],
+} as const satisfies Record<string, PhaseLengths>
+
+export function validateSettings(settings: Settings): void {
+  for (const length of settings.phaseLengths) {
+    if (!Number.isInteger(length) || length < 1 || length > 10) {
+      throw new Error(`Phase length must be an integer from 1 to 10, got ${length}`)
+    }
+  }
+  if (!Number.isInteger(settings.unprintedDiscard) || settings.unprintedDiscard < 0) {
+    throw new Error(`Unprinted discard must be a non-negative integer`)
+  }
+  if (
+    settings.stackCap !== null &&
+    (!Number.isInteger(settings.stackCap) || settings.stackCap < 1)
+  ) {
+    throw new Error(`Stack cap must be a positive integer or null`)
+  }
+}
