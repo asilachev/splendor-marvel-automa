@@ -204,7 +204,7 @@ export function RulesSheet({
               <span className={styles.ruleIcon} aria-hidden="true">
                 i
               </span>
-              <span>{title}</span>
+              <span className={styles.ruleTitle}>{title}</span>
               <ChevronRight
                 size={16}
                 style={{ transform: open === i ? 'rotate(90deg)' : undefined }}

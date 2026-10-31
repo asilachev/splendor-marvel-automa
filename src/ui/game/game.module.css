@@ -531,7 +531,7 @@
   cursor: pointer;
 }
 
-.ruleHead span {
+.ruleTitle {
   flex: 1;
 }
 
