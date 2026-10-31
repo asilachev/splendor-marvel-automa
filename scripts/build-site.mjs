@@ -9,6 +9,7 @@
 //
 // Fails if a language misses a text, the page references a file that isn't there, or a
 // placeholder is left over. Russian texts get the app's typography (src/ui/i18n/typography.ts).
+import { createHash } from 'node:crypto'
 import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
 import { typeset } from '../src/ui/i18n/typography.ts'
@@ -133,6 +134,7 @@ function page(template, lang) {
     langMenu: languageLinks,
     langChips: languageLinks,
     redirect: code === 'en' ? REDIRECT : '',
+    cssVersion,
     ...Object.fromEntries(Object.entries(links(code)).map(([k, v]) => [`links.${k}`, v])),
   }
   return render(template, (key) => {
@@ -149,10 +151,16 @@ function page(template, lang) {
 const template = await readFile(`${root}site/index.html`, 'utf8')
 const shots = [...new Set([...template.matchAll(/\{\{shots\}\}([\w-]+\.png)/g)].map((m) => m[1]))]
 
+// Pages may serve a cached stylesheet for 10 minutes; a URL that changes with its content makes a
+// deploy load the matching CSS at once (#71).
+const cssVersion = createHash('sha256')
+  .update(await readFile(`${root}site/styles.css`))
+  .digest('hex')
+  .slice(0, 10)
+
 await rm(out, { recursive: true, force: true })
 await mkdir(`${out}fonts`, { recursive: true })
 await cp(`${root}site/styles.css`, `${out}styles.css`)
-await cp(`${root}site/cursors`, `${out}cursors`, { recursive: true })
 await cp(`${root}src/ui/assets/fonts/bangers-cyrillic.woff2`, `${out}fonts/bangers-cyrillic.woff2`)
 for (const subset of ['latin', 'cyrillic']) {
   const file = `inter-${subset}-wght-normal.woff2`
@@ -179,7 +187,7 @@ for (const lang of LANGS) {
 // Every local file a page or the stylesheet points at must exist.
 let checked = 0
 const check = async (file, ref) => {
-  const target = new URL(ref, `file://${file}`)
+  const target = new URL(ref.split('?')[0], `file://${file}`)
   checked++
   try {
     await stat(fileURLToPath(target))
