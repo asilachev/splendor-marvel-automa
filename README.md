@@ -11,6 +11,9 @@ It is a *companion* to the physical game, not a digital version. The market, the
 stay on the table. The app replaces the automa deck, the token placement board and all of Thanos's
 bookkeeping.
 
+**[Project page](https://asilachev.github.io/splendor-marvel-automa/)**: a short tour with
+screenshots.
+
 > **Status:** in development. Work is planned in
 > [issues](https://github.com/asilachev/splendor-marvel-automa/issues) and
 > [milestones](https://github.com/asilachev/splendor-marvel-automa/milestones).
@@ -122,6 +125,7 @@ npm ci
 npm run dev        # http://localhost:5173 (use `npm run dev -- --host` to open it on your phone)
 npm test           # Vitest
 npm run build      # production build in dist/
+npm run site       # landing page in _site/ (deployed to GitHub Pages from master)
 ```
 
 Built with Vite, React and TypeScript, with a pure TypeScript automa engine in `src/engine`.

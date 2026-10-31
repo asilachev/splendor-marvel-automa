@@ -41,6 +41,9 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  /* Light text on a dark ground stays crisp on macOS, as in the app (#62). */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
