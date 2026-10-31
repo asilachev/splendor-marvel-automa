@@ -1,5 +1,6 @@
-// Assembles the GitHub Pages landing page into _site/: the page in site/, plus the guide's
-// screenshots, the fonts and the app icon, copied in rather than duplicated in the repo.
+// Assembles the GitHub Pages landing page into _site/: the page in site/ (with its glove cursor in
+// site/cursors/, rendered by scripts/gen-cursor.mjs), plus the guide's screenshots, the fonts and
+// the app icon, copied in rather than duplicated in the repo.
 //
 //   npm run site            then preview with: npx vite preview --outDir _site
 //

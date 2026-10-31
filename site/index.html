@@ -8,7 +8,7 @@
       name="description"
       content="A free phone companion for playing Splendor Marvel solo against the fan-made Thanos automa. It runs his deck, his tokens and his race to the Infinity Gauntlet, while your table holds the game."
     />
-    <meta name="theme-color" content="#0f0b1a" />
+    <meta name="theme-color" content="#241a3d" />
     <meta name="color-scheme" content="dark" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="apple-touch-icon" href="icon-512.png" />
@@ -51,6 +51,7 @@
         <a href="#how">How it plays</a>
         <a href="#features">Features</a>
         <a href="#languages">Languages</a>
+        <a href="#get">Get the game</a>
         <a href="#run">Run it</a>
       </nav>
       <a class="button small" href="https://github.com/asilachev/splendor-marvel-automa">GitHub</a>
@@ -94,12 +95,30 @@
         </div>
       </section>
 
-      <section class="strip" aria-label="What the app is">
-        <p>
-          <strong>A companion, not a digital game.</strong> The market, the token supply and your
-          cards stay on the table. The app replaces the automa deck, the token board and every bit
-          of Thanos’s bookkeeping.
-        </p>
+      <section class="strip" aria-labelledby="strip-title">
+        <h2 id="strip-title" class="narration">A companion, not a digital game</h2>
+        <div class="panels">
+          <div class="panel table">
+            <span class="sfx" aria-hidden="true">Clack!</span>
+            <h3>On your table</h3>
+            <ul>
+              <li>The market</li>
+              <li>The token supply</li>
+              <li>Your cards</li>
+            </ul>
+            <p>You play your turns as usual, with the real game.</p>
+          </div>
+          <div class="panel app">
+            <span class="sfx" aria-hidden="true">Tap!</span>
+            <h3>In the app</h3>
+            <ul>
+              <li>The automa deck</li>
+              <li>The token board</li>
+              <li>Thanos’s bookkeeping</li>
+            </ul>
+            <p>Thanos plays his turns through your phone.</p>
+          </div>
+        </div>
       </section>
 
       <section id="how" class="section">
@@ -372,6 +391,38 @@
         </ul>
       </section>
 
+      <section id="get" class="section">
+        <span class="caption red">You need the box</span>
+        <h2>Get the game</h2>
+        <p class="section-lead">
+          The app only runs Thanos. You play with the physical <strong>Splendor Marvel</strong>,
+          designed by Marc André and published by Space Cowboys.
+        </p>
+        <ul class="get">
+          <li>
+            <a href="https://www.spacecowboys-games.com/game/splendor-marvel/">
+              <span class="kicker">Publisher</span>
+              <strong>Space Cowboys</strong>
+              <span class="more">The official Splendor Marvel page</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://storelocator.asmodee.com/">
+              <span class="kicker">Where to buy</span>
+              <strong>Asmodee store locator</strong>
+              <span class="more">Find a shop near you that sells it</span>
+            </a>
+          </li>
+          <li>
+            <a href="https://boardgamegeek.com/boardgame/293296/splendor-marvel">
+              <span class="kicker">Reviews and offers</span>
+              <strong>BoardGameGeek</strong>
+              <span class="more">Ratings, forums and the marketplace</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
       <section id="run" class="section">
         <span class="caption">Run it yourself</span>
         <h2>Host your own copy</h2>
@@ -401,8 +452,10 @@ npm run build
           <h2>Credits</h2>
           <ul>
             <li>
-              <strong>Splendor Marvel</strong>: game by Marc André, published by Space Cowboys
-              (2020).
+              <strong>Splendor Marvel</strong>: game by Marc André, published by
+              <a href="https://www.spacecowboys-games.com/game/splendor-marvel/">Space Cowboys</a>
+              (2020). Find a copy with the
+              <a href="https://storelocator.asmodee.com/">Asmodee store locator</a>.
             </li>
             <li>
               <strong>Solo automa</strong>: designed by

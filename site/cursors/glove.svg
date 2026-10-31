@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- Our own cartoon glove for links and buttons (#66). Hotspot: the fingertip. -->
+  <g
+    fill="#fff"
+    stroke="#0b0d1a"
+    stroke-width="3.2"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    transform="translate(6.8 3.8) scale(0.88) translate(1.5 -2.5) rotate(-10 32 32)"
+  >
+    <path d="M17 47.5h25a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4v-6a4 4 0 0 1 4-4z" />
+    <path d="M16.5 30.5c2-4.5 7-6 12.5-6h12.5c5.5 0 9 4.5 9 10.5v4.5c0 6-4.5 9.5-10.5 9.5H24c-5 0-9-3-9.5-8z" />
+    <rect x="27" y="22" width="10" height="15" rx="5" />
+    <rect x="35" y="24.5" width="9.5" height="14" rx="4.75" />
+    <rect x="42" y="28" width="8.5" height="12" rx="4.25" />
+    <path d="M14.5 34.5c-4-3.5-9.5-2.5-10 1.5-.4 3.5 3.5 6.5 7 9.5 2 1.7 4 2.5 6 2.5" />
+    <rect x="13.5" y="2.6" width="11" height="35" rx="5.5" />
+    <path d="M27.5 41.5v4.5M32.5 41.5v4.5M37.5 41.5v4.5" fill="none" stroke-width="2.4" />
+    <path d="M15 52.5h29" fill="none" stroke-width="2.2" />
+  </g>
+</svg>
