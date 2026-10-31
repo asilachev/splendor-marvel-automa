@@ -156,7 +156,7 @@
   "run": {
     "caption": "Покрените сами",
     "title": "Своја копија",
-    "text": "Ово је статична веб апликација без серверског кода, налога и праћења. Направите Docker слику или статичне фајлове и послужујте их преко HTTPS-а, да би телефони могли да је инсталирају.",
+    "text": "Ово је статична веб апликација без серверског кода и налога. Направите Docker слику или статичне фајлове и послужујте их преко HTTPS-а, да би телефони могли да је инсталирају.",
     "docker": "Docker",
     "static": "Статични фајлови",
     "serve": "# послужујте фасциклу dist/ преко HTTPS-а"
@@ -168,6 +168,7 @@
     "retheme": "<strong>Marvel верзија аутоме</strong>: аутор <a href=\"{{links.retheme}}\">Shamus</a> на BoardGameGeek-у.",
     "fonts": "<strong>Фонтови</strong>: Bangers Cyrillic – © 2011 Vernon Adams (Bangers, лиценца SIL Open Font License 1.1; ћирилично проширење из 2016). Inter – © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor и лого Splendor су жигови компаније Space Cowboys (Asmodee). MARVEL, лого MARVEL и сви повезани ликови и имена су ™ и © MARVEL. Снимци екрана приказују логотипе Splendor и MARVEL и полеђину карата аутоме, који припадају својим власницима.",
+    "privacy": "<strong>Приватност.</strong> Без налога и колачића. Апликација на app.thanos.silachev.com анонимно броји посете преко Vercel Web Analytics; копије које сами хостујете не броје ништа.",
     "unofficial": "<strong>Незванични пројекат фанова.</strong> Није повезан са компанијама Space Cowboys, Asmodee и Marvel нити га оне подржавају, а за игру вам је потребна права игра."
   },
   "footer": {

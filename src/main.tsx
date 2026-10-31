@@ -15,6 +15,12 @@ if (!root) throw new Error('Missing #root element')
 const tidied = takeLanguageFromUrl(location.href)
 if (tidied !== null) history.replaceState(history.state, '', tidied)
 
+// Anonymous, cookieless page views, only in builds made on Vercel (#87). Its script and endpoint
+// are on this origin, so the CSP stays as it is; offline, the request just fails quietly.
+if (__VERCEL_ANALYTICS__) {
+  void import('@vercel/analytics').then(({ inject }) => inject({ framework: 'vite' }))
+}
+
 // Connect the chosen language's file before the first render (#58).
 const lang = loadPrefs().language ?? detectLang(browserLanguages())
 void loadCatalog(lang)

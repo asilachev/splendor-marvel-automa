@@ -4,6 +4,10 @@ import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    // Vercel Web Analytics only in builds that run on Vercel (#87); other builds drop it entirely.
+    __VERCEL_ANALYTICS__: JSON.stringify(process.env.VERCEL === '1'),
+  },
   plugins: [
     react(),
     // Installable, offline-first PWA (#9, #45). The service worker precaches the whole build and

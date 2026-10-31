@@ -55,6 +55,9 @@ change to a rule or ruling updates the docs in the same PR.
     explains why.
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
+  - The one approved analytics is Vercel Web Analytics (#87): anonymous, cookieless page views, only in
+    builds made on Vercel (`__VERCEL_ANALYTICS__` in `vite.config.ts`). Other builds compile it out.
+    No custom events.
 
 ## Commands
 
