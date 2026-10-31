@@ -111,6 +111,10 @@ html {
   scroll-padding-bottom: 170px;
   /* Locking the page behind a sheet doesn't shift it sideways on desktop. */
   scrollbar-gutter: stable;
+  /* Light text on a dark ground: macOS thickens glyphs by default and they read as soft (#62).
+     No effect on other systems. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
