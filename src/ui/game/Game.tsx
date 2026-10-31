@@ -8,6 +8,7 @@ import {
 } from '../../engine/index.ts'
 import { Dock, VersusHud, type SheetName } from '../components/Hud.tsx'
 import { useToasts } from '../components/toast.ts'
+import { useT } from '../i18n/index.ts'
 import { useWakeLock } from '../state/useWakeLock.ts'
 import styles from './game.module.css'
 import { HoardSheet, LogCardSheet, LogSheet, MenuSheet } from './Sheets.tsx'
@@ -45,6 +46,7 @@ export function Game({
 }) {
   const [sheet, setSheet] = useState<SheetName | 'logCard' | null>(null)
   const toasts = useToasts()
+  const t = useT()
   useWakeLock(wakeLock && state.step !== 'over')
 
   // Undo with a toast offering "undo more" (design 6.5).
@@ -55,8 +57,8 @@ export function Game({
       toasts.push({
         key: 'undo',
         icon: <Undo2 size={20} />,
-        text: 'Undone — stepped back one action.',
-        action: { label: 'UNDO MORE', run: () => undoRef.current() },
+        text: t.toasts.undone,
+        action: { label: t.toasts.undoMore, run: () => undoRef.current() },
       })
     }
   })

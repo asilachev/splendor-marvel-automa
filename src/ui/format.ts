@@ -1,122 +1,91 @@
 import type {
   AutomaAction,
   GainAction,
-  GameState,
   GameResult,
+  GameState,
   LogEntry,
-  Phase,
   RecruitedCard,
-  Row,
-  Side,
   Stone,
 } from '../engine/index.ts'
+import type { Messages } from './i18n/index.ts'
 
-export const STONE_LABEL: Readonly<Record<Stone, string>> = {
-  power: 'Power',
-  mind: 'Mind',
-  space: 'Space',
-  reality: 'Reality',
-  soul: 'Soul',
-}
-
-export const PHASE_COLOUR: Readonly<Record<Phase, string>> = { 1: 'green', 2: 'yellow', 3: 'red' }
-
-export const ROW_LABEL: Readonly<Record<Row, string>> = {
-  A: 'level 3 (top row)',
-  B: 'level 2 (middle row)',
-  C: 'level 1 (bottom row)',
-}
-
-export const sideName = (side: Side): string => (side === 'thanos' ? 'Thanos' : 'You')
-
-export const stoneList = (stones: readonly Stone[]): string =>
-  stones.map((s) => STONE_LABEL[s]).join(', ')
-
-export const slotOf = (action: GainAction): string => `${action.row}${action.column}`
-
-const plural = (n: number, word: string) => `${n} ${word}${n === 1 ? '' : 's'}`
-
-export function cardLabel(card: RecruitedCard): string {
-  const extras = [
-    card.points ? plural(card.points, 'pt') : null,
-    card.tags ? plural(card.tags, 'Avengers tag') : null,
-  ].filter(Boolean)
-  return `L${card.level} ${STONE_LABEL[card.colour]}${extras.length ? ` (${extras.join(', ')})` : ''}`
-}
-
-/** One line per log entry, for the game log. */
-export function describeLog(entry: LogEntry): string {
-  switch (entry.kind) {
-    case 'take': {
-      const parts = [
-        entry.taken.length ? `Thanos took ${stoneList(entry.taken)}` : 'Thanos took nothing',
-      ]
-      if (entry.skipped.length) parts.push(`${stoneList(entry.skipped)} empty`)
-      if (entry.capped.length) parts.push(`cap returned ${stoneList(entry.capped)}`)
-      return parts.join(' · ')
-    }
-    case 'gain': {
-      if (!entry.card) return `Thanos took nothing (${entry.slot} empty)`
-      const how = entry.substituted
-        ? ' instead (substitution)'
-        : entry.slotEmpty
-          ? ' (slot empty)'
-          : ''
-      const parts = [`Thanos took ${cardLabel(entry.card)} for ${entry.slot}${how}`]
-      if (entry.returned.length) parts.push(`returned ${stoneList(entry.returned)}`)
-      if (entry.gotTime) parts.push('Time token')
-      return parts.join(' · ')
-    }
-    case 'avengers':
-      return entry.holder === 'none'
-        ? 'Avengers tile back in the middle'
-        : `Avengers tile → ${sideName(entry.holder)}${entry.manual ? ' (manual)' : ''}`
-    case 'playerRecruit':
-      return `You recruited ${cardLabel(entry.card)}${entry.gotTime ? ' · Time token' : ''}`
-    case 'playerLocation':
-      return 'You took a Location (+3)'
-    case 'stackFix':
-      return `Stack fix: ${entry.change === 'add' ? 'added' : 'removed'} ${STONE_LABEL[entry.stone]}`
-    case 'cardFix':
-      return `Card fix: ${entry.change === 'add' ? 'added' : 'removed'} ${sideName(entry.side) === 'You' ? 'your' : 'Thanos’s'} ${cardLabel(entry.card)}`
-    case 'phase':
-      return `Phase ${entry.phase} begins: deck reshuffled`
-    case 'result':
-      return describeResult(entry.result).title
-  }
-}
-
-export function describeResult(result: GameResult): { title: string; text: string } {
-  const title = result.winner === 'player' ? 'You win!' : 'Thanos wins'
-  const who = result.winner === 'player' ? 'You' : 'Thanos'
-  const text = {
-    gauntlet: `${who} completed the Infinity Gauntlet in round ${result.round}.`,
-    morePoints: `Both of you completed the Gauntlet in round ${result.round}. ${who} had more points.`,
-    avengersTile: `Both completed the Gauntlet with equal points. ${who === 'You' ? 'You hold' : 'Thanos holds'} the Avengers tile.`,
-    fewerCards: `Both completed the Gauntlet with equal points and no tile decided it. ${who === 'You' ? 'You have' : 'Thanos has'} fewer cards.`,
-    thanosWinsTies: `Both completed the Gauntlet in round ${result.round}, and Thanos wins ties.`,
-    roundLimit: `Round ${result.round} ended without your Infinity Gauntlet.`,
-  }[result.reason]
-  return { title, text }
-}
-
-/** Options 0…n for the number pickers (points, tags, level). */
-export const numberOptions = (from: number, to: number): { value: number; label: string }[] =>
-  Array.from({ length: to - from + 1 }, (_, i) => ({ value: from + i, label: String(from + i) }))
+/**
+ * Text built from game state. What to say is decided here; how to say it comes from the
+ * current language's messages (#54).
+ */
 
 /** A stone or the Time token, for icons. */
 export type Gem = Stone | 'time'
 
-export const ROW_WORD: Readonly<Record<Row, string>> = { A: 'top', B: 'middle', C: 'bottom' }
-export const ordinal = (n: number): string => ['1st', '2nd', '3rd', '4th'][n - 1] ?? `${n}th`
+export const slotOf = (action: GainAction): string => `${action.row}${action.column}`
+
+export const stoneList = (t: Messages, stones: readonly Stone[]): string =>
+  t.common.list(stones.map((s) => t.stone[s]))
+
+export function cardLabel(t: Messages, card: RecruitedCard): string {
+  const extras = [
+    card.points ? t.common.points(card.points) : null,
+    card.tags ? t.common.tags(card.tags) : null,
+  ].filter((x): x is string => x !== null)
+  return `${t.common.level(card.level)} ${t.stone[card.colour]}${extras.length ? ` (${extras.join(', ')})` : ''}`
+}
+
+/** One line per log entry, for the game log. */
+export function describeLog(t: Messages, entry: LogEntry): string {
+  const l = t.log
+  switch (entry.kind) {
+    case 'take': {
+      const parts = [entry.taken.length ? l.took(stoneList(t, entry.taken)) : l.tookNothing]
+      if (entry.skipped.length) parts.push(l.empty(stoneList(t, entry.skipped)))
+      if (entry.capped.length) parts.push(l.capReturned(stoneList(t, entry.capped)))
+      return parts.join(' · ')
+    }
+    case 'gain': {
+      if (!entry.card) return l.gainNothing(entry.slot)
+      const how = entry.substituted ? 'substituted' : entry.slotEmpty ? 'slotEmpty' : null
+      const parts = [l.gain(cardLabel(t, entry.card), entry.slot, how)]
+      if (entry.returned.length) parts.push(l.returned(stoneList(t, entry.returned)))
+      if (entry.gotTime) parts.push(l.timeToken)
+      return parts.join(' · ')
+    }
+    case 'avengers':
+      return entry.holder === 'none' ? l.tileMiddle : l.tileTo(entry.holder, entry.manual)
+    case 'playerRecruit':
+      return `${l.youRecruited(cardLabel(t, entry.card))}${entry.gotTime ? ` · ${l.timeToken}` : ''}`
+    case 'playerLocation':
+      return l.youLocation
+    case 'stackFix':
+      return l.stackFix(entry.change === 'add', t.stone[entry.stone])
+    case 'cardFix':
+      return l.cardFix(entry.change === 'add', entry.side === 'player', cardLabel(t, entry.card))
+    case 'phase':
+      return l.phase(entry.phase)
+    case 'result':
+      return describeResult(t, entry.result).title
+  }
+}
+
+export function describeResult(t: Messages, result: GameResult): { title: string; text: string } {
+  const r = t.result
+  const you = result.winner === 'player'
+  const text = {
+    gauntlet: r.gauntlet(you, result.round),
+    morePoints: r.morePoints(you, result.round),
+    avengersTile: r.avengersTile(you),
+    fewerCards: r.fewerCards(you),
+    thanosWinsTies: r.thanosWinsTies(result.round),
+    roundLimit: r.roundLimit(result.round),
+  }[result.reason]
+  return { title: you ? r.titleWin : r.titleThanos, text }
+}
 
 /** What Thanos "says" when he takes tokens (design 2.2). */
-export const takeSpeech = (tokens: readonly Stone[]): string =>
-  `${tokens.map((s) => STONE_LABEL[s].toUpperCase()).join('. ')}. MINE.`
+export const takeSpeech = (t: Messages, tokens: readonly Stone[]): string =>
+  t.take.speech(tokens.map((s) => t.stone[s].toUpperCase()))
 
 /** What Thanos "says" when he recruits (design 3.1). */
-export const recruitSpeech = (action: GainAction): string =>
-  `THE ${ordinal(action.column).toUpperCase()} CARD OF THE ${ROW_WORD[action.row].toUpperCase()} ROW IS MINE.`
+export const recruitSpeech = (t: Messages, action: GainAction): string =>
+  t.recruit.speech(action.column, action.row)
 
 /** The printed label of a card section, e.g. "2,5,1" or "C4". */
 export const sectionLabel = (action: AutomaAction): string =>
@@ -133,54 +102,48 @@ export interface ChecklistItem {
 }
 
 /** What to do on the table after Thanos's action this round (design 2.3 / 4.1). */
-export function tableChecklist(state: GameState): ChecklistItem[] {
+export function tableChecklist(t: Messages, state: GameState): ChecklistItem[] {
+  const c = t.checklist
   const out: ChecklistItem[] = []
   for (const [i, e] of state.log.entries()) {
     if (e.round !== state.round) continue
     if (e.kind === 'take') {
       out.push(
         e.taken.length
-          ? { key: `${i}-take`, text: `Put ${stoneList(e.taken)} on his piles`, gems: e.taken }
-          : { key: `${i}-take`, text: 'He took no tokens this time' },
+          ? { key: `${i}-take`, text: c.put(stoneList(t, e.taken)), gems: e.taken }
+          : { key: `${i}-take`, text: c.tookNone },
       )
       if (e.skipped.length) {
-        const s = e.skipped.length === 1 ? 'pile was' : 'piles were'
-        out.push({ key: `${i}-skip`, text: `${stoneList(e.skipped)} ${s} empty — skipped` })
+        out.push({ key: `${i}-skip`, text: c.skipped(stoneList(t, e.skipped), e.skipped.length) })
       }
-      if (e.capped.length) {
-        out.push({ key: `${i}-cap`, text: 'Stack cap: return to the supply', gems: e.capped })
-      }
+      if (e.capped.length) out.push({ key: `${i}-cap`, text: c.cap, gems: e.capped })
     } else if (e.kind === 'gain') {
       if (!e.card) {
-        out.push({ key: `${i}-none`, text: 'Thanos took nothing this turn' })
+        out.push({ key: `${i}-none`, text: c.nothing })
         continue
       }
-      if (e.returned.length)
-        out.push({ key: `${i}-ret`, text: 'Return to the supply', gems: e.returned })
-      const level = e.card.level
+      if (e.returned.length) out.push({ key: `${i}-ret`, text: c.returnTo, gems: e.returned })
       out.push({
         key: `${i}-refill`,
-        text: `Refill ${e.slotEmpty ? 'the market' : `slot ${e.slot}`} from the level ${level} deck`,
+        text: e.slotEmpty ? c.refillMarket(e.card.level) : c.refillSlot(e.slot, e.card.level),
       })
-      if (e.gotTime)
-        out.push({ key: `${i}-time`, text: 'Give Thanos a green Time token', gems: ['time'] })
+      if (e.gotTime) out.push({ key: `${i}-time`, text: c.time, gems: ['time'] })
     } else if (e.kind === 'avengers' && !e.manual && e.holder === 'thanos') {
-      out.push({ key: `${i}-tile`, text: 'Move the Avengers tile to Thanos' })
+      out.push({ key: `${i}-tile`, text: c.tile })
     }
   }
   return out
 }
 
 /** Big result headline for the game-over screen (design 5.2–5.4). */
-export function resultHeadline(state: GameState): {
-  title: string
-  tone: 'win' | 'snap' | 'thanos'
-  tiebreak: boolean
-} {
+export function resultHeadline(
+  t: Messages,
+  state: GameState,
+): { title: string; tone: 'win' | 'snap' | 'thanos'; tiebreak: boolean } {
   const r = state.result
   if (!r) return { title: '', tone: 'thanos', tiebreak: false }
   const tiebreak = ['morePoints', 'avengersTile', 'fewerCards', 'thanosWinsTies'].includes(r.reason)
-  if (r.winner === 'player') return { title: 'YOU WIN!', tone: 'win', tiebreak }
-  if (r.reason === 'roundLimit') return { title: 'SNAP.', tone: 'snap', tiebreak }
-  return { title: 'THANOS WINS', tone: 'thanos', tiebreak }
+  if (r.winner === 'player') return { title: t.result.win, tone: 'win', tiebreak }
+  if (r.reason === 'roundLimit') return { title: t.result.snap, tone: 'snap', tiebreak }
+  return { title: t.result.thanosWins, tone: 'thanos', tiebreak }
 }

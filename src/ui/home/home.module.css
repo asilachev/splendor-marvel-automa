@@ -26,6 +26,28 @@
 }
 
 /* Home */
+.topBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: -6px;
+}
+
+.langButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1.5px solid var(--line);
+  border-radius: 20px;
+  background: var(--ink-2);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
 .logos {
   display: flex;
   align-items: center;

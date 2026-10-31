@@ -131,6 +131,32 @@ Movement only when it means something, and then short and smooth.
 - Both ask "END THIS GAME?" (END GAME / KEEP PLAYING), because ending clears the saved game. A new
   game over a saved one asks "ABANDON THIS GAME?" (1.5).
 
+## Languages (#54)
+
+- **Languages:** English, Russian, Serbian (Latin script), Spanish and German. The browser's language
+  is used on first launch. The picker is the globe button at the top of Home and the Language row in
+  the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen readers and
+  hyphenation use the right language.
+- **Catalogs:** `src/ui/i18n/`. English (`en.ts`) is the source, and every other catalog has the same
+  type, so a missing string fails the typecheck. Text with numbers or names is a function, so each
+  language orders words and inflects them its own way (Russian «из зелёной секции», German „im grünen
+  Abschnitt“). Plurals use `Intl.PluralRules` (Russian and Serbian: one, few and many).
+- **Terms** follow each language's MCU and board-game usage:
+  - stones: Сила/Разум/Пространство/Реальность/Душа; Moć/Um/Prostor/Stvarnost/Duša;
+    Poder/Mente/Espacio/Realidad/Alma; Macht/Gedanken/Raum/Realität/Seele;
+  - the Infinity Gauntlet: Перчатка Бесконечности, Rukavica beskonačnosti, Guantelete del Infinito,
+    Infinity-Handschuh;
+  - the Avengers Assemble tile: «Мстители, общий сбор!», „Osvetnici, okupite se!“,
+    «¡Vengadores, reuníos!», „Avengers Assemble“.
+- **Address:** Russian and Serbian use the formal «Вы»/«Vi», which also keeps past tenses
+  gender-neutral. Spanish and German use the informal «tú»/«du».
+- **Fonts:** Bangers has no Cyrillic, so Russian headings fall back glyph by glyph to Oswald Bold,
+  scaled to 90 %. Serbian diacritics use Bangers' and Inter's Latin-extended subsets, and Russian body
+  text uses Inter's Cyrillic subset. Each subset loads only when its script is on screen, and all are
+  precached for offline use.
+- **Fitting:** every screen was checked at 360 px in all five languages. The HUD never wraps, long
+  buttons balance onto two lines when needed, and long stone names hyphenate.
+
 ## PWA (flow 7)
 
 - **Launch.** Every launch opens on Home, and a saved game shows CONTINUE · ROUND N (7.3 → 1.2).

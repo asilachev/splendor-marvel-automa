@@ -1,5 +1,6 @@
 import { X } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useT } from '../i18n/index.ts'
 import { EXIT_MS, prefersReducedMotion } from '../motion.ts'
 import styles from './kit.module.css'
 import { ToastContext, type ToastApi, type ToastInput } from './toast.ts'
@@ -15,6 +16,7 @@ interface Live extends ToastInput {
  * (#52).
  */
 export function Toaster({ children }: { children: ReactNode }) {
+  const t = useT()
   const [toasts, setToasts] = useState<Live[]>([])
   const next = useRef(1)
   const keyIds = useRef(new Map<string, number>())
@@ -90,35 +92,35 @@ export function Toaster({ children }: { children: ReactNode }) {
     <ToastContext.Provider value={api}>
       {children}
       <div className={styles.toasts} role="status" aria-live="polite">
-        {toasts.map((t) => (
+        {toasts.map((toast) => (
           <div
-            key={t.id}
+            key={toast.id}
             className={styles.toast}
-            data-tone={t.tone ?? 'gold'}
-            data-leaving={t.leaving === true}
+            data-tone={toast.tone ?? 'gold'}
+            data-leaving={toast.leaving === true}
           >
-            {t.icon}
-            <span>{t.text}</span>
-            {t.action ? (
+            {toast.icon}
+            <span>{toast.text}</span>
+            {toast.action ? (
               <button
                 type="button"
                 className={styles.toastAction}
                 onClick={() => {
                   // An action that pushes the same toast again (UNDO MORE) keeps it in place.
                   lastPushed.current = null
-                  t.action?.run()
-                  if (lastPushed.current !== t.id) leave(t.id)
+                  toast.action?.run()
+                  if (lastPushed.current !== toast.id) leave(toast.id)
                 }}
               >
-                {t.action.label}
+                {toast.action.label}
               </button>
             ) : null}
-            {t.duration === 0 ? (
+            {toast.duration === 0 ? (
               <button
                 type="button"
                 className={styles.toastClose}
-                aria-label="Dismiss"
-                onClick={() => leave(t.id)}
+                aria-label={t.common.dismiss}
+                onClick={() => leave(toast.id)}
               >
                 <X size={18} />
               </button>

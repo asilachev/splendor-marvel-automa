@@ -3,6 +3,7 @@ import { useLayoutEffect, useState } from 'react'
 import { PHASE_LENGTH_PRESETS, type PhaseLengths, type Settings } from '../../engine/index.ts'
 import { Button, Caption, CheckItem, Options, Panel } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
+import { useT } from '../i18n/index.ts'
 import styles from './home.module.css'
 
 type Preset = keyof typeof PHASE_LENGTH_PRESETS
@@ -12,18 +13,11 @@ const presetOf = (lengths: PhaseLengths): Preset =>
     (k) => PHASE_LENGTH_PRESETS[k].join() === lengths.join(),
   ) ?? 'standard'
 
-/** Physical setup for the 2-player game the automa uses (docs/rules.md → Setup). */
-const TABLE = [
-  'Deal 4 cards per level, level 1 at the bottom',
-  'Keep 4 tokens of each colour, 2 green, all 5 grey',
-  '2 random Location tiles + Avengers & Gauntlet tiles',
-  'Leave space for Thanos’s colour piles',
-]
-
 function Header({ title, onBack }: { title: string; onBack: () => void }) {
+  const t = useT()
   return (
     <header className={styles.header}>
-      <button type="button" className={styles.back} aria-label="Back" onClick={onBack}>
+      <button type="button" className={styles.back} aria-label={t.common.back} onClick={onBack}>
         <ArrowLeft size={22} />
       </button>
       <h1 className={styles.screenTitle}>{title}</h1>
@@ -41,6 +35,9 @@ export function Setup({
   onStart: (s: Settings) => void
   onBack: () => void
 }) {
+  const t = useT()
+  const u = t.setup
+  const r = t.rulings
   const [settings, setSettings] = useState<Settings>(initial)
   const [rulings, setRulings] = useState(false)
   // The rulings sub-screen opens at its top, and so does setup when you come back (#52).
@@ -60,76 +57,52 @@ export function Setup({
     return (
       <div className={styles.screen}>
         <main className={styles.scroll}>
-          <Header title="RULINGS" onBack={() => setRulings(false)} />
-          <p className={styles.intro}>
-            The automa PDF leaves a few gaps. Defaults follow the BGG clarifications — change them
-            if your table rules differ.
-          </p>
+          <Header title={r.title} onBack={() => setRulings(false)} />
+          <p className={styles.intro}>{r.intro}</p>
           <Options
-            label="Which of Thanos’s cards count"
+            label={r.counted}
             value={settings.countedCards}
             onChange={(v) => set('countedCards', v)}
             options={[
-              { value: 'all', label: 'ALL', hint: 'Shamus’s clarification' },
-              { value: 'scoringOnly', label: 'POINTS / AVENGERS', hint: 'as printed' },
+              { value: 'all', ...r.countedOptions.all },
+              { value: 'scoringOnly', ...r.countedOptions.scoringOnly },
             ]}
-            tip={
-              <RuleTip title="Which cards count">
-                The PDF boxes his cards without points or Avengers tags, which breaks its own colour
-                rule. Shamus clarified on BGG (2021): keep any card with a colour he needs — so in
-                effect every colour counts.
-              </RuleTip>
-            }
+            tip={<RuleTip title={r.countedTip.title}>{r.countedTip.body}</RuleTip>}
           />
           <Options
-            label="Card 12 · phase 3 returns"
+            label={r.card12}
             value={settings.unprintedDiscard}
             onChange={(v) => set('unprintedDiscard', v)}
             options={[
-              { value: 0, label: '0', hint: 'none printed' },
-              { value: 3, label: '3', hint: 'like the others' },
+              { value: 0, ...r.card12Options.zero },
+              { value: 3, ...r.card12Options.three },
             ]}
-            tip={
-              <RuleTip title="Card 12">
-                Its phase-3 section (“C1”) prints no number. The original base-game card is the
-                same, so it’s probably intentional.
-              </RuleTip>
-            }
+            tip={<RuleTip title={r.card12Tip.title}>{r.card12Tip.body}</RuleTip>}
           />
           <Options
-            label="Targeted slot is empty"
+            label={r.emptySlot}
             value={settings.emptySlot}
             onChange={(v) => set('emptySlot', v)}
             options={[
-              { value: 'firstInRow', label: 'FIRST IN ROW', hint: 'left to right' },
-              { value: 'nothing', label: 'TAKES NOTHING' },
+              { value: 'firstInRow', ...r.emptySlotOptions.firstInRow },
+              { value: 'nothing', ...r.emptySlotOptions.nothing },
             ]}
-            tip={
-              <RuleTip title="Empty slot">
-                Neither the PDF nor BGG covers this. “First in row” matches the left-to-right scan
-                of the colour rule.
-              </RuleTip>
-            }
+            tip={<RuleTip title={r.emptySlotTip.title}>{r.emptySlotTip.body}</RuleTip>}
           />
           <Options
-            label="Both complete the Gauntlet"
+            label={r.ties}
             value={settings.ties}
             onChange={(v) => set('ties', v)}
             options={[
-              { value: 'tiebreakersThenThanos', label: 'TIEBREAKERS', hint: 'then Thanos' },
-              { value: 'thanosWins', label: 'THANOS WINS' },
+              { value: 'tiebreakersThenThanos', ...r.tiesOptions.tiebreakers },
+              { value: 'thanosWins', ...r.tiesOptions.thanosWins },
             ]}
-            tip={
-              <RuleTip title="Ties">
-                The PDF says to apply the normal winning conditions and that Thanos wins a draw:
-                official tiebreakers first (points, Avengers tile, fewer cards), then Thanos.
-              </RuleTip>
-            }
+            tip={<RuleTip title={r.tiesTip.title}>{r.tiesTip.body}</RuleTip>}
           />
         </main>
         <footer className={styles.footer}>
           <Button icon={<Check size={22} />} onClick={() => setRulings(false)}>
-            SAVE RULINGS
+            {r.save}
           </Button>
         </footer>
       </div>
@@ -139,12 +112,12 @@ export function Setup({
   return (
     <div className={styles.screen}>
       <main className={styles.scroll}>
-        <Header title="NEW GAME" onBack={onBack} />
-        <Caption>1 · SET UP THE TABLE</Caption>
+        <Header title={u.title} onBack={onBack} />
+        <Caption>{u.tableCaption}</Caption>
         <Panel className={styles.checklist}>
-          {TABLE.map((t, i) => (
+          {u.table.map((item, i) => (
             <CheckItem
-              key={t}
+              key={i}
               done={done.has(i)}
               onToggle={() =>
                 setDone((d) =>
@@ -152,51 +125,41 @@ export function Setup({
                 )
               }
             >
-              {t}
+              {item}
             </CheckItem>
           ))}
         </Panel>
-        <Caption tone="blue">2 · DIFFICULTY</Caption>
+        <Caption tone="blue">{u.difficulty}</Caption>
         <Options
-          label="Game length"
+          label={u.length}
           value={presetOf(settings.phaseLengths)}
           onChange={(p) => set('phaseLengths', PHASE_LENGTH_PRESETS[p])}
           options={[
-            { value: 'standard', label: '30 ROUNDS', hint: 'as printed' },
-            { value: 'shorter', label: '27', hint: 'harder' },
-            { value: 'shortest', label: '24', hint: 'hardest' },
+            { value: 'standard', ...u.lengthOptions.standard },
+            { value: 'shorter', ...u.lengthOptions.shorter },
+            { value: 'shortest', ...u.lengthOptions.shortest },
           ]}
-          tip={
-            <RuleTip title="Game length">
-              A community tweak from BGG: 10/9/8 (27 rounds) was “still too easy”, 8/8/8 (24)
-              “pretty hard”.
-            </RuleTip>
-          }
+          tip={<RuleTip title={u.lengthTip.title}>{u.lengthTip.body}</RuleTip>}
         />
         <Options
-          label="Thanos’s token cap"
+          label={u.cap}
           value={settings.stackCap ?? 0}
           onChange={(c) => set('stackCap', c === 0 ? null : c)}
           options={[
-            { value: 0, label: 'NO CAP', hint: 'as printed' },
-            { value: 12, label: '12 TOKENS', hint: 'community tweak' },
+            { value: 0, ...u.capOptions.none },
+            { value: 12, ...u.capOptions.twelve },
           ]}
-          tip={
-            <RuleTip title="Token cap">
-              A community suggestion: cap his tokens at 12; the oldest beyond the cap go back to the
-              supply.
-            </RuleTip>
-          }
+          tip={<RuleTip title={u.capTip.title}>{u.capTip.body}</RuleTip>}
         />
         <button type="button" className={styles.rulingsRow} onClick={() => setRulings(true)}>
           <ChevronRight size={18} />
-          <span>Rulings for gaps in the automa</span>
-          <small>{changed ? 'customised' : 'defaults ✓'}</small>
+          <span>{u.rulingsRow}</span>
+          <small>{changed ? u.customised : u.defaults}</small>
         </button>
       </main>
       <footer className={styles.footer}>
         <Button icon={<Swords size={22} />} onClick={() => onStart(settings)}>
-          START GAME
+          {u.start}
         </Button>
       </footer>
     </div>

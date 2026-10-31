@@ -43,14 +43,13 @@ import { GemRow, Token } from '../components/Token.tsx'
 import {
   cardLabel,
   describeResult,
-  PHASE_COLOUR,
   recruitSpeech,
   resultHeadline,
   slotOf,
-  STONE_LABEL,
   tableChecklist,
   takeSpeech,
 } from '../format.ts'
+import { useT } from '../i18n/index.ts'
 import styles from './game.module.css'
 
 export type Dispatch = (event: GameEvent) => void
@@ -93,6 +92,7 @@ export function RevealStep({
   /** Called as the card is revealed, so the next step can finish the flip. */
   onRevealed?: () => void
 }) {
+  const t = useT()
   const { phase } = currentRoundCard(state)
   const [flipping, setFlipping] = useState(false)
   const done = () => {
@@ -107,25 +107,22 @@ export function RevealStep({
   }
   return (
     <StepFrame
-      label="Thanos’s turn"
+      label={t.reveal.label}
       dock={dock}
       cta={
         <Button icon={<Rotate3d size={22} />} onClick={reveal}>
-          REVEAL HIS CARD
+          {t.reveal.cta}
         </Button>
       }
     >
       <span className={styles.centerCaption}>
-        <Caption>{`PHASE ${phase} · ${PHASE_COLOUR[phase].toUpperCase()} SECTION`}</Caption>
+        <Caption>{t.reveal.caption(phase)}</Caption>
       </span>
-      <h1 className={styles.headline}>THANOS MAKES HIS MOVE</h1>
+      <h1 className={styles.headline}>{t.reveal.headline}</h1>
       <CardBack flipping={flipping} onFlip={reveal} />
       <p className={styles.hint}>
-        He always goes first — then it’s your turn.
-        <RuleTip title="Thanos’s turn">
-          Each round Thanos flips the next automa card and does the action in the{' '}
-          {PHASE_COLOUR[phase]} section. Then you play your turn on the table as normal.
-        </RuleTip>
+        {t.reveal.hint}
+        <RuleTip title={t.reveal.tipTitle}>{t.reveal.tip(phase)}</RuleTip>
       </p>
     </StepFrame>
   )
@@ -141,31 +138,29 @@ export function PhaseChangeStep({
   dispatch: Dispatch
   dock: ReactNode
 }) {
+  const t = useT()
   const { card, phase } = currentRoundCard(state)
   const starts = phaseStarts(state.setup.settings)
   const end =
     phase === 3 ? state.round + (state.setup.settings.phaseLengths[2] - 1) : starts[phase]! - 1
   return (
     <StepFrame
-      label="Phase change"
+      label={t.phaseChange.label}
       dock={dock}
       cta={
         <Button icon={<Rotate3d size={22} />} onClick={() => dispatch({ type: 'reveal' })}>
-          REVEAL HIS CARD
+          {t.reveal.cta}
         </Button>
       }
     >
       <div className={styles.burst} data-phase={phase}>
-        <h1 className={styles.burstTitle}>DECK RESHUFFLED!</h1>
-        <span className={styles.burstSub}>PHASE {phase} BEGINS</span>
+        <h1 className={styles.burstTitle}>{t.phaseChange.title}</h1>
+        <span className={styles.burstSub}>{t.phaseChange.begins(phase)}</span>
       </div>
       <div className={styles.centered}>
         <MiniCard card={card} phase={phase} />
       </div>
-      <p className={styles.hint}>
-        Rounds {state.round}–{end}: Thanos now reads the {PHASE_COLOUR[phase]} section of every
-        automa card. Each card is used once per phase.
-      </p>
+      <p className={styles.hint}>{t.phaseChange.hint(state.round, end, phase)}</p>
     </StepFrame>
   )
 }
@@ -185,6 +180,7 @@ export function TakeStep({
   /** The card was just flipped: the mini card finishes the flip. */
   entering?: boolean
 }) {
+  const t = useT()
   const { card, phase } = currentRoundCard(state)
   const [skipped, setSkipped] = useState<Stone[]>([])
   const taken = action.tokens.filter((s) => !skipped.includes(s))
@@ -192,38 +188,33 @@ export function TakeStep({
     setSkipped((list) => (list.includes(s) ? list.filter((x) => x !== s) : [...list, s]))
   return (
     <StepFrame
-      label="Thanos takes tokens"
+      label={t.take.label}
       dock={dock}
       cta={
         <Button
           icon={<Check size={22} />}
           onClick={() => dispatch({ type: 'thanosTake', skipped })}
         >
-          {taken.length ? `DONE · ADD ${taken.length} TO HIS PILES` : 'DONE · NOTHING TO TAKE'}
+          {t.take.cta(taken.length)}
         </Button>
       }
     >
       <div className={styles.head}>
-        <Caption>THANOS TAKES TOKENS</Caption>
-        <span className={styles.tag}>
-          CARD {String(card.id).padStart(2, '0')} · PHASE {phase}
-        </span>
+        <Caption>{t.take.caption}</Caption>
+        <span className={styles.tag}>{t.take.tag(String(card.id).padStart(2, '0'), phase)}</span>
       </div>
       <Panel className={styles.move}>
         <MiniCard card={card} phase={phase} entering={entering} />
         <div className={styles.say}>
-          <Speech>{takeSpeech(action.tokens)}</Speech>
-          <p className={styles.plain}>In printed order onto his piles. He has no 10-token limit.</p>
+          <Speech>{takeSpeech(t, action.tokens)}</Speech>
+          <p className={styles.plain}>{t.take.plain}</p>
         </div>
       </Panel>
       <h2 className={styles.question}>
-        TAP A TOKEN IF ITS PILE IS EMPTY
-        <RuleTip title="Taking tokens">
-          The numbers are the token board: 1 Power, 2 Mind, 3 Space, 4 Reality, 5 Soul. He takes
-          them in printed order and skips any colour whose pile is empty.
-        </RuleTip>
+        {t.take.question}
+        <RuleTip title={t.take.tipTitle}>{t.take.tip}</RuleTip>
       </h2>
-      <div className={styles.toggles} role="group" aria-label="Tokens to take">
+      <div className={styles.toggles} role="group" aria-label={t.take.group}>
         {action.tokens.map((s) => {
           const empty = skipped.includes(s)
           return (
@@ -235,8 +226,8 @@ export function TakeStep({
               onClick={() => toggle(s)}
             >
               <Token stone={s} size={52} hollow={empty} />
-              <span>{STONE_LABEL[s]}</span>
-              <span className={styles.toggleState}>{empty ? 'PILE EMPTY' : 'TAKE'}</span>
+              <span>{t.stone[s]}</span>
+              <span className={styles.toggleState}>{empty ? t.take.pileEmpty : t.take.takeIt}</span>
             </button>
           )
         })}
@@ -263,6 +254,8 @@ export function RecruitStep({
   dispatch: Dispatch
   dock: ReactNode
 }) {
+  const t = useT()
+  const r = t.recruit
   const settings = state.setup.settings
   const { card } = currentRoundCard(state)
   const slot = slotOf(action)
@@ -308,16 +301,14 @@ export function RecruitStep({
     }
   }
   const row = action.row
-  const speech = slotEmpty
-    ? `${slot} IS EMPTY? THEN THE FIRST CARD OF THAT ROW.`
-    : recruitSpeech(action)
+  const speech = slotEmpty ? r.speechEmpty(slot) : recruitSpeech(t, action)
   const plain = slotEmpty
-    ? 'Your ruling: first card in the row, from the left. The colour rule still applies.'
-    : `Level ${({ A: 3, B: 2, C: 1 } as const)[row]}, slot ${action.column} from the left. If he already has its colour, he takes the first card in that row in a colour he lacks.`
+    ? r.plainEmpty
+    : r.plain(({ A: 3, B: 2, C: 1 } as const)[row], action.column)
 
   return (
     <StepFrame
-      label="Thanos recruits"
+      label={r.label}
       dock={dock}
       cta={
         <Button
@@ -325,16 +316,13 @@ export function RecruitStep({
           disabled={stage.name !== 'details' && stage.name !== 'nothing'}
           onClick={confirm}
         >
-          {stage.name === 'nothing' ? 'CONFIRM · HE TAKES NOTHING' : 'HE TAKES IT'}
+          {stage.name === 'nothing' ? r.ctaNothing : r.cta}
         </Button>
       }
     >
       <div className={styles.head}>
-        <Caption>THANOS RECRUITS</Caption>
-        <span className={styles.tag}>
-          CARD {String(card.id).padStart(2, '0')}
-          {card.star ? ' ★' : ''} · RETURNS {n}
-        </span>
+        <Caption>{r.caption}</Caption>
+        <span className={styles.tag}>{r.tag(String(card.id).padStart(2, '0'), card.star, n)}</span>
       </div>
       <Panel className={styles.move}>
         <MarketMap slot={slot} empty={slotEmpty} />
@@ -346,40 +334,35 @@ export function RecruitStep({
       <div className={styles.pays}>
         <span className={styles.paysLabel}>
           <span className={styles.paysTitle}>
-            {returned.length && stage.name !== 'nothing' ? 'HE RETURNS' : 'RETURNS NOTHING'}
+            {returned.length && stage.name !== 'nothing' ? r.returns : r.returnsNothing}
           </span>
           <span className={styles.paysSub}>
             {stage.name === 'nothing'
-              ? 'he takes nothing'
+              ? r.takesNothingSub
               : returned.length
                 ? returned.length < n
-                  ? `oldest first · only ${returned.length} of ${n}`
-                  : 'oldest first'
+                  ? r.onlyOf(returned.length, n)
+                  : r.oldestFirst
                 : n === 0
-                  ? 'none printed'
-                  : 'his piles are empty'}
+                  ? r.nonePrinted
+                  : r.pilesEmpty}
           </span>
         </span>
         {returned.length && stage.name !== 'nothing' ? <GemRow gems={returned} size={30} /> : null}
         <span className={styles.supply}>
-          <ArrowRight size={18} /> SUPPLY
+          <ArrowRight size={18} /> {r.supply}
         </span>
-        <RuleTip title="Returning tokens">
-          Tokens go back from the bottom of his piles, oldest first. He still takes the card if he
-          can’t return them all, or any.
-        </RuleTip>
+        <RuleTip title={r.returningTipTitle}>{r.returningTip}</RuleTip>
       </div>
 
       {stage.name === 'substitute' ? (
         <div key="substitute" className={styles.stageBlock}>
           <h2 className={styles.question} data-tone="gold">
-            HE ALREADY HAS {STONE_LABEL[stage.target].toUpperCase()}!
+            {r.alreadyHas(t.stone[stage.target])}
           </h2>
-          <p className={styles.text}>
-            Scan row {row} from the left: he takes the first card in a colour he lacks.
-          </p>
+          <p className={styles.text}>{r.scanRow(row)}</p>
           <StonePicker
-            label="Colour of the card Thanos takes instead"
+            label={r.insteadLabel}
             allowed={missing}
             lacks={missing}
             onPick={(s) => setStage({ name: 'details', colour: s, substituted: true })}
@@ -389,31 +372,24 @@ export function RecruitStep({
             className={styles.escape}
             onClick={() => setStage({ name: 'details', colour: stage.target, substituted: false })}
           >
-            <CornerDownRight size={18} /> No such card in that row — he takes{' '}
-            {slotEmpty ? 'that card' : slot} anyway
+            <CornerDownRight size={18} /> {r.noSuchCard(slotEmpty ? null : slot)}
           </button>
         </div>
       ) : stage.name === 'nothing' ? (
         <div key="nothing" className={styles.stageBlock}>
-          <p className={styles.notice}>Thanos takes nothing this turn and returns no tokens.</p>
-          <LinkButton onClick={() => setStage({ name: 'colour' })}>Back</LinkButton>
+          <p className={styles.notice}>{r.nothingNotice}</p>
+          <LinkButton onClick={() => setStage({ name: 'colour' })}>{t.common.back}</LinkButton>
         </div>
       ) : (
         <div key="pick" className={styles.stageBlock}>
           <h2 className={styles.question}>
-            {slotEmpty ? `WHICH STONE IS ON ROW ${row}’S FIRST CARD?` : 'WHICH STONE IS ON IT?'}
-            <RuleTip title="Colour substitution">
-              If he already has a card in that colour, he takes the first card in the same row (left
-              to right) in a colour he lacks — none? then the original card.{' '}
-              {settings.countedCards === 'all'
-                ? 'Every card he has counts (Shamus’s clarification).'
-                : 'Only his cards with points or Avengers tags count.'}
+            {slotEmpty ? r.questionEmpty(row) : r.question}
+            <RuleTip title={r.substitutionTipTitle}>
+              {r.substitutionTip(settings.countedCards === 'all')}
             </RuleTip>
           </h2>
           <StonePicker
-            label={
-              slotEmpty ? `Colour of the first card in row ${row}` : `Colour of the card in ${slot}`
-            }
+            label={slotEmpty ? r.colourLabelEmpty(row) : r.colourLabel(slot)}
             selected={stage.name === 'details' ? stage.colour : null}
             onPick={pick}
           />
@@ -424,16 +400,13 @@ export function RecruitStep({
               data-tone="red"
               onClick={() => setStage({ name: 'nothing' })}
             >
-              <Ban size={18} /> Row {row} is empty too — he takes nothing, returns nothing
+              <Ban size={18} /> {r.rowEmpty(row)}
             </button>
           ) : (
             <span>
-              <LinkButton onClick={markEmpty}>Slot {slot} is empty</LinkButton>
-              <RuleTip title="Empty slot">
-                The PDF doesn’t cover this, so it’s a ruling:{' '}
-                {settings.emptySlot === 'firstInRow'
-                  ? 'he takes the first card in that row from the left instead.'
-                  : 'he takes nothing and returns no tokens.'}
+              <LinkButton onClick={markEmpty}>{r.slotEmpty(slot)}</LinkButton>
+              <RuleTip title={r.emptySlotTipTitle}>
+                {r.emptySlotTip(settings.emptySlot === 'firstInRow')}
               </RuleTip>
             </span>
           )}
@@ -442,14 +415,14 @@ export function RecruitStep({
 
       <div ref={details} className={styles.stageBlock}>
         <NumberChips
-          label="Points"
+          label={r.points}
           values={[0, 1, 2, 3, 4, 5]}
           value={points}
           onChange={setPoints}
           disabled={stage.name !== 'details'}
         />
         <NumberChips
-          label="Avengers"
+          label={r.avengers}
           values={[0, 1, 2]}
           value={tags}
           onChange={setTags}
@@ -472,7 +445,8 @@ export function TableStep({
   dock: ReactNode
   onLogCard: () => void
 }) {
-  const items = tableChecklist(state)
+  const t = useT()
+  const items = tableChecklist(t, state)
   const [done, setDone] = useState<ReadonlySet<string>>(new Set())
   const toggle = (k: string) =>
     setDone((d) => (d.has(k) ? new Set([...d].filter((x) => x !== k)) : new Set([...d, k])))
@@ -484,24 +458,21 @@ export function TableStep({
     (e) => e.kind === 'avengers' && !e.manual && e.holder === 'player',
   )
   const logged = [
-    ...recruits.map((e) => (e.kind === 'playerRecruit' ? cardLabel(e.card) : '')),
-    ...(tookLocation ? ['Location +3'] : []),
+    ...recruits.map((e) => (e.kind === 'playerRecruit' ? cardLabel(t, e.card) : '')),
+    ...(tookLocation ? [t.table.locationLogged] : []),
   ]
-  const ties =
-    state.setup.settings.ties === 'thanosWins'
-      ? 'If both complete the Gauntlet in the same round, Thanos wins (your ruling).'
-      : 'If both complete the Gauntlet: more points wins, then the Avengers tile, then fewer cards — and Thanos wins any remaining tie.'
+  const ties = t.table.ties(state.setup.settings.ties === 'thanosWins')
   return (
     <StepFrame
-      label="Your turn"
+      label={t.table.label}
       dock={dock}
       cta={
         <Button icon={<Flag size={22} />} onClick={() => dispatch({ type: 'endRound' })}>
-          END ROUND {state.round}
+          {t.table.cta(state.round)}
         </Button>
       }
     >
-      <Caption>AT THE TABLE</Caption>
+      <Caption>{t.table.caption}</Caption>
       {items.length ? (
         <Panel className={styles.checklist}>
           {items.map((it) => (
@@ -516,12 +487,12 @@ export function TableStep({
           ))}
         </Panel>
       ) : null}
-      <Caption tone="blue">YOUR MOVE</Caption>
+      <Caption tone="blue">{t.table.yourMove}</Caption>
       <div className={styles.moveTiles}>
         <button type="button" className={styles.moveTile} onClick={onLogCard}>
           <SquarePlus size={26} />
-          <strong>I RECRUITED</strong>
-          <small>log the card</small>
+          <strong>{t.table.recruited}</strong>
+          <small>{t.table.recruitedSub}</small>
         </button>
         <button
           type="button"
@@ -531,25 +502,25 @@ export function TableStep({
           onClick={() => dispatch({ type: 'playerLocation' })}
         >
           {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
-          <strong>{tookLocation ? 'LOCATION TAKEN' : 'I TOOK A LOCATION'}</strong>
-          <small>{tookLocation ? '+3 · one per turn' : '+3 points'}</small>
+          <strong>{tookLocation ? t.table.locationTaken : t.table.location}</strong>
+          <small>{tookLocation ? t.table.locationTakenSub : t.table.locationSub}</small>
         </button>
       </div>
       {logged.length ? (
         <div className={styles.logged}>
           <CircleCheck size={18} />
-          <span>Logged: {logged.join(' · ')}</span>
+          <span>{t.table.logged(logged)}</span>
         </div>
       ) : null}
       {tileToYou ? (
         <div className={styles.inlineToast} role="status">
           <Award size={20} />
-          <span>You have more Avengers tags — the Avengers tile moves to you (+3).</span>
+          <span>{t.table.tileToYou}</span>
         </div>
       ) : null}
       <p className={styles.after}>
-        Took tokens or reserved? Nothing to log. Then the app checks both sides for the Gauntlet.
-        <RuleTip title="End of round">{ties}</RuleTip>
+        {t.table.after}
+        <RuleTip title={t.table.tipTitle}>{ties}</RuleTip>
       </p>
     </StepFrame>
   )
@@ -567,18 +538,19 @@ export function GameOverStep({
   onNewGame: () => void
   onHome: () => void
 }) {
+  const t = useT()
   if (!state.result) return null
-  const { title, tone, tiebreak } = resultHeadline(state)
-  const { text } = describeResult(state.result)
+  const { title, tone, tiebreak } = resultHeadline(t, state)
+  const { text } = describeResult(t, state.result)
   const sides = [
-    ['THANOS', sideStats(state, 'thanos'), state.result.winner === 'thanos'],
-    ['YOU', sideStats(state, 'player'), state.result.winner === 'player'],
+    ['thanos', t.over.thanos, sideStats(state, 'thanos'), state.result.winner === 'thanos'],
+    ['player', t.over.you, sideStats(state, 'player'), state.result.winner === 'player'],
   ] as const
   return (
-    <StepFrame label="Game over">
+    <StepFrame label={t.over.label}>
       {tiebreak ? (
         <span className={styles.centerCaption}>
-          <Caption tone="red">TIEBREAKER</Caption>
+          <Caption tone="red">{t.over.tiebreaker}</Caption>
         </span>
       ) : null}
       <section className={styles.result} data-tone={tone} aria-live="polite">
@@ -586,25 +558,24 @@ export function GameOverStep({
         <p className={styles.resultText}>{text}</p>
       </section>
       <div className={styles.tallies}>
-        {sides.map(([who, s, won]) => (
-          <div key={who} className={styles.tally} data-winner={won && who === 'YOU'}>
+        {sides.map(([side, who, s, won]) => (
+          <div key={side} className={styles.tally} data-winner={won && side === 'player'}>
             <span className={styles.tallyWho}>{who}</span>
-            <span className={styles.tallyPts}>{s.points} PTS</span>
+            <span className={styles.tallyPts}>{t.over.pts(s.points)}</span>
             <span className={styles.tallyMeta}>
-              {s.colours.length} of 5 colours{s.hasTime ? ' + Time' : ''}
-              {state.avengers === (who === 'YOU' ? 'player' : 'thanos') ? ' · Avengers tile' : ''}
+              {t.over.meta(s.colours.length, s.hasTime, state.avengers === side)}
             </span>
           </div>
         ))}
       </div>
       <div className={styles.actions}>
         <Button icon={<Swords size={22} />} onClick={onNewGame}>
-          NEW GAME
+          {t.over.newGame}
         </Button>
         <Button variant="secondary" onClick={onUndo}>
-          UNDO THE LAST STEP
+          {t.over.undo}
         </Button>
-        <LinkButton onClick={onHome}>Back to home</LinkButton>
+        <LinkButton onClick={onHome}>{t.over.home}</LinkButton>
       </div>
     </StepFrame>
   )

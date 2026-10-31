@@ -1,6 +1,7 @@
 /* v2 "Versus" theme tokens. Design: Pencil file splendor-marvel-automa.pen → Components & states. */
 
-/* Bundled and precached fonts. `block` instead of `swap`: no reflow when they arrive (#52). */
+/* Bundled and precached fonts. `block` instead of `swap`: no reflow when they arrive (#52).
+   Each subset loads only when its script is on screen (#54). */
 @font-face {
   font-family: 'Bangers';
   font-style: normal;
@@ -8,6 +9,36 @@
   font-weight: 400;
   src: url('../../../node_modules/@fontsource/bangers/files/bangers-latin-400-normal.woff2')
     format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Serbian Latin: č ć š ž đ */
+@font-face {
+  font-family: 'Bangers';
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  src: url('../../../node_modules/@fontsource/bangers/files/bangers-latin-ext-400-normal.woff2')
+    format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+/* Bangers has no Cyrillic: Russian headings fall back to Oswald Bold, glyph by glyph */
+@font-face {
+  font-family: 'Display Cyrillic';
+  font-style: normal;
+  font-display: block;
+  font-weight: 400;
+  /* Oswald runs larger than Bangers; scale it to sit beside Latin headings. */
+  size-adjust: 90%;
+  src: url('../../../node_modules/@fontsource/oswald/files/oswald-cyrillic-700-normal.woff2')
+    format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
 @font-face {
@@ -17,6 +48,32 @@
   font-weight: 100 900;
   src: url('../../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
     format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url('../../../node_modules/@fontsource-variable/inter/files/inter-latin-ext-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Inter Variable';
+  font-style: normal;
+  font-display: block;
+  font-weight: 100 900;
+  src: url('../../../node_modules/@fontsource-variable/inter/files/inter-cyrillic-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 
 :root {
@@ -54,7 +111,7 @@
   --level-2: #e8891a;
   --level-3: #2f6fbf;
 
-  --font-display: 'Bangers', 'Impact', 'Arial Narrow', sans-serif;
+  --font-display: 'Bangers', 'Display Cyrillic', 'Impact', 'Arial Narrow', sans-serif;
   --font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Comic hard shadows */
