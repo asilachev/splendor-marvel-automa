@@ -27,8 +27,10 @@ function Fighter({ side, stats }: { side: 'thanos' | 'player'; stats: SideStats 
         {thanos ? null : <Shield size={22} />}
       </span>
       <span>
-        <span className={styles.fighterName}>{thanos ? t.hud.thanos : t.hud.you}</span>
-        <span className={styles.fighterPoints}>{t.hud.points(stats.points, GAUNTLET)}</span>
+        <span className={styles.fighterName}>{thanos ? t('hud.thanos') : t('hud.you')}</span>
+        <span className={styles.fighterPoints}>
+          {t('hud.points', { n: stats.points, goal: GAUNTLET })}
+        </span>
       </span>
     </div>
   )
@@ -65,24 +67,28 @@ export function VersusHud({ state }: { state: GameState }) {
   const limit = roundLimit(state.setup.settings)
   const over = state.step === 'over'
   const last = !over && state.round === limit
-  const summary = t.hud.summary({
+  const summary = t('hud.summary', {
     round: state.round,
     limit,
-    thanos: { points: thanos.points, colours: thanos.colours.length, time: thanos.hasTime },
-    you: { points: player.points, colours: player.colours.length, time: player.hasTime },
+    thanosPoints: thanos.points,
+    thanosColours: thanos.colours.length,
+    thanosTime: thanos.hasTime,
+    youPoints: player.points,
+    youColours: player.colours.length,
+    youTime: player.hasTime,
   })
   return (
     <header className={styles.hud} aria-label={summary}>
       <div className={styles.fighters}>
         <Fighter side="thanos" stats={thanos} />
         <div className={styles.clock} data-last={last}>
-          <strong>{over ? t.hud.gameOver : t.hud.round(state.round)}</strong>
+          <strong>{over ? t('hud.gameOver') : t('hud.round', { n: state.round })}</strong>
           <span>
             {over
-              ? t.hud.round(state.round)
+              ? t('hud.round', { n: state.round })
               : last
-                ? t.hud.lastRound
-                : t.hud.left(limit - state.round)}
+                ? t('hud.lastRound')
+                : t('hud.left', { n: limit - state.round })}
           </span>
         </div>
         <Fighter side="player" stats={player} />
@@ -129,14 +135,14 @@ export function Dock({
     </button>
   )
   return (
-    <nav className={styles.dock} aria-label={t.dock.nav}>
+    <nav className={styles.dock} aria-label={t('dock.nav')}>
       <button type="button" className={styles.dockItem} disabled={!canUndo} onClick={onUndo}>
         <Undo2 size={22} />
-        {t.dock.undo}
+        {t('dock.undo')}
       </button>
-      {item('hoard', <Layers size={22} />, t.dock.hoard(tokens))}
-      {item('log', <ScrollText size={22} />, t.dock.log)}
-      {item('menu', <Menu size={22} />, t.dock.menu)}
+      {item('hoard', <Layers size={22} />, t('dock.hoard', { n: tokens }))}
+      {item('log', <ScrollText size={22} />, t('dock.log'))}
+      {item('menu', <Menu size={22} />, t('dock.menu'))}
     </nav>
   )
 }

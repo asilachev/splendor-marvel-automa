@@ -22,10 +22,10 @@ export function usePwaToasts(): void {
     toasts.push({
       key: 'update',
       icon: <Sparkles size={20} />,
-      text: t.toasts.update,
+      text: t('toasts.update'),
       tone: 'gold',
       duration: 0,
-      action: { label: t.toasts.reload, run: () => void updateServiceWorker(true) },
+      action: { label: t('toasts.reload'), run: () => void updateServiceWorker(true) },
     })
   }, [needRefresh, toasts, updateServiceWorker, t])
 
@@ -34,7 +34,7 @@ export function usePwaToasts(): void {
       toasts.push({
         key: 'network',
         icon: <WifiOff size={20} />,
-        text: t.toasts.offline,
+        text: t('toasts.offline'),
         tone: 'muted',
         duration: 5000,
       })

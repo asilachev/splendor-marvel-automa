@@ -6,31 +6,31 @@ import styles from './credits.module.css'
  * inside an accordion. Names stay as they are in every language (#54).
  */
 export function Credits({ tone = 'dark' }: { tone?: 'dark' | 'paper' }) {
-  const { credits: c } = useT()
+  const t = useT()
   return (
-    <footer className={styles.credits} data-tone={tone} aria-label={c.label}>
-      <h2 className={styles.title}>{c.title}</h2>
+    <footer className={styles.credits} data-tone={tone} aria-label={t('credits.label')}>
+      <h2 className={styles.title}>{t('credits.title')}</h2>
       <ul className={styles.list}>
         <li>
-          <strong>{c.game.name}</strong>: {c.game.text}
+          <strong>{t('credits.game.name')}</strong>: {t('credits.game.text')}
         </li>
         <li>
-          <strong>{c.automa.name}</strong>: {c.automa.before}{' '}
+          <strong>{t('credits.automa.name')}</strong>: {t('credits.automa.before')}{' '}
           <a href="https://boardgamegeek.com/filepage/201926" target="_blank" rel="noreferrer">
             Dukefanblue2005
           </a>{' '}
-          {c.automa.after}
+          {t('credits.automa.after')}
         </li>
         <li>
-          <strong>{c.retheme.name}</strong>: {c.retheme.before}{' '}
+          <strong>{t('credits.retheme.name')}</strong>: {t('credits.retheme.before')}{' '}
           <a href="https://boardgamegeek.com/filepage/215783" target="_blank" rel="noreferrer">
             Shamus
           </a>{' '}
-          {c.retheme.after}
+          {t('credits.retheme.after')}
         </li>
       </ul>
-      <h2 className={styles.title}>{c.copyrightTitle}</h2>
-      {c.notices.map((notice) => (
+      <h2 className={styles.title}>{t('credits.copyrightTitle')}</h2>
+      {t.list('credits.notices').map((notice) => (
         <p key={notice}>{notice}</p>
       ))}
     </footer>

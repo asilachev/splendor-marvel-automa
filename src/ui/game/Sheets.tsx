@@ -30,10 +30,10 @@ import {
   SheetLabel,
   StonePicker,
 } from '../components/Kit.tsx'
-import { LanguagePicker } from '../components/LanguagePicker.tsx'
+import { LanguageSheet } from '../components/LanguagePicker.tsx'
 import { Token } from '../components/Token.tsx'
 import { cardLabel, describeLog } from '../format.ts'
-import { useT } from '../i18n/index.ts'
+import { LANGS, useI18n, useT } from '../i18n/index.ts'
 import styles from './game.module.css'
 import type { Dispatch } from './Steps.tsx'
 
@@ -48,14 +48,13 @@ export function HoardSheet({
   onClose: () => void
 }) {
   const t = useT()
-  const h = t.hoard
   const [fixing, setFixing] = useState(false)
   return (
-    <Sheet title={h.title} onClose={onClose}>
+    <Sheet title={t('hoard.title')} onClose={onClose}>
       <div className={styles.sheetRow}>
-        <SheetLabel>{h.tokens(state.stack.length)}</SheetLabel>
+        <SheetLabel>{t('hoard.tokens', { n: state.stack.length })}</SheetLabel>
         <Button variant="small" aria-pressed={fixing} onClick={() => setFixing((f) => !f)}>
-          {fixing ? h.done : h.fix}
+          {fixing ? t('hoard.done') : t('hoard.fix')}
         </Button>
       </div>
       <TokenPiles
@@ -64,10 +63,10 @@ export function HoardSheet({
         onRemove={(index) => dispatch({ type: 'stackRemove', index })}
         onAdd={(stone) => dispatch({ type: 'stackAdd', stone })}
       />
-      <SheetLabel>{h.cards(state.thanosCards.length)}</SheetLabel>
+      <SheetLabel>{t('hoard.cards', { n: state.thanosCards.length })}</SheetLabel>
       <div className={styles.chipsWrap}>
         {state.thanosCards.length === 0 ? (
-          <span className={styles.sheetNote}>{h.noCards}</span>
+          <span className={styles.sheetNote}>{t('hoard.noCards')}</span>
         ) : null}
         {state.thanosCards.map((c, index) => (
           <span key={index} className={styles.cardChip}>
@@ -76,7 +75,7 @@ export function HoardSheet({
             {fixing ? (
               <button
                 type="button"
-                aria-label={h.removeCard(cardLabel(t, c))}
+                aria-label={t('hoard.removeCard', { card: cardLabel(t, c) })}
                 onClick={() => dispatch({ type: 'removeCard', side: 'thanos', index })}
               >
                 <X size={14} />
@@ -88,17 +87,17 @@ export function HoardSheet({
       {fixing ? (
         <Options
           paper
-          label={h.tile}
+          label={t('hoard.tile')}
           value={state.avengers}
           onChange={(holder) => dispatch({ type: 'setAvengers', holder })}
           options={[
-            { value: 'none', label: h.tileOptions.none },
-            { value: 'thanos', label: h.tileOptions.thanos },
-            { value: 'player', label: h.tileOptions.player },
+            { value: 'none', label: t('hoard.tileOptions.none') },
+            { value: 'thanos', label: t('hoard.tileOptions.thanos') },
+            { value: 'player', label: t('hoard.tileOptions.player') },
           ]}
         />
       ) : null}
-      <p className={styles.sheetNote}>{fixing ? h.noteFix : h.note}</p>
+      <p className={styles.sheetNote}>{fixing ? t('hoard.noteFix') : t('hoard.note')}</p>
     </Sheet>
   )
 }
@@ -120,12 +119,15 @@ export function LogSheet({ state, onClose }: { state: GameState; onClose: () => 
   const t = useT()
   const rounds = [...new Set(state.log.map((e) => e.round))].sort((a, b) => b - a)
   return (
-    <Sheet title={t.logSheet.title} onClose={onClose}>
-      {rounds.length === 0 ? <p className={styles.sheetNote}>{t.logSheet.empty}</p> : null}
+    <Sheet title={t('logSheet.title')} onClose={onClose}>
+      {rounds.length === 0 ? <p className={styles.sheetNote}>{t('logSheet.empty')}</p> : null}
       {rounds.map((r) => (
-        <section key={r} aria-label={t.logSheet.round(r)}>
+        <section key={r} aria-label={t('logSheet.round', { round: r })}>
           <h3 className={styles.logRound}>
-            {t.logSheet.roundTitle(r, r === state.round && state.step !== 'over')}
+            {t('logSheet.roundTitle', {
+              round: r,
+              now: r === state.round && state.step !== 'over',
+            })}
           </h3>
           {state.log
             .filter((e) => e.round === r)
@@ -168,65 +170,85 @@ export function MenuSheet({
   onEndGame: () => void
 }) {
   const t = useT()
-  const m = t.menu
+  const { lang } = useI18n()
   const [open, setOpen] = useState<number | null>(null)
+  const [languages, setLanguages] = useState(false)
   const s = state.setup.settings
   return (
-    <Sheet title={m.title} onClose={onClose}>
-      <Button variant="secondary" icon={<House size={20} />} onClick={onHome}>
-        {m.home}
-      </Button>
-      <Button variant="quietDanger" icon={<OctagonX size={20} />} onClick={onEndGame}>
-        {m.end}
-      </Button>
-      <SheetLabel>{m.rules}</SheetLabel>
-      <div>
-        {t.rules.map(({ title, text }, i) => (
-          <div key={title} className={styles.ruleRow}>
-            <button
-              type="button"
-              className={styles.ruleHead}
-              aria-expanded={open === i}
-              onClick={() => setOpen(open === i ? null : i)}
-            >
-              <span className={styles.ruleIcon} aria-hidden="true">
-                i
-              </span>
-              <span className={styles.ruleTitle}>{title}</span>
-              <ChevronRight size={16} className={styles.ruleChevron} />
-            </button>
-            <Collapse open={open === i}>
-              <span className={styles.ruleBody}>{text}</span>
-            </Collapse>
-          </div>
-        ))}
-      </div>
-      <SheetLabel>{m.settings}</SheetLabel>
-      <div className={styles.setting}>
+    <>
+      <Sheet title={t('menu.title')} onClose={onClose}>
+        <Button variant="secondary" icon={<House size={20} />} onClick={onHome}>
+          {t('menu.home')}
+        </Button>
+        <Button variant="quietDanger" icon={<OctagonX size={20} />} onClick={onEndGame}>
+          {t('menu.end')}
+        </Button>
+        <SheetLabel>{t('menu.rules')}</SheetLabel>
         <div>
-          <strong>{m.wake}</strong>
-          <small>{m.wakeSub}</small>
+          {t.list('rules').map(({ title, text }, i) => (
+            <div key={title} className={styles.ruleRow}>
+              <button
+                type="button"
+                className={styles.ruleHead}
+                aria-expanded={open === i}
+                onClick={() => setOpen(open === i ? null : i)}
+              >
+                <span className={styles.ruleIcon} aria-hidden="true">
+                  i
+                </span>
+                <span className={styles.ruleTitle}>{title}</span>
+                <ChevronRight size={16} className={styles.ruleChevron} />
+              </button>
+              <Collapse open={open === i}>
+                <span className={styles.ruleBody}>{text}</span>
+              </Collapse>
+            </div>
+          ))}
+        </div>
+        <SheetLabel>{t('menu.settings')}</SheetLabel>
+        <div className={styles.setting}>
+          <div>
+            <strong>{t('menu.wake')}</strong>
+            <small>{t('menu.wakeSub')}</small>
+          </div>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={wakeLock}
+            aria-label={t('menu.wake')}
+            className={styles.switch}
+            onClick={() => onWakeLock(!wakeLock)}
+          />
         </div>
         <button
           type="button"
-          role="switch"
-          aria-checked={wakeLock}
-          aria-label={m.wake}
-          className={styles.switch}
-          onClick={() => onWakeLock(!wakeLock)}
-        />
-      </div>
-      <LanguagePicker paper />
-      <SheetLabel>{m.rulingsTitle}</SheetLabel>
-      <ul className={styles.rulings}>
-        <li>{m.rulingLength(s.phaseLengths, s.stackCap)}</li>
-        <li>{m.rulingCounted(s.countedCards === 'all')}</li>
-        <li>{m.rulingCard12(s.unprintedDiscard)}</li>
-        <li>{m.rulingEmpty(s.emptySlot === 'firstInRow')}</li>
-        <li>{m.rulingTies(s.ties === 'thanosWins')}</li>
-      </ul>
-      <Credits tone="paper" />
-    </Sheet>
+          className={styles.settingRow}
+          aria-haspopup="dialog"
+          onClick={() => setLanguages(true)}
+        >
+          <span>
+            <strong>{t('language.label')}</strong>
+            <small>{LANGS.find((l) => l.code === lang)?.name}</small>
+          </span>
+          <ChevronRight size={18} aria-hidden="true" />
+        </button>
+        <SheetLabel>{t('menu.rulingsTitle')}</SheetLabel>
+        <ul className={styles.rulings}>
+          <li>
+            {t('menu.rulingLength', {
+              lengths: s.phaseLengths.join(' / '),
+              cap: s.stackCap ?? 'none',
+            })}
+          </li>
+          <li>{t('menu.rulingCounted', { all: s.countedCards === 'all' })}</li>
+          <li>{t('menu.rulingCard12', { n: s.unprintedDiscard })}</li>
+          <li>{t('menu.rulingEmpty', { firstInRow: s.emptySlot === 'firstInRow' })}</li>
+          <li>{t('menu.rulingTies', { thanosWins: s.ties === 'thanosWins' })}</li>
+        </ul>
+        <Credits tone="paper" />
+      </Sheet>
+      {languages ? <LanguageSheet onClose={() => setLanguages(false)} /> : null}
+    </>
   )
 }
 
@@ -239,37 +261,42 @@ export function LogCardSheet({
   onClose: () => void
 }) {
   const t = useT()
-  const c = t.logCard
   const [level, setLevel] = useState<Level>(1)
   const [colour, setColour] = useState<Stone | null>(null)
   const [points, setPoints] = useState(0)
   const [tags, setTags] = useState(0)
   return (
-    <Sheet title={c.title} onClose={onClose}>
+    <Sheet title={t('logCard.title')} onClose={onClose}>
       <NumberChips
         paper
-        label={c.level}
+        label={t('logCard.level')}
         values={[1, 2, 3]}
         value={level}
         onChange={(v) => setLevel(v as Level)}
       />
-      <SheetLabel>{c.colour}</SheetLabel>
-      <StonePicker paper label={c.colourLabel} selected={colour} onPick={setColour} />
+      <SheetLabel>{t('logCard.colour')}</SheetLabel>
+      <StonePicker paper label={t('logCard.colourLabel')} selected={colour} onPick={setColour} />
       <NumberChips
         paper
-        label={c.points}
+        label={t('logCard.points')}
         values={[0, 1, 2, 3, 4, 5]}
         value={points}
         onChange={setPoints}
       />
-      <NumberChips paper label={c.avengers} values={[0, 1, 2]} value={tags} onChange={setTags} />
-      <p className={styles.sheetNote}>{c.note}</p>
+      <NumberChips
+        paper
+        label={t('logCard.avengers')}
+        values={[0, 1, 2]}
+        value={tags}
+        onChange={setTags}
+      />
+      <p className={styles.sheetNote}>{t('logCard.note')}</p>
       <Button
         icon={<Plus size={22} />}
         disabled={colour === null}
         onClick={() => colour && onAdd({ level, colour, points, tags })}
       >
-        {c.add}
+        {t('logCard.add')}
       </Button>
     </Sheet>
   )

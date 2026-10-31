@@ -66,7 +66,7 @@ export function GemRow({ gems, size = 22 }: { gems: readonly Gem[]; size?: numbe
   return (
     <span className={styles.gemRow}>
       {gems.map((g, i) => (
-        <span key={i} title={g === 'time' ? t.common.time : t.stone[g]}>
+        <span key={i} title={g === 'time' ? t('common.time') : t(`stone.${g}`)}>
           <Token stone={g} size={size} />
         </span>
       ))}

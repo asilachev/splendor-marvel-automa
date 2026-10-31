@@ -15,7 +15,7 @@ export function CardBack({ flipping, onFlip }: { flipping: boolean; onFlip: () =
         type="button"
         className={styles.cardBack}
         data-flipping={flipping}
-        aria-label={t.cards.flip}
+        aria-label={t('cards.flip')}
         onClick={onFlip}
       >
         <img src={OFFICIAL_ART.cardBack} alt="" draggable={false} />
@@ -26,7 +26,7 @@ export function CardBack({ flipping, onFlip }: { flipping: boolean; onFlip: () =
         </span>
       </button>
       <span className={styles.sticker} aria-hidden="true">
-        {t.cards.tapToReveal}
+        {t('cards.tapToReveal')}
       </span>
     </div>
   )
@@ -53,7 +53,7 @@ export function MiniCard({
       className={styles.miniCard}
       data-entering={entering}
       role="img"
-      aria-label={t.cards.mini(card.id, phase)}
+      aria-label={t('cards.mini', { id: card.id, phase })}
     >
       {card.actions.map((action, i) => (
         <div key={i} className={styles.band} data-active={i + 1 === phase}>
@@ -69,7 +69,7 @@ export function MiniCard({
 export function MarketMap({ slot, empty = false }: { slot: string; empty?: boolean }) {
   const t = useT()
   return (
-    <div className={styles.market} role="img" aria-label={t.cards.market(slot, empty)}>
+    <div className={styles.market} role="img" aria-label={t('cards.market', { slot, empty })}>
       {(
         [
           ['A', 3],
@@ -78,7 +78,7 @@ export function MarketMap({ slot, empty = false }: { slot: string; empty?: boole
         ] as const
       ).map(([row, level]) => (
         <div key={row} className={styles.marketRow}>
-          <span className={styles.marketLevel}>{t.common.level(level)}</span>
+          <span className={styles.marketLevel}>{t('common.level', { level })}</span>
           {[1, 2, 3, 4].map((col) => {
             const hit = `${row}${col}` === slot
             return (
@@ -120,14 +120,14 @@ export function TokenPiles({
   const t = useT()
   const count = (s: Stone) => stack.filter((x) => x === s).length
   const summary = STONES.filter((s) => count(s) > 0)
-    .map((s) => t.cards.pile(count(s), t.stone[s]))
+    .map((s) => t('cards.pile', { n: count(s), stone: t(`stone.${s}`) }))
     .join(', ')
   return (
     <>
       <div
         className={styles.piles}
         role="group"
-        aria-label={t.cards.piles(summary || t.cards.pilesNone)}
+        aria-label={t('cards.piles', { summary: summary || t('cards.pilesNone') })}
       >
         {STONES.map((s) => {
           const n = count(s)
@@ -137,7 +137,7 @@ export function TokenPiles({
               key={s}
               className={styles.pile}
               data-empty={n === 0}
-              aria-label={t.cards.pile(n, t.stone[s])}
+              aria-label={t('cards.pile', { n, stone: t(`stone.${s}`) })}
             >
               <div
                 className={styles.pileDiscs}
@@ -154,7 +154,7 @@ export function TokenPiles({
                 <div className={styles.pileFix}>
                   <button
                     type="button"
-                    aria-label={t.cards.remove(t.stone[s])}
+                    aria-label={t('cards.remove', { stone: t(`stone.${s}`) })}
                     disabled={n === 0}
                     onClick={() => onRemove(stack.lastIndexOf(s))}
                   >
@@ -162,7 +162,7 @@ export function TokenPiles({
                   </button>
                   <button
                     type="button"
-                    aria-label={t.cards.add(t.stone[s])}
+                    aria-label={t('cards.add', { stone: t(`stone.${s}`) })}
                     onClick={() => onAdd(s)}
                   >
                     <Plus size={16} />
@@ -173,12 +173,12 @@ export function TokenPiles({
           )
         })}
         {stack.length === 0 && !fixing ? (
-          <span className={styles.order}>{t.cards.noTokens}</span>
+          <span className={styles.order}>{t('cards.noTokens')}</span>
         ) : null}
       </div>
       {stack.length > 0 ? (
-        <div className={styles.order} aria-label={t.cards.returnOrder}>
-          <span>{t.cards.returnedFirst}</span>
+        <div className={styles.order} aria-label={t('cards.returnOrder')}>
+          <span>{t('cards.returnedFirst')}</span>
           {stack.map((s, i) => (
             <Token key={i} stone={s} size={18} />
           ))}

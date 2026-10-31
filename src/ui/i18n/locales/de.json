@@ -1,0 +1,457 @@
+{
+  "common": {
+    "thanos": "Thanos",
+    "close": "Schließen",
+    "closeTitle": "{title} schließen",
+    "dismiss": "Ausblenden",
+    "back": "Zurück",
+    "rule": "Regel: {title}",
+    "keepPlaying": "WEITERSPIELEN",
+    "level": "S{level}",
+    "points": "{n, plural, one {# Pkt.} other {# Pkt.}}",
+    "tags": "{n, plural, one {# Avengers-Symbol} other {# Avengers-Symbole}}",
+    "time": "Zeit",
+    "listSeparator": ", "
+  },
+  "stone": {
+    "power": "Macht",
+    "mind": "Gedanken",
+    "space": "Raum",
+    "reality": "Realität",
+    "soul": "Seele"
+  },
+  "language": {
+    "title": "SPRACHE",
+    "label": "Sprache",
+    "change": "Sprache: {name}"
+  },
+  "hud": {
+    "thanos": "THANOS",
+    "you": "DU",
+    "points": "{n} / {goal} PKT.",
+    "round": "RUNDE {n}",
+    "left": "NOCH {n}",
+    "lastRound": "LETZTE RUNDE",
+    "gameOver": "SPIELENDE",
+    "summary": "Runde {round} von {limit}. Thanos: {thanosPoints, plural, one {# Punkt} other {# Punkte}}, {thanosColours} Farben{thanosTime, select, true { und Zeit} other {}}. Du: {youPoints, plural, one {# Punkt} other {# Punkte}}, {youColours} Farben{youTime, select, true { und Zeit} other {}}."
+  },
+  "dock": {
+    "nav": "Spielmenü",
+    "undo": "Rückgängig",
+    "hoard": "Beute · {n}",
+    "log": "Protokoll",
+    "menu": "Menü"
+  },
+  "cards": {
+    "flip": "Thanos’ Karte aufdecken",
+    "tapToReveal": "AUFDECKEN!",
+    "mini": "Automa-Karte {id}, Abschnitt für Phase {phase}",
+    "market": "{empty, select, true {Markt, Feld {slot} (leer)} other {Markt, Feld {slot}}}",
+    "pile": "{n}× {stone}",
+    "piles": "Thanos’ Chips: {summary}",
+    "pilesNone": "keine",
+    "remove": "Einen {stone}-Chip entfernen",
+    "add": "Einen {stone}-Chip hinzufügen",
+    "noTokens": "Noch keine Chips",
+    "returnOrder": "Rückgabe-Reihenfolge, älteste zuerst",
+    "returnedFirst": "Gehen zuerst zurück →"
+  },
+  "home": {
+    "tagline": "Spiele Splendor Marvel solo. Auf deinem Tisch liegt das Spiel – die App steuert Thanos: sein Deck, seine Chips, sein Rennen zum Handschuh.",
+    "steps": [
+      "Baue ein Spiel für 2 auf",
+      "Decke jede Runde seine Karte auf",
+      "Schlag ihn im Rennen zum Handschuh"
+    ],
+    "corruptSave": "Dein gespeichertes Spiel war nicht lesbar und wurde gelöscht.",
+    "lastGame": "Letztes Spiel:",
+    "lastGameRound": "in Runde {round}.",
+    "continue": "WEITER · RUNDE {round}",
+    "newGame": "NEUES SPIEL",
+    "firstGame": "DEIN ERSTES SPIEL",
+    "endGame": "Dieses Spiel beenden"
+  },
+  "setup": {
+    "title": "NEUES SPIEL",
+    "tableCaption": "1 · TISCH AUFBAUEN",
+    "table": [
+      "4 Karten je Stufe auslegen, Stufe 1 unten",
+      "4 Chips je Farbe, 2 grüne und alle 5 grauen behalten",
+      "2 zufällige Orte + Avengers- und Handschuh-Plättchen",
+      "Platz für Thanos’ Farbstapel lassen"
+    ],
+    "difficulty": "2 · SCHWIERIGKEIT",
+    "length": "Spiellänge",
+    "lengthOptions": {
+      "standard": {
+        "label": "30 RUNDEN",
+        "hint": "wie gedruckt"
+      },
+      "shorter": {
+        "label": "27",
+        "hint": "schwerer"
+      },
+      "shortest": {
+        "label": "24",
+        "hint": "am schwersten"
+      }
+    },
+    "lengthTip": {
+      "title": "Spiellänge",
+      "body": "Eine Community-Variante von BGG: 10/9/8 (27 Runden) war „immer noch zu leicht“, 8/8/8 (24) „ziemlich schwer“."
+    },
+    "cap": "Chip-Limit für Thanos",
+    "capOptions": {
+      "none": {
+        "label": "KEIN LIMIT",
+        "hint": "wie gedruckt"
+      },
+      "twelve": {
+        "label": "12 CHIPS",
+        "hint": "Community-Variante"
+      }
+    },
+    "capTip": {
+      "title": "Chip-Limit",
+      "body": "Ein Vorschlag aus der Community: höchstens 12 Chips; die ältesten über dem Limit gehen in den Vorrat zurück."
+    },
+    "rulingsRow": "Auslegungen für Lücken im Automa",
+    "customised": "angepasst",
+    "defaults": "Standard ✓",
+    "start": "SPIEL STARTEN"
+  },
+  "rulings": {
+    "title": "AUSLEGUNGEN",
+    "intro": "Das Automa-PDF lässt ein paar Lücken. Die Standards folgen den Klarstellungen auf BGG – ändere sie, wenn ihr am Tisch anders spielt.",
+    "counted": "Welche Karten von Thanos zählen",
+    "countedOptions": {
+      "all": {
+        "label": "ALLE",
+        "hint": "Klarstellung von Shamus"
+      },
+      "scoringOnly": {
+        "label": "PUNKTE / AVENGERS",
+        "hint": "wie gedruckt"
+      }
+    },
+    "countedTip": {
+      "title": "Welche Karten zählen",
+      "body": "Das PDF legt seine Karten ohne Punkte oder Avengers-Symbole beiseite, was seine eigene Farbregel bricht. Shamus hat auf BGG klargestellt (2021): Jede Karte in einer Farbe, die er braucht, bleibt – praktisch zählt also jede Farbe."
+    },
+    "card12": "Karte 12 · Rückgabe in Phase 3",
+    "card12Options": {
+      "zero": {
+        "label": "0",
+        "hint": "keine Zahl"
+      },
+      "three": {
+        "label": "3",
+        "hint": "wie die anderen"
+      }
+    },
+    "card12Tip": {
+      "title": "Karte 12",
+      "body": "Ihr Abschnitt für Phase 3 („C1“) hat keine Zahl. Die Originalkarte aus dem Grundspiel ist genauso, also wohl Absicht."
+    },
+    "emptySlot": "Zielfeld ist leer",
+    "emptySlotOptions": {
+      "firstInRow": {
+        "label": "ERSTE DER REIHE",
+        "hint": "von links nach rechts"
+      },
+      "nothing": {
+        "label": "NIMMT NICHTS",
+        "hint": ""
+      }
+    },
+    "emptySlotTip": {
+      "title": "Leeres Feld",
+      "body": "Weder das PDF noch BGG regeln das. „Erste der Reihe“ passt zur Suche von links nach rechts aus der Farbregel."
+    },
+    "ties": "Beide vollenden den Handschuh",
+    "tiesOptions": {
+      "tiebreakers": {
+        "label": "TIEBREAKER",
+        "hint": "dann Thanos"
+      },
+      "thanosWins": {
+        "label": "THANOS GEWINNT",
+        "hint": ""
+      }
+    },
+    "tiesTip": {
+      "title": "Gleichstand",
+      "body": "Laut PDF gelten die normalen Siegbedingungen, und Thanos gewinnt bei Gleichstand: zuerst die offiziellen Tiebreaker (Punkte, Avengers-Plättchen, weniger Karten), dann Thanos."
+    },
+    "save": "SPEICHERN"
+  },
+  "reveal": {
+    "label": "Thanos ist am Zug",
+    "caption": "{phase, select, 1 {PHASE 1 · GRÜNER ABSCHNITT} 2 {PHASE 2 · GELBER ABSCHNITT} other {PHASE 3 · ROTER ABSCHNITT}}",
+    "headline": "THANOS IST AM ZUG",
+    "hint": "Er beginnt immer – dann bist du dran.",
+    "tipTitle": "Thanos’ Zug",
+    "tip": "{phase, select, 1 {Jede Runde deckt Thanos die nächste Automa-Karte auf und führt die Aktion im grünen Abschnitt aus. Dann spielst du deinen Zug am Tisch wie gewohnt.} 2 {Jede Runde deckt Thanos die nächste Automa-Karte auf und führt die Aktion im gelben Abschnitt aus. Dann spielst du deinen Zug am Tisch wie gewohnt.} other {Jede Runde deckt Thanos die nächste Automa-Karte auf und führt die Aktion im roten Abschnitt aus. Dann spielst du deinen Zug am Tisch wie gewohnt.}}",
+    "cta": "SEINE KARTE AUFDECKEN"
+  },
+  "phaseChange": {
+    "label": "Phasenwechsel",
+    "title": "DECK GEMISCHT!",
+    "begins": "PHASE {phase} BEGINNT",
+    "hint": "{phase, select, 1 {Runden {from}–{to}: Thanos liest jetzt den grünen Abschnitt jeder Automa-Karte. Jede Karte kommt einmal pro Phase dran.} 2 {Runden {from}–{to}: Thanos liest jetzt den gelben Abschnitt jeder Automa-Karte. Jede Karte kommt einmal pro Phase dran.} other {Runden {from}–{to}: Thanos liest jetzt den roten Abschnitt jeder Automa-Karte. Jede Karte kommt einmal pro Phase dran.}}"
+  },
+  "take": {
+    "label": "Thanos nimmt Chips",
+    "caption": "THANOS NIMMT CHIPS",
+    "tag": "KARTE {card} · PHASE {phase}",
+    "speech": "{stones}. MEINS.",
+    "plain": "In gedruckter Reihenfolge auf seine Stapel. Er hat kein 10-Chip-Limit.",
+    "question": "STAPEL IM VORRAT LEER? TIPPE DEN CHIP AN",
+    "tipTitle": "Chips nehmen",
+    "tip": "Die Zahlen sind die Chip-Tafel: 1 Macht, 2 Gedanken, 3 Raum, 4 Realität, 5 Seele. Er nimmt sie in gedruckter Reihenfolge und überspringt jede Farbe, deren Stapel leer ist.",
+    "group": "Chips, die er nimmt",
+    "takeIt": "NEHMEN",
+    "pileEmpty": "STAPEL LEER",
+    "cta": "{n, plural, =0 {FERTIG · NICHTS ZU NEHMEN} other {FERTIG · +# IN SEINE BEUTE}}"
+  },
+  "recruit": {
+    "label": "Thanos wirbt an",
+    "caption": "THANOS WIRBT AN",
+    "tag": "{star, select, true {KARTE {card} ★ · GIBT {n} ZURÜCK} other {KARTE {card} · GIBT {n} ZURÜCK}}",
+    "speech": "DIE {column}. KARTE DER {row, select, A {OBEREN} B {MITTLEREN} other {UNTEREN}} REIHE GEHÖRT MIR.",
+    "speechEmpty": "{slot} IST LEER? DANN DIE ERSTE KARTE DIESER REIHE.",
+    "plain": "Stufe {level}, {column}. Feld von links. Hat er die Farbe schon, nimmt er die erste Karte dieser Reihe in einer Farbe, die ihm fehlt.",
+    "plainEmpty": "Deine Auslegung: erste Karte der Reihe, von links. Die Farbregel gilt weiter.",
+    "returns": "ER GIBT ZURÜCK",
+    "returnsNothing": "GIBT NICHTS ZURÜCK",
+    "takesNothingSub": "er nimmt nichts",
+    "oldestFirst": "älteste zuerst",
+    "onlyOf": "älteste zuerst · nur {have} von {n}",
+    "nonePrinted": "keine Zahl gedruckt",
+    "pilesEmpty": "seine Stapel sind leer",
+    "supply": "VORRAT",
+    "returningTipTitle": "Chips zurückgeben",
+    "returningTip": "Chips gehen von unten aus seinen Stapeln zurück, die ältesten zuerst. Er nimmt die Karte auch, wenn er nicht alle oder gar keine zurückgeben kann.",
+    "alreadyHas": "{stone} HAT ER SCHON!",
+    "scanRow": "Suche Reihe {row} von links ab: Er nimmt die erste Karte in einer Farbe, die ihm fehlt.",
+    "insteadLabel": "Farbe der Karte, die Thanos stattdessen nimmt",
+    "noSuchCard": "Keine solche Karte in der Reihe – er nimmt trotzdem {target}",
+    "nothingNotice": "Thanos nimmt in diesem Zug nichts und gibt keine Chips zurück.",
+    "question": "WELCHER STEIN IST DARAUF?",
+    "questionEmpty": "WELCHER STEIN IST AUF DER ERSTEN KARTE VON REIHE {row}?",
+    "substitutionTipTitle": "Farbersatz",
+    "substitutionTip": "{allCount, select, true {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Alle seine Karten zählen (Klarstellung von Shamus).} other {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Nur seine Karten mit Punkten oder Avengers-Symbolen zählen.}}",
+    "colourLabel": "Farbe der Karte in {slot}",
+    "colourLabelEmpty": "Farbe der ersten Karte in Reihe {row}",
+    "rowEmpty": "Auch Reihe {row} ist leer – er nimmt nichts und gibt nichts zurück",
+    "slotEmpty": "Feld {slot} ist leer",
+    "emptySlotTipTitle": "Leeres Feld",
+    "emptySlotTip": "{firstInRow, select, true {Das PDF regelt das nicht, darum ist es eine Auslegung: Er nimmt stattdessen die erste Karte dieser Reihe von links.} other {Das PDF regelt das nicht, darum ist es eine Auslegung: Er nimmt nichts und gibt keine Chips zurück.}}",
+    "points": "Punkte",
+    "avengers": "Avengers",
+    "cta": "ER NIMMT SIE",
+    "ctaNothing": "BESTÄTIGEN · ER NIMMT NICHTS",
+    "thatCard": "diese Karte"
+  },
+  "table": {
+    "label": "Dein Zug",
+    "caption": "AM TISCH",
+    "yourMove": "DEIN ZUG",
+    "recruited": "ANGEWORBEN",
+    "recruitedSub": "Karte eintragen",
+    "location": "ORT GENOMMEN",
+    "locationSub": "+3 Punkte",
+    "locationTaken": "ORT EINGETRAGEN",
+    "locationTakenSub": "+3 · einer pro Zug",
+    "logged": "Eingetragen: {items}",
+    "locationLogged": "Ort +3",
+    "tileToYou": "Du hast mehr Avengers-Symbole – das Avengers-Plättchen geht an dich (+3).",
+    "after": "Chips genommen oder reserviert? Nichts einzutragen. Danach prüft die App bei beiden den Handschuh.",
+    "tipTitle": "Rundenende",
+    "ties": "{thanosWins, select, true {Vollenden beide den Handschuh in derselben Runde, gewinnt Thanos (deine Auslegung).} other {Vollenden beide den Handschuh: mehr Punkte gewinnen, dann das Avengers-Plättchen, dann weniger Karten – jeden restlichen Gleichstand gewinnt Thanos.}}",
+    "cta": "RUNDE {round} BEENDEN"
+  },
+  "over": {
+    "label": "Spielende",
+    "tiebreaker": "TIEBREAKER",
+    "thanos": "THANOS",
+    "you": "DU",
+    "pts": "{n, plural, one {# PKT.} other {# PKT.}}",
+    "meta": "{colours} von 5 Farben{time, select, true { + Zeit} other {}}{tile, select, true { · Avengers-Plättchen} other {}}",
+    "newGame": "NEUES SPIEL",
+    "undo": "LETZTEN SCHRITT ZURÜCK",
+    "home": "Zum Start"
+  },
+  "result": {
+    "win": "DU GEWINNST!",
+    "snap": "SCHNIPP.",
+    "thanosWins": "THANOS GEWINNT",
+    "titleWin": "Du gewinnst!",
+    "titleThanos": "Thanos gewinnt",
+    "gauntlet": "{you, select, true {Du hast den Infinity-Handschuh in Runde {round} vollendet.} other {Thanos hat den Infinity-Handschuh in Runde {round} vollendet.}}",
+    "morePoints": "{you, select, true {Ihr habt beide den Handschuh in Runde {round} vollendet. Du hattest mehr Punkte.} other {Ihr habt beide den Handschuh in Runde {round} vollendet. Thanos hatte mehr Punkte.}}",
+    "avengersTile": "{you, select, true {Beide haben den Handschuh mit gleich vielen Punkten vollendet. Du hast das Avengers-Plättchen.} other {Beide haben den Handschuh mit gleich vielen Punkten vollendet. Thanos hat das Avengers-Plättchen.}}",
+    "fewerCards": "{you, select, true {Beide haben den Handschuh mit gleich vielen Punkten vollendet, das Plättchen hat nicht entschieden. Du hast weniger Karten.} other {Beide haben den Handschuh mit gleich vielen Punkten vollendet, das Plättchen hat nicht entschieden. Thanos hat weniger Karten.}}",
+    "thanosWinsTies": "Beide haben den Handschuh in Runde {round} vollendet, und Thanos gewinnt bei Gleichstand.",
+    "roundLimit": "Runde {round} endete ohne deinen Infinity-Handschuh."
+  },
+  "checklist": {
+    "put": "Auf seine Stapel: {stones}",
+    "tookNone": "Diesmal hat er keine Chips genommen",
+    "skipped": "{n, plural, one {Stapel leer: {stones} – übersprungen} other {Stapel leer: {stones} – übersprungen}}",
+    "cap": "Chip-Limit: in den Vorrat zurück",
+    "nothing": "Thanos hat in diesem Zug nichts genommen",
+    "returnTo": "In den Vorrat zurück",
+    "refillSlot": "Feld {slot} aus dem Stapel für Stufe {level} auffüllen",
+    "refillMarket": "Markt aus dem Stapel für Stufe {level} auffüllen",
+    "time": "Gib Thanos einen grünen Zeit-Chip",
+    "tile": "Gib Thanos das Avengers-Plättchen"
+  },
+  "log": {
+    "took": "Thanos nahm {stones}",
+    "tookNothing": "Thanos nahm nichts",
+    "empty": "leer: {stones}",
+    "capReturned": "Limit gab {stones} zurück",
+    "gainNothing": "Thanos nahm nichts ({slot} leer)",
+    "gain": "{how, select, substituted {Thanos nahm {card} für {slot} stattdessen (Farbersatz)} slotEmpty {Thanos nahm {card} für {slot} (Feld leer)} other {Thanos nahm {card} für {slot}}}",
+    "returned": "gab {stones} zurück",
+    "timeToken": "Zeit-Chip",
+    "tileMiddle": "Avengers-Plättchen zurück in der Mitte",
+    "tileTo": "Avengers-Plättchen → {who, select, thanos {Thanos} other {du}}{manual, select, true { (manuell)} other {}}",
+    "youRecruited": "Du hast {card} angeworben",
+    "youLocation": "Du hast einen Ort genommen (+3)",
+    "stackFix": "{added, select, true {Stapel korrigiert: {stone}-Chip hinzugefügt} other {Stapel korrigiert: {stone}-Chip entfernt}}",
+    "cardFix": "Karte korrigiert: {yours, select, true {deine} other {Thanos’}} {card} {added, select, true {hinzugefügt} other {entfernt}}",
+    "phase": "Phase {phase} beginnt: Deck gemischt"
+  },
+  "hoard": {
+    "title": "THANOS’ BEUTE",
+    "tokens": "CHIPS · {n}",
+    "fix": "KORRIGIEREN",
+    "done": "FERTIG",
+    "cards": "KARTEN · {n}",
+    "noCards": "Noch keine Karten.",
+    "removeCard": "{card} entfernen",
+    "tile": "„Avengers Assemble“-Plättchen",
+    "tileOptions": {
+      "none": "MITTE",
+      "thanos": "THANOS",
+      "player": "DU"
+    },
+    "noteFix": "Korrigiere nur, wenn Tisch und App nicht übereinstimmen – für die letzten Schritte ist Rückgängig einfacher.",
+    "note": "Halte seine Chips nach Farben gestapelt auf dem Tisch – die App merkt sich, welche zuerst zurückgehen."
+  },
+  "logSheet": {
+    "title": "SPIELPROTOKOLL",
+    "empty": "Noch nichts – decke Thanos’ erste Karte auf.",
+    "round": "Runde {round}",
+    "roundTitle": "{now, select, true {RUNDE {round} · JETZT} other {RUNDE {round}}}"
+  },
+  "menu": {
+    "title": "MENÜ",
+    "home": "ZUM START · GESPEICHERT",
+    "end": "DIESES SPIEL BEENDEN",
+    "rules": "REGELN",
+    "settings": "EINSTELLUNGEN",
+    "wake": "Bildschirm anlassen",
+    "wakeSub": "während des Spiels, damit das Handy nicht sperrt",
+    "rulingsTitle": "AUSLEGUNGEN DIESES SPIELS",
+    "rulingLength": "{cap, select, none {{lengths} Runden je Phase} other {{lengths} Runden je Phase · Chip-Limit {cap}}}",
+    "rulingCounted": "{all, select, true {Zählende Karten von Thanos: alle (Klarstellung von Shamus)} other {Zählende Karten von Thanos: nur mit Punkten oder Avengers}}",
+    "rulingCard12": "Karte 12, Rückgabe in Phase 3: {n}",
+    "rulingEmpty": "{firstInRow, select, true {Leeres Feld: erste Karte der Reihe} other {Leeres Feld: er nimmt nichts}}",
+    "rulingTies": "{thanosWins, select, true {Beide vollenden den Handschuh: Thanos gewinnt} other {Beide vollenden den Handschuh: Tiebreaker, dann Thanos}}"
+  },
+  "rules": [
+    {
+      "title": "Thanos’ Zug",
+      "text": "Thanos beginnt jede Runde: Decke die nächste Automa-Karte auf und führe die Aktion im Abschnitt der aktuellen Phase aus (grün in den Runden 1–10, gelb in 11–20, rot in 21–30). Zwischen den Phasen wird das Deck gemischt."
+    },
+    {
+      "title": "Chips nehmen",
+      "text": "Er nimmt die gezeigten Chips in gedruckter Reihenfolge (1 Macht, 2 Gedanken, 3 Raum, 4 Realität, 5 Seele) auf seine Stapel. Farben mit leerem Stapel werden übersprungen. Er hat kein 10-Chip-Limit."
+    },
+    {
+      "title": "Anwerben & Farbersatz",
+      "text": "Er nimmt die Karte im genannten Feld (Reihe A = Stufe 3 oben, C = Stufe 1 unten; Spalten von links). Hat er diese Farbe schon, nimmt er die erste Karte der Reihe in einer Farbe, die ihm fehlt; gibt es keine, die ursprüngliche."
+    },
+    {
+      "title": "Chips zurückgeben (älteste zuerst)",
+      "text": "Wenn er anwirbt, gibt er die gedruckte Zahl an Chips zurück, die ältesten zuerst. Er nimmt die Karte auch, wenn er nicht alle oder gar keine zurückgeben kann."
+    },
+    {
+      "title": "Avengers-Plättchen & Orte",
+      "text": "Wer zuerst 3+ Avengers-Symbole hat, nimmt das „Avengers Assemble“-Plättchen (+3); abnehmen kann es nur, wer mehr Symbole hat. Thanos nimmt nie Orte."
+    },
+    {
+      "title": "Sieg & Tiebreaker",
+      "text": "Am Ende einer Runde vollenden 16+ Punkte, ein Bonus jeder Farbe und der grüne Zeit-Chip den Handschuh. Gleichstand: mehr Punkte, dann das Avengers-Plättchen, dann weniger Karten; dann Thanos. Hast du nach der letzten Runde keinen Handschuh, verlierst du."
+    }
+  ],
+  "logCard": {
+    "title": "KARTE EINTRAGEN",
+    "level": "Stufe",
+    "colour": "BONUSFARBE",
+    "colourLabel": "Bonusfarbe",
+    "points": "Punkte",
+    "avengers": "Avengers",
+    "note": "Karten der Stufe 3 geben dir auch den grünen Zeit-Chip.",
+    "add": "KARTE HINZUFÜGEN"
+  },
+  "dialogs": {
+    "endTitle": "DIESES SPIEL BEENDEN?",
+    "endBody": "Du bist in Runde {round}. Beenden löscht das gespeicherte Spiel – Rückgängig holt es nicht zurück.",
+    "end": "BEENDEN",
+    "abandonTitle": "DIESES SPIEL ABBRECHEN?",
+    "abandonBody": "Du bist in Runde {round}. Ein Neustart löscht es – Rückgängig holt es nicht zurück.",
+    "startOver": "NEU ANFANGEN"
+  },
+  "toasts": {
+    "undone": "Rückgängig gemacht – ein Schritt zurück.",
+    "undoMore": "NOCH EINEN",
+    "ended": "Spiel beendet.",
+    "update": "Eine neue Version ist da. Dein Spiel ist gespeichert.",
+    "reload": "NEU LADEN",
+    "offline": "Du bist offline – alles funktioniert weiter."
+  },
+  "pwa": {
+    "cardLabel": "Thanos Automa installieren",
+    "cardTitle": "THANOS AUTOMA INSTALLIEREN",
+    "cardSub": "Vollbild, offline, Bildschirm bleibt an.",
+    "install": "INSTALLIEREN",
+    "sheetTitle": "APP INSTALLIEREN",
+    "benefits": ["Funktioniert offline", "Vollbild", "Bildschirm bleibt an"],
+    "steps": [
+      "Tippe in Safari auf „Teilen“",
+      "Wähle „Zum Home-Bildschirm“",
+      "Öffne Thanos Automa auf dem Home-Bildschirm"
+    ],
+    "gotIt": "VERSTANDEN",
+    "splashSub": "Splendor Marvel · Solo-Begleiter"
+  },
+  "credits": {
+    "label": "Credits und Urheberrecht",
+    "title": "Credits",
+    "game": {
+      "name": "Splendor Marvel",
+      "text": "Spiel von Marc André, erschienen bei Space Cowboys (2020)."
+    },
+    "automa": {
+      "name": "Solo-Automa",
+      "before": "entworfen von",
+      "after": "auf BoardGameGeek."
+    },
+    "retheme": {
+      "name": "Marvel-Fassung des Automa",
+      "before": "von",
+      "after": "auf BoardGameGeek."
+    },
+    "copyrightTitle": "Urheberrecht & Marken",
+    "notices": [
+      "Splendor und das Splendor-Logo sind Marken von Space Cowboys (Asmodee). Spielregeln und Schachtelgrafik © 2020 Space Cowboys.",
+      "MARVEL, das MARVEL-Logo und alle zugehörigen Figuren und Namen sind ™ & © MARVEL.",
+      "Die Logos und die Rückseite der Automa-Karten (Schachtelgrafik © Space Cowboys und © MARVEL, Kartendesign von Shamus) werden nur privat und nicht kommerziell genutzt.",
+      "Inoffizielles Fan-Tool, weder verbunden mit noch unterstützt von Space Cowboys, Asmodee oder Marvel. Zum Spielen brauchst du das echte Spiel."
+    ]
+  }
+}

@@ -107,22 +107,22 @@ export function RevealStep({
   }
   return (
     <StepFrame
-      label={t.reveal.label}
+      label={t('reveal.label')}
       dock={dock}
       cta={
         <Button icon={<Rotate3d size={22} />} onClick={reveal}>
-          {t.reveal.cta}
+          {t('reveal.cta')}
         </Button>
       }
     >
       <span className={styles.centerCaption}>
-        <Caption>{t.reveal.caption(phase)}</Caption>
+        <Caption>{t('reveal.caption', { phase })}</Caption>
       </span>
-      <h1 className={styles.headline}>{t.reveal.headline}</h1>
+      <h1 className={styles.headline}>{t('reveal.headline')}</h1>
       <CardBack flipping={flipping} onFlip={reveal} />
       <p className={styles.hint}>
-        {t.reveal.hint}
-        <RuleTip title={t.reveal.tipTitle}>{t.reveal.tip(phase)}</RuleTip>
+        {t('reveal.hint')}
+        <RuleTip title={t('reveal.tipTitle')}>{t('reveal.tip', { phase })}</RuleTip>
       </p>
     </StepFrame>
   )
@@ -145,22 +145,22 @@ export function PhaseChangeStep({
     phase === 3 ? state.round + (state.setup.settings.phaseLengths[2] - 1) : starts[phase]! - 1
   return (
     <StepFrame
-      label={t.phaseChange.label}
+      label={t('phaseChange.label')}
       dock={dock}
       cta={
         <Button icon={<Rotate3d size={22} />} onClick={() => dispatch({ type: 'reveal' })}>
-          {t.reveal.cta}
+          {t('reveal.cta')}
         </Button>
       }
     >
       <div className={styles.burst} data-phase={phase}>
-        <h1 className={styles.burstTitle}>{t.phaseChange.title}</h1>
-        <span className={styles.burstSub}>{t.phaseChange.begins(phase)}</span>
+        <h1 className={styles.burstTitle}>{t('phaseChange.title')}</h1>
+        <span className={styles.burstSub}>{t('phaseChange.begins', { phase })}</span>
       </div>
       <div className={styles.centered}>
         <MiniCard card={card} phase={phase} />
       </div>
-      <p className={styles.hint}>{t.phaseChange.hint(state.round, end, phase)}</p>
+      <p className={styles.hint}>{t('phaseChange.hint', { from: state.round, to: end, phase })}</p>
     </StepFrame>
   )
 }
@@ -188,33 +188,35 @@ export function TakeStep({
     setSkipped((list) => (list.includes(s) ? list.filter((x) => x !== s) : [...list, s]))
   return (
     <StepFrame
-      label={t.take.label}
+      label={t('take.label')}
       dock={dock}
       cta={
         <Button
           icon={<Check size={22} />}
           onClick={() => dispatch({ type: 'thanosTake', skipped })}
         >
-          {t.take.cta(taken.length)}
+          {t('take.cta', { n: taken.length })}
         </Button>
       }
     >
       <div className={styles.head}>
-        <Caption>{t.take.caption}</Caption>
-        <span className={styles.tag}>{t.take.tag(String(card.id).padStart(2, '0'), phase)}</span>
+        <Caption>{t('take.caption')}</Caption>
+        <span className={styles.tag}>
+          {t('take.tag', { card: String(card.id).padStart(2, '0'), phase })}
+        </span>
       </div>
       <Panel className={styles.move}>
         <MiniCard card={card} phase={phase} entering={entering} />
         <div className={styles.say}>
           <Speech>{takeSpeech(t, action.tokens)}</Speech>
-          <p className={styles.plain}>{t.take.plain}</p>
+          <p className={styles.plain}>{t('take.plain')}</p>
         </div>
       </Panel>
       <h2 className={styles.question}>
-        {t.take.question}
-        <RuleTip title={t.take.tipTitle}>{t.take.tip}</RuleTip>
+        {t('take.question')}
+        <RuleTip title={t('take.tipTitle')}>{t('take.tip')}</RuleTip>
       </h2>
-      <div className={styles.toggles} role="group" aria-label={t.take.group}>
+      <div className={styles.toggles} role="group" aria-label={t('take.group')}>
         {action.tokens.map((s) => {
           const empty = skipped.includes(s)
           return (
@@ -226,8 +228,10 @@ export function TakeStep({
               onClick={() => toggle(s)}
             >
               <Token stone={s} size={52} hollow={empty} />
-              <span>{t.stone[s]}</span>
-              <span className={styles.toggleState}>{empty ? t.take.pileEmpty : t.take.takeIt}</span>
+              <span>{t(`stone.${s}`)}</span>
+              <span className={styles.toggleState}>
+                {empty ? t('take.pileEmpty') : t('take.takeIt')}
+              </span>
             </button>
           )
         })}
@@ -255,7 +259,6 @@ export function RecruitStep({
   dock: ReactNode
 }) {
   const t = useT()
-  const r = t.recruit
   const settings = state.setup.settings
   const { card } = currentRoundCard(state)
   const slot = slotOf(action)
@@ -301,14 +304,14 @@ export function RecruitStep({
     }
   }
   const row = action.row
-  const speech = slotEmpty ? r.speechEmpty(slot) : recruitSpeech(t, action)
+  const speech = slotEmpty ? t('recruit.speechEmpty', { slot }) : recruitSpeech(t, action)
   const plain = slotEmpty
-    ? r.plainEmpty
-    : r.plain(({ A: 3, B: 2, C: 1 } as const)[row], action.column)
+    ? t('recruit.plainEmpty')
+    : t('recruit.plain', { level: ({ A: 3, B: 2, C: 1 } as const)[row], column: action.column })
 
   return (
     <StepFrame
-      label={r.label}
+      label={t('recruit.label')}
       dock={dock}
       cta={
         <Button
@@ -316,13 +319,15 @@ export function RecruitStep({
           disabled={stage.name !== 'details' && stage.name !== 'nothing'}
           onClick={confirm}
         >
-          {stage.name === 'nothing' ? r.ctaNothing : r.cta}
+          {stage.name === 'nothing' ? t('recruit.ctaNothing') : t('recruit.cta')}
         </Button>
       }
     >
       <div className={styles.head}>
-        <Caption>{r.caption}</Caption>
-        <span className={styles.tag}>{r.tag(String(card.id).padStart(2, '0'), card.star, n)}</span>
+        <Caption>{t('recruit.caption')}</Caption>
+        <span className={styles.tag}>
+          {t('recruit.tag', { card: String(card.id).padStart(2, '0'), star: card.star, n })}
+        </span>
       </div>
       <Panel className={styles.move}>
         <MarketMap slot={slot} empty={slotEmpty} />
@@ -334,35 +339,37 @@ export function RecruitStep({
       <div className={styles.pays}>
         <span className={styles.paysLabel}>
           <span className={styles.paysTitle}>
-            {returned.length && stage.name !== 'nothing' ? r.returns : r.returnsNothing}
+            {returned.length && stage.name !== 'nothing'
+              ? t('recruit.returns')
+              : t('recruit.returnsNothing')}
           </span>
           <span className={styles.paysSub}>
             {stage.name === 'nothing'
-              ? r.takesNothingSub
+              ? t('recruit.takesNothingSub')
               : returned.length
                 ? returned.length < n
-                  ? r.onlyOf(returned.length, n)
-                  : r.oldestFirst
+                  ? t('recruit.onlyOf', { have: returned.length, n })
+                  : t('recruit.oldestFirst')
                 : n === 0
-                  ? r.nonePrinted
-                  : r.pilesEmpty}
+                  ? t('recruit.nonePrinted')
+                  : t('recruit.pilesEmpty')}
           </span>
         </span>
         {returned.length && stage.name !== 'nothing' ? <GemRow gems={returned} size={30} /> : null}
         <span className={styles.supply}>
-          <ArrowRight size={18} /> {r.supply}
+          <ArrowRight size={18} /> {t('recruit.supply')}
         </span>
-        <RuleTip title={r.returningTipTitle}>{r.returningTip}</RuleTip>
+        <RuleTip title={t('recruit.returningTipTitle')}>{t('recruit.returningTip')}</RuleTip>
       </div>
 
       {stage.name === 'substitute' ? (
         <div key="substitute" className={styles.stageBlock}>
           <h2 className={styles.question} data-tone="gold">
-            {r.alreadyHas(t.stone[stage.target])}
+            {t('recruit.alreadyHas', { stone: t(`stone.${stage.target}`).toUpperCase() })}
           </h2>
-          <p className={styles.text}>{r.scanRow(row)}</p>
+          <p className={styles.text}>{t('recruit.scanRow', { row })}</p>
           <StonePicker
-            label={r.insteadLabel}
+            label={t('recruit.insteadLabel')}
             allowed={missing}
             lacks={missing}
             onPick={(s) => setStage({ name: 'details', colour: s, substituted: true })}
@@ -372,24 +379,29 @@ export function RecruitStep({
             className={styles.escape}
             onClick={() => setStage({ name: 'details', colour: stage.target, substituted: false })}
           >
-            <CornerDownRight size={18} /> {r.noSuchCard(slotEmpty ? null : slot)}
+            <CornerDownRight size={18} />{' '}
+            {t('recruit.noSuchCard', { target: slotEmpty ? t('recruit.thatCard') : slot })}
           </button>
         </div>
       ) : stage.name === 'nothing' ? (
         <div key="nothing" className={styles.stageBlock}>
-          <p className={styles.notice}>{r.nothingNotice}</p>
-          <LinkButton onClick={() => setStage({ name: 'colour' })}>{t.common.back}</LinkButton>
+          <p className={styles.notice}>{t('recruit.nothingNotice')}</p>
+          <LinkButton onClick={() => setStage({ name: 'colour' })}>{t('common.back')}</LinkButton>
         </div>
       ) : (
         <div key="pick" className={styles.stageBlock}>
           <h2 className={styles.question}>
-            {slotEmpty ? r.questionEmpty(row) : r.question}
-            <RuleTip title={r.substitutionTipTitle}>
-              {r.substitutionTip(settings.countedCards === 'all')}
+            {slotEmpty ? t('recruit.questionEmpty', { row }) : t('recruit.question')}
+            <RuleTip title={t('recruit.substitutionTipTitle')}>
+              {t('recruit.substitutionTip', { allCount: settings.countedCards === 'all' })}
             </RuleTip>
           </h2>
           <StonePicker
-            label={slotEmpty ? r.colourLabelEmpty(row) : r.colourLabel(slot)}
+            label={
+              slotEmpty
+                ? t('recruit.colourLabelEmpty', { row })
+                : t('recruit.colourLabel', { slot })
+            }
             selected={stage.name === 'details' ? stage.colour : null}
             onPick={pick}
           />
@@ -400,13 +412,13 @@ export function RecruitStep({
               data-tone="red"
               onClick={() => setStage({ name: 'nothing' })}
             >
-              <Ban size={18} /> {r.rowEmpty(row)}
+              <Ban size={18} /> {t('recruit.rowEmpty', { row })}
             </button>
           ) : (
             <span>
-              <LinkButton onClick={markEmpty}>{r.slotEmpty(slot)}</LinkButton>
-              <RuleTip title={r.emptySlotTipTitle}>
-                {r.emptySlotTip(settings.emptySlot === 'firstInRow')}
+              <LinkButton onClick={markEmpty}>{t('recruit.slotEmpty', { slot })}</LinkButton>
+              <RuleTip title={t('recruit.emptySlotTipTitle')}>
+                {t('recruit.emptySlotTip', { firstInRow: settings.emptySlot === 'firstInRow' })}
               </RuleTip>
             </span>
           )}
@@ -415,14 +427,14 @@ export function RecruitStep({
 
       <div ref={details} className={styles.stageBlock}>
         <NumberChips
-          label={r.points}
+          label={t('recruit.points')}
           values={[0, 1, 2, 3, 4, 5]}
           value={points}
           onChange={setPoints}
           disabled={stage.name !== 'details'}
         />
         <NumberChips
-          label={r.avengers}
+          label={t('recruit.avengers')}
           values={[0, 1, 2]}
           value={tags}
           onChange={setTags}
@@ -459,20 +471,20 @@ export function TableStep({
   )
   const logged = [
     ...recruits.map((e) => (e.kind === 'playerRecruit' ? cardLabel(t, e.card) : '')),
-    ...(tookLocation ? [t.table.locationLogged] : []),
+    ...(tookLocation ? [t('table.locationLogged')] : []),
   ]
-  const ties = t.table.ties(state.setup.settings.ties === 'thanosWins')
+  const ties = t('table.ties', { thanosWins: state.setup.settings.ties === 'thanosWins' })
   return (
     <StepFrame
-      label={t.table.label}
+      label={t('table.label')}
       dock={dock}
       cta={
         <Button icon={<Flag size={22} />} onClick={() => dispatch({ type: 'endRound' })}>
-          {t.table.cta(state.round)}
+          {t('table.cta', { round: state.round })}
         </Button>
       }
     >
-      <Caption>{t.table.caption}</Caption>
+      <Caption>{t('table.caption')}</Caption>
       {items.length ? (
         <Panel className={styles.checklist}>
           {items.map((it) => (
@@ -487,12 +499,12 @@ export function TableStep({
           ))}
         </Panel>
       ) : null}
-      <Caption tone="blue">{t.table.yourMove}</Caption>
+      <Caption tone="blue">{t('table.yourMove')}</Caption>
       <div className={styles.moveTiles}>
         <button type="button" className={styles.moveTile} onClick={onLogCard}>
           <SquarePlus size={26} />
-          <strong>{t.table.recruited}</strong>
-          <small>{t.table.recruitedSub}</small>
+          <strong>{t('table.recruited')}</strong>
+          <small>{t('table.recruitedSub')}</small>
         </button>
         <button
           type="button"
@@ -502,25 +514,25 @@ export function TableStep({
           onClick={() => dispatch({ type: 'playerLocation' })}
         >
           {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
-          <strong>{tookLocation ? t.table.locationTaken : t.table.location}</strong>
-          <small>{tookLocation ? t.table.locationTakenSub : t.table.locationSub}</small>
+          <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
+          <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
         </button>
       </div>
       {logged.length ? (
         <div className={styles.logged}>
           <CircleCheck size={18} />
-          <span>{t.table.logged(logged)}</span>
+          <span>{t('table.logged', { items: logged.join(' · ') })}</span>
         </div>
       ) : null}
       {tileToYou ? (
         <div className={styles.inlineToast} role="status">
           <Award size={20} />
-          <span>{t.table.tileToYou}</span>
+          <span>{t('table.tileToYou')}</span>
         </div>
       ) : null}
       <p className={styles.after}>
-        {t.table.after}
-        <RuleTip title={t.table.tipTitle}>{ties}</RuleTip>
+        {t('table.after')}
+        <RuleTip title={t('table.tipTitle')}>{ties}</RuleTip>
       </p>
     </StepFrame>
   )
@@ -543,14 +555,14 @@ export function GameOverStep({
   const { title, tone, tiebreak } = resultHeadline(t, state)
   const { text } = describeResult(t, state.result)
   const sides = [
-    ['thanos', t.over.thanos, sideStats(state, 'thanos'), state.result.winner === 'thanos'],
-    ['player', t.over.you, sideStats(state, 'player'), state.result.winner === 'player'],
+    ['thanos', t('over.thanos'), sideStats(state, 'thanos'), state.result.winner === 'thanos'],
+    ['player', t('over.you'), sideStats(state, 'player'), state.result.winner === 'player'],
   ] as const
   return (
-    <StepFrame label={t.over.label}>
+    <StepFrame label={t('over.label')}>
       {tiebreak ? (
         <span className={styles.centerCaption}>
-          <Caption tone="red">{t.over.tiebreaker}</Caption>
+          <Caption tone="red">{t('over.tiebreaker')}</Caption>
         </span>
       ) : null}
       <section className={styles.result} data-tone={tone} aria-live="polite">
@@ -561,21 +573,25 @@ export function GameOverStep({
         {sides.map(([side, who, s, won]) => (
           <div key={side} className={styles.tally} data-winner={won && side === 'player'}>
             <span className={styles.tallyWho}>{who}</span>
-            <span className={styles.tallyPts}>{t.over.pts(s.points)}</span>
+            <span className={styles.tallyPts}>{t('over.pts', { n: s.points })}</span>
             <span className={styles.tallyMeta}>
-              {t.over.meta(s.colours.length, s.hasTime, state.avengers === side)}
+              {t('over.meta', {
+                colours: s.colours.length,
+                time: s.hasTime,
+                tile: state.avengers === side,
+              })}
             </span>
           </div>
         ))}
       </div>
       <div className={styles.actions}>
         <Button icon={<Swords size={22} />} onClick={onNewGame}>
-          {t.over.newGame}
+          {t('over.newGame')}
         </Button>
         <Button variant="secondary" onClick={onUndo}>
-          {t.over.undo}
+          {t('over.undo')}
         </Button>
-        <LinkButton onClick={onHome}>{t.over.home}</LinkButton>
+        <LinkButton onClick={onHome}>{t('over.home')}</LinkButton>
       </div>
     </StepFrame>
   )

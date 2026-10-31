@@ -135,7 +135,7 @@ export function StonePicker({
           onClick={() => onPick(s)}
         >
           <Token stone={s} size={40} />
-          <span>{t.stone[s]}</span>
+          <span>{t(`stone.${s}`)}</span>
           <small aria-hidden="true">{i + 1}</small>
         </button>
       ))}
@@ -212,14 +212,25 @@ export function Options<T extends string | number>({
   )
 }
 
+/** Open layers, innermost last: Escape closes only the top one (e.g. Language over the Menu). */
+const escapeStack: (() => void)[] = []
+const onEscapeKey = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') escapeStack[escapeStack.length - 1]?.()
+}
+
 function useEscape(onClose: () => void) {
+  const latest = useRef(onClose)
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
+    latest.current = onClose
+  })
+  useEffect(() => {
+    const close = () => latest.current()
+    if (escapeStack.push(close) === 1) window.addEventListener('keydown', onEscapeKey)
+    return () => {
+      escapeStack.splice(escapeStack.lastIndexOf(close), 1)
+      if (escapeStack.length === 0) window.removeEventListener('keydown', onEscapeKey)
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [onClose])
+  }, [])
 }
 
 const FOCUSABLE =
@@ -322,7 +333,8 @@ export function Sheet({
 }: {
   title: string
   onClose: () => void
-  children: ReactNode
+  /** Content, or a function of the animated close (e.g. close after a pick). */
+  children: ReactNode | ((close: () => void) => ReactNode)
 }) {
   const t = useT()
   const [closing, close] = useAnimatedClose(onClose)
@@ -335,7 +347,7 @@ export function Sheet({
       <button
         type="button"
         className={styles.scrim}
-        aria-label={t.common.close}
+        aria-label={t('common.close')}
         tabIndex={-1}
         onClick={close}
       />
@@ -353,13 +365,15 @@ export function Sheet({
           <button
             type="button"
             className={styles.close}
-            aria-label={t.common.closeTitle(title)}
+            aria-label={t('common.closeTitle', { title })}
             onClick={close}
           >
             <X size={20} />
           </button>
         </header>
-        <div className={styles.sheetBody}>{children}</div>
+        <div className={styles.sheetBody}>
+          {typeof children === 'function' ? children(close) : children}
+        </div>
       </section>
     </div>
   )
@@ -390,7 +404,7 @@ export function Dialog({
       <button
         type="button"
         className={styles.scrim}
-        aria-label={t.common.close}
+        aria-label={t('common.close')}
         tabIndex={-1}
         onClick={close}
       />

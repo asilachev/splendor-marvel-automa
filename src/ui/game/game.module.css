@@ -605,6 +605,36 @@
   font-size: 0.7rem;
 }
 
+/* A settings row that opens a selector, e.g. Language (#58). */
+.settingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--paper-ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.settingRow > span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.settingRow strong {
+  font-size: 0.9rem;
+}
+
+.settingRow small {
+  color: var(--paper-muted);
+  font-size: 0.7rem;
+}
+
 .switch {
   position: relative;
   flex: none;

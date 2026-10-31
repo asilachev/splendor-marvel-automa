@@ -8,12 +8,15 @@ import { Home } from './home/Home.tsx'
 import { Setup } from './home/Setup.tsx'
 import {
   browserLanguages,
-  CATALOGS,
   detectLang,
   I18nContext,
   LANGS,
+  loadCatalog,
+  loadedCatalog,
+  translatorFor,
   useT,
   type I18n,
+  type Lang,
 } from './i18n/index.ts'
 import {
   isIosSafari,
@@ -50,9 +53,23 @@ export function App() {
       }),
     [],
   )
-  const lang = prefs.language ?? detectLang(browserLanguages())
+  const preferred = prefs.language ?? detectLang(browserLanguages())
+  // A language's file is loaded before it goes on screen, so text never flashes in English.
+  const [lang, setLang] = useState<Lang>(() => (loadedCatalog(preferred) ? preferred : 'en'))
+  useEffect(() => {
+    if (lang === preferred) return
+    let cancelled = false
+    loadCatalog(preferred)
+      .then(() => {
+        if (!cancelled) setLang(preferred)
+      })
+      .catch(() => {})
+    return () => {
+      cancelled = true
+    }
+  }, [lang, preferred])
   const i18n = useMemo<I18n>(
-    () => ({ lang, t: CATALOGS[lang], setLang: (language) => updatePrefs({ language }) }),
+    () => ({ lang, t: translatorFor(lang), setLang: (language) => updatePrefs({ language }) }),
     [lang, updatePrefs],
   )
   useEffect(() => {
@@ -139,11 +156,13 @@ function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs 
       {view}
       {confirm && game.state ? (
         <Dialog
-          title={ending ? t.dialogs.endTitle : t.dialogs.abandonTitle}
+          title={ending ? t('dialogs.endTitle') : t('dialogs.abandonTitle')}
           onClose={() => setConfirm(null)}
         >
           <p>
-            {ending ? t.dialogs.endBody(game.state.round) : t.dialogs.abandonBody(game.state.round)}
+            {ending
+              ? t('dialogs.endBody', { round: game.state.round })
+              : t('dialogs.abandonBody', { round: game.state.round })}
           </p>
           <Button
             variant="danger"
@@ -157,7 +176,7 @@ function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs 
                 toasts.push({
                   key: 'ended',
                   icon: <OctagonX size={20} />,
-                  text: t.toasts.ended,
+                  text: t('toasts.ended'),
                   tone: 'muted',
                 })
               } else {
@@ -165,10 +184,10 @@ function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs 
               }
             }}
           >
-            {ending ? t.dialogs.end : t.dialogs.startOver}
+            {ending ? t('dialogs.end') : t('dialogs.startOver')}
           </Button>
           <Button variant="secondary" onClick={() => setConfirm(null)}>
-            {t.common.keepPlaying}
+            {t('common.keepPlaying')}
           </Button>
         </Dialog>
       ) : null}
