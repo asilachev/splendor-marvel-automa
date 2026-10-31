@@ -20,3 +20,33 @@ export {
 } from './setup.ts'
 export { STONES, stoneForTokenNumber, type Stone, type TokenNumber } from './stones.ts'
 export * from './types.ts'
+export {
+  applyEvent,
+  AVENGERS_TILE_POINTS,
+  AVENGERS_TILE_TAGS,
+  countedThanosCards,
+  currentPhase,
+  currentRoundCard,
+  discardCount,
+  discardPreview,
+  GameRuleError,
+  GAUNTLET_POINTS,
+  LOCATION_POINTS,
+  LOCATIONS_IN_PLAY,
+  missingColours,
+  newGame,
+  replay,
+  roundResult,
+  sideStats,
+  type AvengersHolder,
+  type GameEvent,
+  type GameResult,
+  type GameState,
+  type LogEntry,
+  type RecruitedCard,
+  type ResultReason,
+  type Side,
+  type SideStats,
+  type Step,
+  type ThanosCardInput,
+} from './game.ts'
