@@ -78,9 +78,10 @@ export function Game({
   // The mini card finishes the flip only right after you flip the card back: not on resume,
   // after undo or at a phase change (#52).
   const [flippedRound, setFlippedRound] = useState<number | null>(null)
-  useEffect(() => {
-    if (state.step !== 'thanos') setFlippedRound(null)
-  }, [state.step])
+  const stepDispatch = (event: GameEvent) => {
+    if (event.type !== 'reveal') setFlippedRound(null)
+    dispatch(event)
+  }
 
   const dock = (
     <Dock
@@ -97,12 +98,12 @@ export function Game({
     step = <GameOverStep state={state} onUndo={doUndo} onNewGame={onNewGame} onHome={onHome} />
   } else if (state.step === 'reveal') {
     step = isPhaseStart(state.round, state.setup.settings) ? (
-      <PhaseChangeStep key={state.round} state={state} dispatch={dispatch} dock={dock} />
+      <PhaseChangeStep key={state.round} state={state} dispatch={stepDispatch} dock={dock} />
     ) : (
       <RevealStep
         key={state.round}
         state={state}
-        dispatch={dispatch}
+        dispatch={stepDispatch}
         dock={dock}
         onRevealed={() => setFlippedRound(state.round)}
       />
@@ -115,7 +116,7 @@ export function Game({
           key={state.round}
           state={state}
           action={action}
-          dispatch={dispatch}
+          dispatch={stepDispatch}
           dock={dock}
           entering={flippedRound === state.round}
         />
@@ -124,7 +125,7 @@ export function Game({
           key={state.round}
           state={state}
           action={action}
-          dispatch={dispatch}
+          dispatch={stepDispatch}
           dock={dock}
         />
       )

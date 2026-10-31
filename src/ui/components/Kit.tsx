@@ -290,24 +290,25 @@ function useScrollLock() {
   }, [])
 }
 
-/** Expands and collapses smoothly; the content stays mounted while it closes. */
+/**
+ * Expands and collapses smoothly (#52). Opening mounts the content and expands it in one go;
+ * closing collapses it first and unmounts it when the transition ends. Collapsed content is
+ * hidden from assistive technology and can't be focused.
+ */
 export function Collapse({ open, children }: { open: boolean; children: ReactNode }) {
   const [mounted, setMounted] = useState(open)
-  useEffect(() => {
-    if (open) {
-      setMounted(true)
-      return
-    }
-    if (prefersReducedMotion()) {
-      setMounted(false)
-      return
-    }
-    const timer = window.setTimeout(() => setMounted(false), EXIT_MS)
-    return () => window.clearTimeout(timer)
-  }, [open])
+  if (open && !mounted) setMounted(true)
   return (
-    <span className={styles.collapse} data-open={open && mounted}>
-      <span className={styles.collapseInner}>{mounted ? children : null}</span>
+    <span
+      className={styles.collapse}
+      data-open={open}
+      onTransitionEnd={(e) => {
+        if (!open && e.target === e.currentTarget) setMounted(false)
+      }}
+    >
+      <span className={styles.collapseInner} aria-hidden={!open} inert={!open}>
+        {mounted ? children : null}
+      </span>
     </span>
   )
 }
