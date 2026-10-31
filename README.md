@@ -12,7 +12,10 @@ stay on the table. The app replaces the automa deck, the token placement board a
 bookkeeping.
 
 **[Project page](https://asilachev.github.io/splendor-marvel-automa/)**: a short tour with
-screenshots.
+screenshots, in English, [Русский](https://asilachev.github.io/splendor-marvel-automa/ru/),
+[Српски](https://asilachev.github.io/splendor-marvel-automa/sr/),
+[Español](https://asilachev.github.io/splendor-marvel-automa/es/) and
+[Deutsch](https://asilachev.github.io/splendor-marvel-automa/de/).
 
 > **Status:** in development. Work is planned in
 > [issues](https://github.com/asilachev/splendor-marvel-automa/issues) and
@@ -130,7 +133,8 @@ npm ci
 npm run dev        # http://localhost:5173 (use `npm run dev -- --host` to open it on your phone)
 npm test           # Vitest
 npm run build      # production build in dist/
-npm run site       # landing page in _site/ (deployed to GitHub Pages from master)
+npm run site:shots # the app in four more languages, for the landing page
+npm run site       # landing page in _site/, five languages (deployed to GitHub Pages from master)
 ```
 
 Built with Vite, React and TypeScript, with a pure TypeScript automa engine in `src/engine`.

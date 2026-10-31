@@ -72,13 +72,14 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run preview` | Serve the production build |
 | `docker build -t thanos-automa .` | Build the production image (nginx on port 8080); `docker compose up -d` runs the published one |
 | `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688). Options after `--`: `--lang ru`, `--only 04,06`, `--out <dir>`, `--width 360` |
-| `npm run site` | Assemble the landing page into `_site/`: `site/` plus the guide screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
+| `npm run site:shots` | Build, then capture the app in Russian, Serbian, Spanish and German for the landing page into `.screenshots/` (not committed; needs Google Chrome) |
+| `npm run site` | Render the landing page in five languages into `_site/` from `site/index.html` and `site/locales/*.json`, with the screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
 and on every push to `master`. Run the same commands before pushing. `.github/workflows/docker.yml`
-builds the image on PRs and publishes it to GHCR from `master`. `.github/workflows/pages.yml` deploys
-the landing page to GitHub Pages from `master`.
+builds the image on PRs and publishes it to GHCR from `master`. `.github/workflows/pages.yml` builds
+the landing page on PRs and deploys it to GitHub Pages from `master`.
 
 ## Code layout
 
@@ -94,7 +95,7 @@ src/
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
-site/       landing page for GitHub Pages: static HTML and CSS, assembled by scripts/build-site.mjs
+site/       landing page for GitHub Pages: an HTML template, CSS and locales/{en,ru,sr,es,de}.json, rendered by scripts/build-site.mjs
 scripts/    repo tooling (logo/icon generator, guide screenshots, landing page build)
 docs/       rules, automa spec, design, user guide with screenshots, reference PDFs
 ```

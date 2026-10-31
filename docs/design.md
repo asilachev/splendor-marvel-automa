@@ -103,23 +103,38 @@ ordered stack by hand is the fiddliest part of the paper automa.
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
 
-## Landing page (#61, #66)
+## Landing page (#61, #66, #69)
 
-`site/` is a static page on GitHub Pages: https://asilachev.github.io/splendor-marvel-automa/.
+`site/` is a static page on GitHub Pages, in the app's five languages:
+https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`, `es/` and `de/`.
+
+- **Languages (#69):**
+  - `site/index.html` is a template; each language's texts are in `site/locales/<lang>.json`.
+    `npm run site` renders one page per language and fails on a missing text, a leftover
+    placeholder or a missing file. Russian goes through the app's typography (`typography.ts`).
+  - Each page shows the app in its own language. English uses the guide screenshots; the others
+    come from `npm run site:shots`, which captures the twelve screens the page shows into
+    `.screenshots/<lang>/`. They aren't committed: the Pages workflow captures them on every build.
+  - A globe menu in the nav (details/summary, so it works without JavaScript) and the language
+    chips link the pages; the current one is marked. Every page lists the others with `hreflang`.
+  - On a first visit the English page opens the browser's language. A language picked on the page
+    is remembered (`localStorage`), so English stays English for a Russian browser that picked it.
+  - The guide is English only, so its button says so in other languages, e.g. «Руководство
+    (англ.)». The store locator opens Asmodee's German and Spanish pages for `de` and `es`.
 
 - **Look:**
   - The app's visual language: gold, Bangers and Inter, hard shadows.
   - The real guide screenshots sit in phone frames.
   - The page ink (`#241a3d`) is a little lighter than the app's (`#0f0b1a`), and each phone frame has
     a thin light rim, so the dark screenshots don't blend into the page.
-- **Sections:**
+- **Sections**, in order (the nav follows it):
   - a hero;
   - "a companion, not a digital game";
+  - get the game, right after it, since the app needs the box;
   - four taps a round;
   - features;
   - a gallery;
   - the five languages;
-  - get the game;
   - how to host your own copy;
   - the credits.
 - **"A companion, not a digital game"** is a comic strip, not a banner:
@@ -142,11 +157,13 @@ ordered stack by hand is the fiddliest part of the paper automa.
   - With reduced motion, the states keep their colours and shadows but don't tilt or animate.
 - **No app link.** It doesn't link to a hosted copy of the app (see the community note in
   `docs/automa.md`).
-- **Build:** `npm run site` copies the page, the screenshots, the two fonts and the icons into
-  `_site/`, and fails if the page references a missing file. `.github/workflows/pages.yml` deploys it
-  when any of them change on `master`, so `npm run screenshots` updates the page too.
-- **Layout:** no sideways scrolling from 320 px up. The hero's two phones share one stage sized in
-  percentages.
+- **Build:** `npm run site:shots && npm run site` renders the pages and copies the screenshots,
+  the fonts (Bangers Cyrillic, Inter Latin and Cyrillic), the cursor and the icons into `_site/`.
+  `.github/workflows/pages.yml` builds it on pull requests and deploys it from `master` whenever the
+  site, the app or the screenshots change.
+- **Layout:** no sideways scrolling from 320 px up, in every language. The hero's two phones share
+  one stage sized in percentages. The section links show from 1180 px, where the longest
+  languages fit beside the menu; under 520 px the nav keeps the brand and the language menu.
 
 ## Motion (#52)
 
