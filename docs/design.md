@@ -115,8 +115,10 @@ https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`
   - Each page shows the app in its own language. English uses the guide screenshots; the others
     come from `npm run site:shots`, which captures the twelve screens the page shows into
     `.screenshots/<lang>/`. They aren't committed: the Pages workflow captures them on every build.
-  - A globe menu in the nav (details/summary, so it works without JavaScript) and the language
-    chips link the pages; the current one is marked. Every page lists the others with `hreflang`.
+  - A globe chip in the nav opens a comic speech-bubble menu (#71): halftone paper, a thick
+    outline, a tail pointing at the chip, and the current language as a tilted gold sticker. It's
+    details/summary, so it works without JavaScript. The language chips link the pages too, the
+    current one in gold. Every page lists the others with `hreflang`.
   - On a first visit the English page opens the browser's language. A language picked on the page
     is remembered (`localStorage`), so English stays English for a Russian browser that picked it.
   - The guide is English only, so its button says so in other languages, e.g. «Руководство
@@ -147,9 +149,8 @@ https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`
   - the BoardGameGeek page.
 
   The credits link the publisher and the store locator too.
-- **Cursor.** Links and buttons show our own cartoon glove pointing a finger, with the normal pointer
-  as a fallback. `site/cursors/glove.svg` is the drawing; `node scripts/gen-cursor.mjs` renders the
-  32 px and 64 px PNGs and prints the fingertip hotspot.
+- **Cursor.** Links, buttons and the language menu show the standard pointer. The owner preferred it
+  to the cartoon glove tried in #66 (#71).
 - **States:**
   - Buttons and link cards lift on hover with a bigger shadow, press in when active, and show a
     white focus ring.
@@ -158,9 +159,12 @@ https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`
 - **No app link.** It doesn't link to a hosted copy of the app (see the community note in
   `docs/automa.md`).
 - **Build:** `npm run site:shots && npm run site` renders the pages and copies the screenshots,
-  the fonts (Bangers Cyrillic, Inter Latin and Cyrillic), the cursor and the icons into `_site/`.
+  the fonts (Bangers Cyrillic, Inter Latin and Cyrillic) and the icons into `_site/`.
   `.github/workflows/pages.yml` builds it on pull requests and deploys it from `master` whenever the
   site, the app or the screenshots change.
+- **Caching (#71):** Pages lets browsers reuse a file for 10 minutes, so the pages link
+  `styles.css?v=<hash of its contents>`. A deploy then loads the matching stylesheet at once,
+  instead of new HTML with old CSS.
 - **Layout:** no sideways scrolling from 320 px up, in every language. The hero's two phones share
   one stage sized in percentages. The section links show from 1180 px, where the longest
   languages fit beside the menu; under 520 px the nav keeps the brand and the language menu.
