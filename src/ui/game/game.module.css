@@ -12,6 +12,22 @@
   flex-direction: column;
   gap: 14px;
   padding: 8px var(--gutter) 16px;
+  /* A new step fades in; the HUD and the pinned footer stay put (#52). */
+  animation: stepIn 0.16s ease-out;
+}
+
+@keyframes stepIn {
+  from {
+    opacity: 0;
+  }
+}
+
+/* A group of step content, e.g. the substitution prompt, fading in when it replaces another. */
+.stageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: stepIn 0.16s ease-out;
 }
 
 /* CTA + dock pinned to the bottom, above the home indicator. */
@@ -103,8 +119,10 @@
 /* He returns */
 .pays {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  column-gap: 10px;
+  row-gap: 0;
   padding: 10px 12px;
   border: 1px solid rgb(255 255 255 / 14%);
   border-radius: var(--radius);
@@ -549,7 +567,17 @@
   font-style: italic;
 }
 
+.ruleChevron {
+  flex: none;
+  transition: transform 0.2s ease;
+}
+
+.ruleHead[aria-expanded='true'] .ruleChevron {
+  transform: rotate(90deg);
+}
+
 .ruleBody {
+  display: block;
   margin: 0 0 10px 32px;
   color: #3b2f55;
   font-size: 0.8rem;

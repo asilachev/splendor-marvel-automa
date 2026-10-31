@@ -1,4 +1,4 @@
-import { BookOpen, Layers, ScrollText, Shield, Undo2 } from 'lucide-react'
+import { Layers, Menu, ScrollText, Shield, Undo2 } from 'lucide-react'
 import {
   roundLimit,
   STONES,
@@ -38,7 +38,7 @@ function Bar({ stats, mirrored }: { stats: SideStats; mirrored: boolean }) {
   const pct = Math.min(stats.points, GAUNTLET) / GAUNTLET
   return (
     <div className={styles.bar} data-mirrored={mirrored} data-ready={stats.gauntlet}>
-      <div className={styles.barFill} style={{ width: `${pct * 100}%` }} />
+      <div className={styles.barFill} style={{ transform: `scaleX(${pct})` }} />
     </div>
   )
 }
@@ -91,9 +91,9 @@ export function VersusHud({ state }: { state: GameState }) {
   )
 }
 
-export type SheetName = 'hoard' | 'log' | 'rules'
+export type SheetName = 'hoard' | 'log' | 'menu'
 
-/** The comic capsule dock: Undo, Hoard, Log, Rules. */
+/** The comic capsule dock: Undo, Hoard, Log, Menu. */
 export function Dock({
   tokens,
   canUndo,
@@ -127,7 +127,7 @@ export function Dock({
       </button>
       {item('hoard', <Layers size={22} />, `Hoard · ${tokens}`)}
       {item('log', <ScrollText size={22} />, 'Log')}
-      {item('rules', <BookOpen size={22} />, 'Rules')}
+      {item('menu', <Menu size={22} />, 'Menu')}
     </nav>
   )
 }

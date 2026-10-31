@@ -3,26 +3,31 @@ import type { ReactNode } from 'react'
 import type { GameState } from '../../engine/index.ts'
 import { OFFICIAL_ART } from '../assets/official/index.ts'
 import { Credits } from '../components/Credits.tsx'
-import { Button } from '../components/Kit.tsx'
+import { Button, LinkButton } from '../components/Kit.tsx'
 import { describeResult } from '../format.ts'
 import styles from './home.module.css'
 
 /** 1.1 / 1.2 — Home on first launch or with a saved game. */
 export function Home({
   state,
+  firstLaunch,
   corruptSave,
   install,
   onContinue,
   onNewGame,
+  onEndGame,
 }: {
   state: GameState | null
+  /** No game was ever started on this device. */
+  firstLaunch: boolean
   corruptSave: boolean
   install?: ReactNode
   onContinue: () => void
   onNewGame: () => void
+  /** Asks to end the game in progress (#53). */
+  onEndGame: () => void
 }) {
   const inProgress = state !== null && state.step !== 'over'
-  const firstLaunch = state === null
   return (
     <div className={styles.screen}>
       <main className={styles.scroll}>
@@ -94,6 +99,7 @@ export function Home({
             <Button variant="secondary" onClick={onNewGame}>
               NEW GAME
             </Button>
+            <LinkButton onClick={onEndGame}>End this game</LinkButton>
           </>
         ) : (
           <Button icon={<Swords size={22} />} onClick={onNewGame}>

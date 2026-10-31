@@ -194,13 +194,7 @@ const SHOTS = {
   ],
   '11-hoard': [table7, dock(`Hoard · ${E.replay(takeSeed, S, table7.events).stack.length}`)],
   '12-log': [table7, dock('Log')],
-  '13-rules': [
-    table7,
-    async (p) => {
-      await dock('Rules')(p)
-      await p.getByRole('button', { name: /Recruiting & colour substitution/ }).click()
-    },
-  ],
+  '13-menu': [table7, dock('Menu')],
   '14-win': [
     win,
     async (p) => {
@@ -215,8 +209,15 @@ const SHOTS = {
       await p.getByRole('button', { name: 'END ROUND 30' }).click()
     },
   ],
-  '16-install-iphone': [null, null, { userAgent: IPHONE, isMobile: true, hasTouch: true }],
-  '17-install-android': [
+  '16-end-game': [
+    table7,
+    async (p) => {
+      await dock('Menu')(p)
+      await p.getByRole('button', { name: 'END THIS GAME' }).click()
+    },
+  ],
+  '17-install-iphone': [null, null, { userAgent: IPHONE, isMobile: true, hasTouch: true }],
+  '18-install-android': [
     round7,
     (p) =>
       p.evaluate(() => {

@@ -11,7 +11,7 @@ import {
   ArrowRight,
   Check,
 } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import {
   currentRoundCard,
   discardCount,
@@ -38,6 +38,7 @@ import {
   StonePicker,
 } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
+import { prefersReducedMotion } from '../motion.ts'
 import { GemRow, Token } from '../components/Token.tsx'
 import {
   cardLabel,
@@ -79,27 +80,30 @@ export function StepFrame({
   )
 }
 
-const prefersReducedMotion = () =>
-  typeof window.matchMedia !== 'function' ||
-  window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
 /** 2.1 — Thanos makes his move: tap the printed card back to reveal it. */
 export function RevealStep({
   state,
   dispatch,
   dock,
+  onRevealed,
 }: {
   state: GameState
   dispatch: Dispatch
   dock: ReactNode
+  /** Called as the card is revealed, so the next step can finish the flip. */
+  onRevealed?: () => void
 }) {
   const { phase } = currentRoundCard(state)
   const [flipping, setFlipping] = useState(false)
+  const done = () => {
+    onRevealed?.()
+    dispatch({ type: 'reveal' })
+  }
   const reveal = () => {
     if (flipping) return
-    if (prefersReducedMotion()) return dispatch({ type: 'reveal' })
+    if (prefersReducedMotion()) return done()
     setFlipping(true)
-    window.setTimeout(() => dispatch({ type: 'reveal' }), 380)
+    window.setTimeout(done, 380)
   }
   return (
     <StepFrame
@@ -172,11 +176,14 @@ export function TakeStep({
   action,
   dispatch,
   dock,
+  entering = false,
 }: {
   state: GameState
   action: TakeAction
   dispatch: Dispatch
   dock: ReactNode
+  /** The card was just flipped: the mini card finishes the flip. */
+  entering?: boolean
 }) {
   const { card, phase } = currentRoundCard(state)
   const [skipped, setSkipped] = useState<Stone[]>([])
@@ -203,7 +210,7 @@ export function TakeStep({
         </span>
       </div>
       <Panel className={styles.move}>
-        <MiniCard card={card} phase={phase} />
+        <MiniCard card={card} phase={phase} entering={entering} />
         <div className={styles.say}>
           <Speech>{takeSpeech(action.tokens)}</Speech>
           <p className={styles.plain}>In printed order onto his piles. He has no 10-token limit.</p>
@@ -267,6 +274,16 @@ export function RecruitStep({
   const [slotEmpty, setSlotEmpty] = useState(false)
   const [points, setPoints] = useState(0)
   const [tags, setTags] = useState(0)
+  // Points and tags become available once the colour is known; bring them into view if they
+  // sit below the pinned button (#52). `nearest` means no scroll when they are visible.
+  const details = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    if (stage.name !== 'details') return
+    details.current?.scrollIntoView?.({
+      block: 'nearest',
+      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
+    })
+  }, [stage.name])
 
   const pick = (s: Stone) =>
     setStage(
@@ -354,7 +371,7 @@ export function RecruitStep({
       </div>
 
       {stage.name === 'substitute' ? (
-        <>
+        <div key="substitute" className={styles.stageBlock}>
           <h2 className={styles.question} data-tone="gold">
             HE ALREADY HAS {STONE_LABEL[stage.target].toUpperCase()}!
           </h2>
@@ -375,14 +392,14 @@ export function RecruitStep({
             <CornerDownRight size={18} /> No such card in that row — he takes{' '}
             {slotEmpty ? 'that card' : slot} anyway
           </button>
-        </>
+        </div>
       ) : stage.name === 'nothing' ? (
-        <>
+        <div key="nothing" className={styles.stageBlock}>
           <p className={styles.notice}>Thanos takes nothing this turn and returns no tokens.</p>
           <LinkButton onClick={() => setStage({ name: 'colour' })}>Back</LinkButton>
-        </>
+        </div>
       ) : (
-        <>
+        <div key="pick" className={styles.stageBlock}>
           <h2 className={styles.question}>
             {slotEmpty ? `WHICH STONE IS ON ROW ${row}’S FIRST CARD?` : 'WHICH STONE IS ON IT?'}
             <RuleTip title="Colour substitution">
@@ -420,23 +437,25 @@ export function RecruitStep({
               </RuleTip>
             </span>
           )}
-        </>
+        </div>
       )}
 
-      <NumberChips
-        label="Points"
-        values={[0, 1, 2, 3, 4, 5]}
-        value={points}
-        onChange={setPoints}
-        disabled={stage.name !== 'details'}
-      />
-      <NumberChips
-        label="Avengers"
-        values={[0, 1, 2]}
-        value={tags}
-        onChange={setTags}
-        disabled={stage.name !== 'details'}
-      />
+      <div ref={details} className={styles.stageBlock}>
+        <NumberChips
+          label="Points"
+          values={[0, 1, 2, 3, 4, 5]}
+          value={points}
+          onChange={setPoints}
+          disabled={stage.name !== 'details'}
+        />
+        <NumberChips
+          label="Avengers"
+          values={[0, 1, 2]}
+          value={tags}
+          onChange={setTags}
+          disabled={stage.name !== 'details'}
+        />
+      </div>
     </StepFrame>
   )
 }

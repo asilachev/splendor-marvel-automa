@@ -1,5 +1,5 @@
 import { Undo2 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   currentRoundCard,
   isPhaseStart,
@@ -10,7 +10,7 @@ import { Dock, VersusHud, type SheetName } from '../components/Hud.tsx'
 import { useToasts } from '../components/toast.ts'
 import { useWakeLock } from '../state/useWakeLock.ts'
 import styles from './game.module.css'
-import { HoardSheet, LogCardSheet, LogSheet, RulesSheet } from './Sheets.tsx'
+import { HoardSheet, LogCardSheet, LogSheet, MenuSheet } from './Sheets.tsx'
 import {
   GameOverStep,
   PhaseChangeStep,
@@ -30,6 +30,7 @@ export function Game({
   onWakeLock,
   onHome,
   onNewGame,
+  onEndGame,
 }: {
   state: GameState
   canUndo: boolean
@@ -39,6 +40,8 @@ export function Game({
   onWakeLock: (on: boolean) => void
   onHome: () => void
   onNewGame: () => void
+  /** Asks to end the game in progress (#53). */
+  onEndGame: () => void
 }) {
   const [sheet, setSheet] = useState<SheetName | 'logCard' | null>(null)
   const toasts = useToasts()
@@ -67,6 +70,18 @@ export function Game({
     lastKey.current = stepKey
   }, [stepKey, sheet])
 
+  // Every step opens at its top, set before paint so nothing visibly jumps (#52).
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [stepKey])
+
+  // The mini card finishes the flip only right after you flip the card back: not on resume,
+  // after undo or at a phase change (#52).
+  const [flippedRound, setFlippedRound] = useState<number | null>(null)
+  useEffect(() => {
+    if (state.step !== 'thanos') setFlippedRound(null)
+  }, [state.step])
+
   const dock = (
     <Dock
       tokens={state.stack.length}
@@ -84,13 +99,26 @@ export function Game({
     step = isPhaseStart(state.round, state.setup.settings) ? (
       <PhaseChangeStep key={state.round} state={state} dispatch={dispatch} dock={dock} />
     ) : (
-      <RevealStep key={state.round} state={state} dispatch={dispatch} dock={dock} />
+      <RevealStep
+        key={state.round}
+        state={state}
+        dispatch={dispatch}
+        dock={dock}
+        onRevealed={() => setFlippedRound(state.round)}
+      />
     )
   } else if (state.step === 'thanos') {
     const { action } = currentRoundCard(state)
     step =
       action.kind === 'take' ? (
-        <TakeStep key={state.round} state={state} action={action} dispatch={dispatch} dock={dock} />
+        <TakeStep
+          key={state.round}
+          state={state}
+          action={action}
+          dispatch={dispatch}
+          dock={dock}
+          entering={flippedRound === state.round}
+        />
       ) : (
         <RecruitStep
           key={state.round}
@@ -120,13 +148,17 @@ export function Game({
         <HoardSheet state={state} dispatch={dispatch} onClose={() => setSheet(null)} />
       ) : null}
       {sheet === 'log' ? <LogSheet state={state} onClose={() => setSheet(null)} /> : null}
-      {sheet === 'rules' ? (
-        <RulesSheet
+      {sheet === 'menu' ? (
+        <MenuSheet
           state={state}
           wakeLock={wakeLock}
           onWakeLock={onWakeLock}
           onClose={() => setSheet(null)}
           onHome={onHome}
+          onEndGame={() => {
+            setSheet(null)
+            onEndGame()
+          }}
         />
       ) : null}
       {sheet === 'logCard' ? (

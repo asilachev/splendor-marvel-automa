@@ -1,5 +1,5 @@
 import { ArrowLeft, ChevronRight, Check, Swords } from 'lucide-react'
-import { useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { PHASE_LENGTH_PRESETS, type PhaseLengths, type Settings } from '../../engine/index.ts'
 import { Button, Caption, CheckItem, Options, Panel } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
@@ -43,6 +43,10 @@ export function Setup({
 }) {
   const [settings, setSettings] = useState<Settings>(initial)
   const [rulings, setRulings] = useState(false)
+  // The rulings sub-screen opens at its top, and so does setup when you come back (#52).
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, [rulings])
   const [done, setDone] = useState<ReadonlySet<number>>(new Set())
   const set = <K extends keyof Settings>(key: K, value: Settings[K]) =>
     setSettings((s) => ({ ...s, [key]: value }))
