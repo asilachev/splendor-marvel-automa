@@ -46,6 +46,42 @@ change to a rule or ruling updates the docs in the same PR.
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
 
+## Commands
+
+You need Node 22 or later (see `.nvmrc`). Use npm.
+
+| Command | What it does |
+| --- | --- |
+| `npm ci` | Install dependencies exactly as locked |
+| `npm run dev` | Start the dev server (add `-- --host` to open it on a phone on the same Wi-Fi) |
+| `npm test` | Run all tests once (Vitest). The `engine` project runs on Node, the `ui` project on jsdom |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run lint` | Run Oxlint; warnings fail |
+| `npm run format` / `format:check` | Format, or check formatting, with Prettier (code and config only; Markdown is excluded) |
+| `npm run typecheck` | `tsc -b`, strict |
+| `npm run build` | Typecheck, then production build into `dist/` |
+| `npm run preview` | Serve the production build |
+
+CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
+and on every push to `master`. Run the same commands before pushing.
+
+## Code layout
+
+```
+src/
+  engine/   pure TypeScript automa engine: no React, no DOM; *.test.ts runs on Node
+  ui/       React components and styles; *.test.tsx runs on jsdom with Testing Library
+  test/     shared test setup
+docs/       rules, automa spec, design, reference PDFs
+```
+
+**Conventions**
+
+- Imports use explicit `.ts` / `.tsx` extensions.
+- Use named exports.
+- Style with CSS Modules (`*.module.css`), using the tokens in `src/ui/styles/global.css`.
+- TypeScript is strict, with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`.
+
 ## Workflow
 
 GitHub Issues hold the plan, organised with milestones and labels: `engine`, `ui`, `infra`, `rules`,
