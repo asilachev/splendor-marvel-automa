@@ -186,7 +186,9 @@
 .screenTitle {
   font-size: 2.4rem;
   line-height: 1;
-  -webkit-text-stroke: 1px #000;
+  /* The outline sits outside the letters instead of eating into them (#62). */
+  -webkit-text-stroke: 2px #000;
+  paint-order: stroke fill;
 }
 
 .checklist {

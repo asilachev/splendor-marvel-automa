@@ -197,6 +197,11 @@ Components & states board, a user-flow map and a PWA checklist.
   pinned at the bottom, above the home indicator.
 - **Comic styling.** Bangers display type, Inter for body text, black outlines, hard offset shadows,
   gold, blue and red caption boxes, and a paper panel with a speech bubble for Thanos's move.
+- **Crisp text (#62).**
+  - Text uses grayscale antialiasing (`-webkit-font-smoothing: antialiased`). Without it, macOS
+    thickens light text on the dark ground and it reads as soft. Other systems ignore it.
+  - Outlined display text paints its black outline outside the letters (`paint-order: stroke fill`,
+    with the stroke doubled), so the outline doesn't eat into the letter shapes.
 - **Stones** are tokens: a coloured disc, a black outline and a white symbol. Pickers show the
   token-board numbers 1–5.
 - **Sheets.** Hoard (colour piles with a fix mode), Log, Menu (back to home, end the game, rules,
