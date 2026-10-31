@@ -3,8 +3,8 @@ import { useState, type ReactNode } from 'react'
 import type { GameState } from '../../engine/index.ts'
 import { OFFICIAL_ART } from '../assets/official/index.ts'
 import { Credits } from '../components/Credits.tsx'
-import { Button, LinkButton, Sheet } from '../components/Kit.tsx'
-import { LanguagePicker } from '../components/LanguagePicker.tsx'
+import { Button, LinkButton } from '../components/Kit.tsx'
+import { LanguageSheet } from '../components/LanguagePicker.tsx'
 import { describeResult } from '../format.ts'
 import { LANGS, useI18n } from '../i18n/index.ts'
 import styles from './home.module.css'
@@ -30,7 +30,6 @@ export function Home({
   onEndGame: () => void
 }) {
   const { t, lang } = useI18n()
-  const h = t.home
   const [languages, setLanguages] = useState(false)
   const inProgress = state !== null && state.step !== 'over'
   const langName = LANGS.find((l) => l.code === lang)?.name ?? lang
@@ -41,7 +40,7 @@ export function Home({
           <button
             type="button"
             className={styles.langButton}
-            aria-label={t.language.change(langName)}
+            aria-label={t('language.change', { name: langName })}
             aria-haspopup="dialog"
             onClick={() => setLanguages(true)}
           >
@@ -76,10 +75,10 @@ export function Home({
           </div>
         </div>
         <h1 className={styles.title}>THANOS AUTOMA</h1>
-        <p className={styles.tagline}>{h.tagline}</p>
+        <p className={styles.tagline}>{t('home.tagline')}</p>
         {firstLaunch ? (
           <div className={styles.steps}>
-            {h.steps.map((text, i) => (
+            {t.list('home.steps').map((text, i) => (
               <div key={i} className={styles.step}>
                 <strong>{i + 1}</strong>
                 {text}
@@ -89,13 +88,13 @@ export function Home({
         ) : null}
         {corruptSave ? (
           <p className={styles.notice} role="status">
-            {h.corruptSave}
+            {t('home.corruptSave')}
           </p>
         ) : null}
         {state?.result ? (
           <p className={styles.notice}>
-            {h.lastGame} <strong>{describeResult(t, state.result).title}</strong>{' '}
-            {h.lastGameRound(state.result.round)}
+            {t('home.lastGame')} <strong>{describeResult(t, state.result).title}</strong>{' '}
+            {t('home.lastGameRound', { round: state.result.round })}
           </p>
         ) : null}
         <Credits />
@@ -105,24 +104,20 @@ export function Home({
         {inProgress ? (
           <>
             <Button icon={<Play size={20} />} onClick={onContinue}>
-              {h.continue(state.round)}
+              {t('home.continue', { round: state.round })}
             </Button>
             <Button variant="secondary" onClick={onNewGame}>
-              {h.newGame}
+              {t('home.newGame')}
             </Button>
-            <LinkButton onClick={onEndGame}>{h.endGame}</LinkButton>
+            <LinkButton onClick={onEndGame}>{t('home.endGame')}</LinkButton>
           </>
         ) : (
           <Button icon={<Swords size={22} />} onClick={onNewGame}>
-            {firstLaunch ? h.firstGame : h.newGame}
+            {firstLaunch ? t('home.firstGame') : t('home.newGame')}
           </Button>
         )}
       </footer>
-      {languages ? (
-        <Sheet title={t.language.title} onClose={() => setLanguages(false)}>
-          <LanguagePicker paper />
-        </Sheet>
-      ) : null}
+      {languages ? <LanguageSheet onClose={() => setLanguages(false)} /> : null}
     </div>
   )
 }

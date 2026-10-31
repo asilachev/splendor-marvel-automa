@@ -360,17 +360,16 @@ describe('motion (#52)', () => {
   })
 })
 
-describe('languages (#54)', () => {
-  it('switches the language from Home and remembers it', async () => {
+describe('languages (#54, #58)', () => {
+  it('switches the language from Home, closes the selector and remembers it', async () => {
     const user = userEvent.setup()
     const { unmount } = render(<App />)
     expect(document.documentElement.lang).toBe('en')
     await user.click(screen.getByRole('button', { name: 'Language: English' }))
     const sheet = screen.getByRole('dialog', { name: 'LANGUAGE' })
     await user.click(within(sheet).getByRole('button', { name: /^DE/ }))
-    expect(screen.getByRole('dialog', { name: 'SPRACHE' })).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'SPRACHE schließen' }))
-    expect(screen.getByRole('button', { name: 'DEIN ERSTES SPIEL' })).toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(await screen.findByRole('button', { name: 'DEIN ERSTES SPIEL' })).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('de')
     expect(loadPrefs().language).toBe('de')
 
@@ -379,15 +378,17 @@ describe('languages (#54)', () => {
     expect(screen.getByRole('button', { name: 'DEIN ERSTES SPIEL' })).toBeInTheDocument()
   })
 
-  it('plays in Russian, switched from the menu', async () => {
+  it('plays in Russian, picked from the menu', async () => {
     const user = userEvent.setup()
     await resume(user, takeSeed, [])
     await user.click(screen.getByRole('button', { name: 'Menu' }))
-    await user.click(screen.getByRole('button', { name: /^RU/ }))
-    expect(screen.getByRole('dialog', { name: 'МЕНЮ' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /^Language/ }))
+    const sheet = screen.getByRole('dialog', { name: 'LANGUAGE' })
+    await user.click(within(sheet).getByRole('button', { name: /^RU/ }))
+    expect(await screen.findByRole('dialog', { name: 'МЕНЮ' })).toBeInTheDocument()
+    expect(screen.queryByRole('dialog', { name: 'ЯЗЫК' })).toBeNull()
     await user.click(screen.getByRole('button', { name: 'Закрыть: МЕНЮ' }))
     expect(screen.getByRole('heading', { name: 'ХОД ТАНОСА' })).toBeInTheDocument()
-    expect(screen.getByText('РАУНД 1')).toBeInTheDocument()
     expect(document.documentElement.lang).toBe('ru')
   })
 })

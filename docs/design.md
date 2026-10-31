@@ -137,10 +137,15 @@ Movement only when it means something, and then short and smooth.
   is used on first launch. The picker is the globe button at the top of Home and the Language row in
   the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen readers and
   hyphenation use the right language.
-- **Catalogs:** `src/ui/i18n/`. English (`en.ts`) is the source, and every other catalog has the same
-  type, so a missing string fails the typecheck. Text with numbers or names is a function, so each
-  language orders words and inflects them its own way (Russian «из зелёной секции», German „im grünen
-  Abschnitt“). Plurals use `Intl.PluralRules` (Russian and Serbian: one, few and many).
+- **Translation files:** `src/ui/i18n/locales/{en,ru,sr,es,de}.json`, one per language, in ICU
+  message syntax: `{round}`, `select` and `plural` with `#` (#58). English is bundled as the
+  fallback, and each other file loads only when its language is chosen, as its own chunk precached
+  for offline use. Code calls `t('home.continue', { round })` with keys typed from `en.json`. Tests
+  check that every file has the same keys, that messages parse, and that translations use only
+  English's placeholders. Each language can put whole sentences in `select` branches, so grammar
+  never depends on gluing pieces together. `locales/README.md` is the translator's guide.
+- **Picking a language** closes the selector. On Home it's the globe button; in the Menu, a
+  "Language · English" row opens the same sheet. Escape closes only the top layer.
 - **Terms** follow each language's MCU and board-game usage:
   - stones: Сила/Разум/Пространство/Реальность/Душа; Moć/Um/Prostor/Stvarnost/Duša;
     Poder/Mente/Espacio/Realidad/Alma; Macht/Gedanken/Raum/Realität/Seele;

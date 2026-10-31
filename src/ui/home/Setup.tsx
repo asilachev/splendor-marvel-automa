@@ -17,7 +17,7 @@ function Header({ title, onBack }: { title: string; onBack: () => void }) {
   const t = useT()
   return (
     <header className={styles.header}>
-      <button type="button" className={styles.back} aria-label={t.common.back} onClick={onBack}>
+      <button type="button" className={styles.back} aria-label={t('common.back')} onClick={onBack}>
         <ArrowLeft size={22} />
       </button>
       <h1 className={styles.screenTitle}>{title}</h1>
@@ -36,8 +36,6 @@ export function Setup({
   onBack: () => void
 }) {
   const t = useT()
-  const u = t.setup
-  const r = t.rulings
   const [settings, setSettings] = useState<Settings>(initial)
   const [rulings, setRulings] = useState(false)
   // The rulings sub-screen opens at its top, and so does setup when you come back (#52).
@@ -57,52 +55,94 @@ export function Setup({
     return (
       <div className={styles.screen}>
         <main className={styles.scroll}>
-          <Header title={r.title} onBack={() => setRulings(false)} />
-          <p className={styles.intro}>{r.intro}</p>
+          <Header title={t('rulings.title')} onBack={() => setRulings(false)} />
+          <p className={styles.intro}>{t('rulings.intro')}</p>
           <Options
-            label={r.counted}
+            label={t('rulings.counted')}
             value={settings.countedCards}
             onChange={(v) => set('countedCards', v)}
             options={[
-              { value: 'all', ...r.countedOptions.all },
-              { value: 'scoringOnly', ...r.countedOptions.scoringOnly },
+              {
+                value: 'all',
+                label: t('rulings.countedOptions.all.label'),
+                hint: t('rulings.countedOptions.all.hint'),
+              },
+              {
+                value: 'scoringOnly',
+                label: t('rulings.countedOptions.scoringOnly.label'),
+                hint: t('rulings.countedOptions.scoringOnly.hint'),
+              },
             ]}
-            tip={<RuleTip title={r.countedTip.title}>{r.countedTip.body}</RuleTip>}
+            tip={
+              <RuleTip title={t('rulings.countedTip.title')}>
+                {t('rulings.countedTip.body')}
+              </RuleTip>
+            }
           />
           <Options
-            label={r.card12}
+            label={t('rulings.card12')}
             value={settings.unprintedDiscard}
             onChange={(v) => set('unprintedDiscard', v)}
             options={[
-              { value: 0, ...r.card12Options.zero },
-              { value: 3, ...r.card12Options.three },
+              {
+                value: 0,
+                label: t('rulings.card12Options.zero.label'),
+                hint: t('rulings.card12Options.zero.hint'),
+              },
+              {
+                value: 3,
+                label: t('rulings.card12Options.three.label'),
+                hint: t('rulings.card12Options.three.hint'),
+              },
             ]}
-            tip={<RuleTip title={r.card12Tip.title}>{r.card12Tip.body}</RuleTip>}
+            tip={
+              <RuleTip title={t('rulings.card12Tip.title')}>{t('rulings.card12Tip.body')}</RuleTip>
+            }
           />
           <Options
-            label={r.emptySlot}
+            label={t('rulings.emptySlot')}
             value={settings.emptySlot}
             onChange={(v) => set('emptySlot', v)}
             options={[
-              { value: 'firstInRow', ...r.emptySlotOptions.firstInRow },
-              { value: 'nothing', ...r.emptySlotOptions.nothing },
+              {
+                value: 'firstInRow',
+                label: t('rulings.emptySlotOptions.firstInRow.label'),
+                hint: t('rulings.emptySlotOptions.firstInRow.hint'),
+              },
+              {
+                value: 'nothing',
+                label: t('rulings.emptySlotOptions.nothing.label'),
+                hint: t('rulings.emptySlotOptions.nothing.hint'),
+              },
             ]}
-            tip={<RuleTip title={r.emptySlotTip.title}>{r.emptySlotTip.body}</RuleTip>}
+            tip={
+              <RuleTip title={t('rulings.emptySlotTip.title')}>
+                {t('rulings.emptySlotTip.body')}
+              </RuleTip>
+            }
           />
           <Options
-            label={r.ties}
+            label={t('rulings.ties')}
             value={settings.ties}
             onChange={(v) => set('ties', v)}
             options={[
-              { value: 'tiebreakersThenThanos', ...r.tiesOptions.tiebreakers },
-              { value: 'thanosWins', ...r.tiesOptions.thanosWins },
+              {
+                value: 'tiebreakersThenThanos',
+                label: t('rulings.tiesOptions.tiebreakers.label'),
+                hint: t('rulings.tiesOptions.tiebreakers.hint'),
+              },
+              {
+                value: 'thanosWins',
+                label: t('rulings.tiesOptions.thanosWins.label'),
+                hint: t('rulings.tiesOptions.thanosWins.hint'),
+              },
             ]}
-            tip={<RuleTip title={r.tiesTip.title}>{r.tiesTip.body}</RuleTip>}
+            tip={<RuleTip title={t('rulings.tiesTip.title')}>{t('rulings.tiesTip.body')}</RuleTip>}
           />
         </main>
         <footer className={styles.footer}>
           <Button icon={<Check size={22} />} onClick={() => setRulings(false)}>
-            {r.save}
+            {t('rulings.save')}
           </Button>
         </footer>
       </div>
@@ -112,10 +152,10 @@ export function Setup({
   return (
     <div className={styles.screen}>
       <main className={styles.scroll}>
-        <Header title={u.title} onBack={onBack} />
-        <Caption>{u.tableCaption}</Caption>
+        <Header title={t('setup.title')} onBack={onBack} />
+        <Caption>{t('setup.tableCaption')}</Caption>
         <Panel className={styles.checklist}>
-          {u.table.map((item, i) => (
+          {t.list('setup.table').map((item, i) => (
             <CheckItem
               key={i}
               done={done.has(i)}
@@ -129,37 +169,57 @@ export function Setup({
             </CheckItem>
           ))}
         </Panel>
-        <Caption tone="blue">{u.difficulty}</Caption>
+        <Caption tone="blue">{t('setup.difficulty')}</Caption>
         <Options
-          label={u.length}
+          label={t('setup.length')}
           value={presetOf(settings.phaseLengths)}
           onChange={(p) => set('phaseLengths', PHASE_LENGTH_PRESETS[p])}
           options={[
-            { value: 'standard', ...u.lengthOptions.standard },
-            { value: 'shorter', ...u.lengthOptions.shorter },
-            { value: 'shortest', ...u.lengthOptions.shortest },
+            {
+              value: 'standard',
+              label: t('setup.lengthOptions.standard.label'),
+              hint: t('setup.lengthOptions.standard.hint'),
+            },
+            {
+              value: 'shorter',
+              label: t('setup.lengthOptions.shorter.label'),
+              hint: t('setup.lengthOptions.shorter.hint'),
+            },
+            {
+              value: 'shortest',
+              label: t('setup.lengthOptions.shortest.label'),
+              hint: t('setup.lengthOptions.shortest.hint'),
+            },
           ]}
-          tip={<RuleTip title={u.lengthTip.title}>{u.lengthTip.body}</RuleTip>}
+          tip={<RuleTip title={t('setup.lengthTip.title')}>{t('setup.lengthTip.body')}</RuleTip>}
         />
         <Options
-          label={u.cap}
+          label={t('setup.cap')}
           value={settings.stackCap ?? 0}
           onChange={(c) => set('stackCap', c === 0 ? null : c)}
           options={[
-            { value: 0, ...u.capOptions.none },
-            { value: 12, ...u.capOptions.twelve },
+            {
+              value: 0,
+              label: t('setup.capOptions.none.label'),
+              hint: t('setup.capOptions.none.hint'),
+            },
+            {
+              value: 12,
+              label: t('setup.capOptions.twelve.label'),
+              hint: t('setup.capOptions.twelve.hint'),
+            },
           ]}
-          tip={<RuleTip title={u.capTip.title}>{u.capTip.body}</RuleTip>}
+          tip={<RuleTip title={t('setup.capTip.title')}>{t('setup.capTip.body')}</RuleTip>}
         />
         <button type="button" className={styles.rulingsRow} onClick={() => setRulings(true)}>
           <ChevronRight size={18} />
-          <span>{u.rulingsRow}</span>
-          <small>{changed ? u.customised : u.defaults}</small>
+          <span>{t('setup.rulingsRow')}</span>
+          <small>{changed ? t('setup.customised') : t('setup.defaults')}</small>
         </button>
       </main>
       <footer className={styles.footer}>
         <Button icon={<Swords size={22} />} onClick={() => onStart(settings)}>
-          {u.start}
+          {t('setup.start')}
         </Button>
       </footer>
     </div>

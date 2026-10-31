@@ -57,8 +57,8 @@ export function Game({
       toasts.push({
         key: 'undo',
         icon: <Undo2 size={20} />,
-        text: t.toasts.undone,
-        action: { label: t.toasts.undoMore, run: () => undoRef.current() },
+        text: t('toasts.undone'),
+        action: { label: t('toasts.undoMore'), run: () => undoRef.current() },
       })
     }
   })

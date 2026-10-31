@@ -81,7 +81,7 @@ src/
     components/  comic kit: Token, Button, Caption, chips, stone tiles, sheets, dialog, toasts, Versus HUD, dock, cards
     game/        game screen: steps (reveal, take, recruit, table, phase change, game over) and dock sheets
     home/        home, setup and rulings
-    i18n/        message catalogs: en (source), ru, sr (Latin), es, de; plurals; language detection
+    i18n/        translations: locales/{en,ru,sr,es,de}.json (ICU messages), loader, t(), language detection
     pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
@@ -95,10 +95,10 @@ docs/       rules, automa spec, design, user guide with screenshots, reference P
 - Imports use explicit `.ts` / `.tsx` extensions.
 - Use named exports.
 - Style with CSS Modules (`*.module.css`), using the tokens in `src/ui/styles/global.css`.
-- **All UI text lives in `src/ui/i18n/`.** Add each new string to `en.ts`, then translate it in
-  `ru.ts`, `sr.ts`, `es.ts` and `de.ts`. The typecheck fails if one is missing. Text with numbers
-  or names is a function, so each language can inflect it. Check new screens at 360 px in the
-  longest languages, German and Russian.
+- **All UI text lives in `src/ui/i18n/locales/*.json`**, one file per language, in ICU message syntax
+  (see `locales/README.md`). Code calls `t('section.key', { vars })`, with keys typed from `en.json`.
+  Add each new text to every file; tests fail on a missing key or an unknown placeholder. Check new
+  screens at 360 px in the longest languages, German and Russian.
 - TypeScript is strict, with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`.
 
 ## Workflow

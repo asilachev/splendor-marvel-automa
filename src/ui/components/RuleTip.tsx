@@ -19,7 +19,7 @@ export function RuleTip({ title, children }: { title: string; children: ReactNod
         className={styles.tipButton}
         aria-expanded={open}
         aria-controls={id}
-        aria-label={t.common.rule(title)}
+        aria-label={t('common.rule', { title })}
         onClick={() => setOpen((o) => !o)}
       >
         i

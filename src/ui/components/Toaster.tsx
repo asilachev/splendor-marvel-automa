@@ -119,7 +119,7 @@ export function Toaster({ children }: { children: ReactNode }) {
               <button
                 type="button"
                 className={styles.toastClose}
-                aria-label={t.common.dismiss}
+                aria-label={t('common.dismiss')}
                 onClick={() => leave(toast.id)}
               >
                 <X size={18} />
