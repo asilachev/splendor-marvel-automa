@@ -70,8 +70,13 @@ points, and checks the Infinity Gauntlet for both sides. The
 
 ## Credits
 
-- **Splendor Marvel** is designed by Marc André and published by Space Cowboys (2020). © Space Cowboys,
+- **Splendor Marvel** is designed by Marc André and published by
+  [Space Cowboys](https://www.spacecowboys-games.com/game/splendor-marvel/) (2020). © Space Cowboys,
   © MARVEL.
+  - **Where to buy:** find a shop with
+    [Asmodee's store locator](https://storelocator.asmodee.com/), or see the offers on its
+    [BoardGameGeek page](https://boardgamegeek.com/boardgame/293296/splendor-marvel). You need the
+    physical game to use the app.
 - **The solo automa** was designed by **Dukefanblue2005** on BGG, originally for Splendor
   ([Splendor Automa](https://boardgamegeek.com/filepage/201926)).
 - **The Marvel re-theme of the automa** is by **Shamus** on BGG
