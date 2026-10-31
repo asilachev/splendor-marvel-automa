@@ -3,6 +3,7 @@ node_modules/
 
 # build & test output
 dist/
+_site/
 dev-dist/
 coverage/
 playwright-report/

@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thanos Automa · play Splendor Marvel solo</title>
+    <meta
+      name="description"
+      content="A free phone companion for playing Splendor Marvel solo against the fan-made Thanos automa. It runs his deck, his tokens and his race to the Infinity Gauntlet, while your table holds the game."
+    />
+    <meta name="theme-color" content="#0f0b1a" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="icon-512.png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Thanos Automa · play Splendor Marvel solo" />
+    <meta
+      property="og:description"
+      content="Your table holds the game. This app runs Thanos: his deck, his tokens, his race to the Gauntlet."
+    />
+    <meta
+      property="og:image"
+      content="https://asilachev.github.io/splendor-marvel-automa/screenshots/04-reveal.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg width="0" height="0" class="sprite" aria-hidden="true">
+      <defs>
+        <g id="sym-power"><circle cx="12" cy="12" r="4.6" /></g>
+        <g id="sym-mind"><path d="M9.4 7.4h5.2l2.6 4.6-2.6 4.6H9.4L6.8 12z" /></g>
+        <g id="sym-space"><rect x="7.6" y="7.6" width="8.8" height="8.8" rx="1.2" /></g>
+        <g id="sym-reality"><path d="M12 6.8l5.4 9.3H6.6z" /></g>
+        <g id="sym-soul">
+          <circle cx="12" cy="12" r="2.8" />
+          <path
+            d="M12 5.4v1.6M12 17v1.6M5.4 12H7M17 12h1.6M7.3 7.3l1.1 1.1M15.6 15.6l1.1 1.1M7.3 16.7l1.1-1.1M15.6 8.4l1.1-1.1"
+          />
+        </g>
+        <g id="sym-time"><path d="M12 6.5l5.5 5.5-5.5 5.5L6.5 12z" /></g>
+      </defs>
+    </svg>
+
+    <header class="nav">
+      <a class="brand" href="#top">
+        <img src="favicon.svg" width="36" height="36" alt="" />
+        <span>Thanos Automa</span>
+      </a>
+      <nav aria-label="Sections">
+        <a href="#how">How it plays</a>
+        <a href="#features">Features</a>
+        <a href="#languages">Languages</a>
+        <a href="#run">Run it</a>
+      </nav>
+      <a class="button small" href="https://github.com/asilachev/splendor-marvel-automa">GitHub</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-text">
+          <span class="caption">Splendor Marvel · solo</span>
+          <h1>Thanos<br />Automa</h1>
+          <p class="lead">
+            Play <strong>Splendor Marvel</strong> solo against the fan-made Thanos automa. Your
+            table holds the game. This phone app runs Thanos: his deck, his tokens and his race to
+            the Infinity Gauntlet.
+          </p>
+          <div class="actions">
+            <a
+              class="button"
+              href="https://github.com/asilachev/splendor-marvel-automa/blob/master/docs/guide/README.md"
+              >Read the guide</a
+            >
+            <a class="button secondary" href="https://github.com/asilachev/splendor-marvel-automa"
+              >View on GitHub</a
+            >
+          </div>
+          <ul class="badges" aria-label="Highlights">
+            <li>Free &amp; open source</li>
+            <li>Works offline</li>
+            <li>5 languages</li>
+            <li>No accounts</li>
+          </ul>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <figure class="phone back">
+            <img src="screenshots/06-recruit.png" width="780" height="1688" alt="" />
+          </figure>
+          <figure class="phone front">
+            <img src="screenshots/04-reveal.png" width="780" height="1688" alt="" />
+          </figure>
+          <span class="burst">He always goes first!</span>
+        </div>
+      </section>
+
+      <section class="strip" aria-label="What the app is">
+        <p>
+          <strong>A companion, not a digital game.</strong> The market, the token supply and your
+          cards stay on the table. The app replaces the automa deck, the token board and every bit
+          of Thanos’s bookkeeping.
+        </p>
+      </section>
+
+      <section id="how" class="section">
+        <span class="caption blue">How a round goes</span>
+        <h2>Four taps a round</h2>
+        <ol class="steps">
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/04-reveal.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Thanos makes his move: the automa card back, tap to reveal"
+              />
+            </figure>
+            <span class="number">1</span>
+            <h3>Flip his card</h3>
+            <p>
+              Thanos always goes first. The app shuffles his deck for each phase and reads the right
+              section of the card.
+            </p>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/06-recruit.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Thanos recruits: the market map, the tokens he returns, and which stone is on the card"
+              />
+            </figure>
+            <span class="number">2</span>
+            <h3>Do what he says</h3>
+            <p>
+              Which tokens he takes, which card he recruits, the colour substitution, and which
+              tokens go back first: you just move them on the table.
+            </p>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/08-table.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="At the table: a checklist of his move, then your move"
+              />
+            </figure>
+            <span class="number">3</span>
+            <h3>Play your turn</h3>
+            <p>
+              Tick off the table checklist, play as usual, and log the card you recruited: its
+              level, colour, points and Avengers tags.
+            </p>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/14-win.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="You win: you completed the Infinity Gauntlet"
+              />
+            </figure>
+            <span class="number">4</span>
+            <h3>Race to the Gauntlet</h3>
+            <p>
+              At the end of every round the app checks both sides for the Infinity Gauntlet, with
+              the official tiebreakers. Survive 30 rounds or it’s a SNAP.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="features" class="section">
+        <span class="caption">What it does</span>
+        <h2>Thanos, fully automated</h2>
+        <ul class="features">
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #8e44d6">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-power" />
+            </svg>
+            <h3>Runs his deck</h3>
+            <p>Shuffles each phase, reads green, yellow, then red, and keeps the 30-round clock.</p>
+          </li>
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #f2c200">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-mind" />
+            </svg>
+            <h3>Tells you exactly what he does</h3>
+            <p>
+              Tokens in printed order, the slot he recruits, colour substitution and the oldest
+              tokens back first.
+            </p>
+          </li>
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #2f8fdd">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-space" />
+            </svg>
+            <h3>Keeps his bookkeeping</h3>
+            <p>His token piles, cards, points, the Avengers tile and the Time stone.</p>
+          </li>
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #e23b3b">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-reality" />
+            </svg>
+            <h3>Checks the Gauntlet</h3>
+            <p>
+              Every round, for both sides, with the official tiebreakers and the automa’s rules for
+              ties.
+            </p>
+          </li>
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #f07f1a">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-soul" />
+            </svg>
+            <h3>Undo anything</h3>
+            <p>Every step can be undone, and the game is saved after every tap.</p>
+          </li>
+          <li>
+            <svg class="token" viewBox="0 0 24 24" aria-hidden="true" style="--stone: #2fb36b">
+              <circle cx="12" cy="12" r="10.8" />
+              <use href="#sym-time" />
+            </svg>
+            <h3>Made for the table</h3>
+            <p>
+              Installs to your home screen, works offline and keeps the screen awake during a game.
+            </p>
+          </li>
+          <li>
+            <span class="token-text" aria-hidden="true">i</span>
+            <h3>Rules where you need them</h3>
+            <p>Tap the “i” next to a step to read the rule it follows, right at the table.</p>
+          </li>
+          <li>
+            <span class="token-text" aria-hidden="true">?</span>
+            <h3>Rulings for the gaps</h3>
+            <p>
+              Where the automa PDF is silent, the defaults follow the BoardGameGeek clarifications,
+              and you can change them.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section gallery-section" aria-labelledby="gallery-title">
+        <span class="caption red">Every screen</span>
+        <h2 id="gallery-title">A closer look</h2>
+        <ul class="gallery">
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/02-setup.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="New game setup: table checklist and difficulty"
+              />
+            </figure>
+            <span>Set up and pick a difficulty</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/05-take.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Thanos takes tokens; tap a token if its pile is empty"
+              />
+            </figure>
+            <span>He takes tokens</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/07-substitute.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Colour substitution: he already has that colour"
+              />
+            </figure>
+            <span>Colour substitution</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/09-log-card.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Log your card: level, bonus colour, points and Avengers tags"
+              />
+            </figure>
+            <span>Log your card</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/10-phase-change.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Deck reshuffled: phase 2 begins"
+              />
+            </figure>
+            <span>New phase, new section</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/11-hoard.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="Thanos's hoard: token piles, return order and his cards"
+              />
+            </figure>
+            <span>His hoard</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/12-log.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="The game log, newest round first"
+              />
+            </figure>
+            <span>The game log</span>
+          </li>
+          <li>
+            <figure class="phone small">
+              <img
+                src="screenshots/15-snap.png"
+                width="780"
+                height="1688"
+                loading="lazy"
+                alt="SNAP: round 30 ended without your Infinity Gauntlet"
+              />
+            </figure>
+            <span>Or… SNAP.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section id="languages" class="section">
+        <span class="caption blue">Five languages</span>
+        <h2>Speaks your language</h2>
+        <p class="section-lead">
+          It starts in your phone’s language, and you can switch any time. Every text, including the
+          rules and Thanos’s lines, is translated.
+        </p>
+        <ul class="languages">
+          <li lang="en">English</li>
+          <li lang="ru">Русский</li>
+          <li lang="sr-Cyrl">Српски</li>
+          <li lang="es">Español</li>
+          <li lang="de">Deutsch</li>
+        </ul>
+      </section>
+
+      <section id="run" class="section">
+        <span class="caption">Run it yourself</span>
+        <h2>Host your own copy</h2>
+        <p class="section-lead">
+          It’s a static web app with no server code, accounts or tracking. Build the Docker image,
+          or the static files, and serve them over HTTPS so phones can install it.
+        </p>
+        <div class="code-grid">
+          <figure class="code">
+            <figcaption>Docker</figcaption>
+            <pre><code>git clone https://github.com/asilachev/splendor-marvel-automa.git
+cd splendor-marvel-automa
+docker build -t thanos-automa .
+docker run -p 8080:8080 thanos-automa</code></pre>
+          </figure>
+          <figure class="code">
+            <figcaption>Static files</figcaption>
+            <pre><code>npm ci
+npm run build
+# serve the dist/ folder over HTTPS</code></pre>
+          </figure>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="credits">
+          <h2>Credits</h2>
+          <ul>
+            <li>
+              <strong>Splendor Marvel</strong>: game by Marc André, published by Space Cowboys
+              (2020).
+            </li>
+            <li>
+              <strong>Solo automa</strong>: designed by
+              <a href="https://boardgamegeek.com/filepage/201926">Dukefanblue2005</a> on
+              BoardGameGeek.
+            </li>
+            <li>
+              <strong>Marvel re-theme of the automa</strong>: by
+              <a href="https://boardgamegeek.com/filepage/215783">Shamus</a> on BoardGameGeek.
+            </li>
+            <li>
+              <strong>Fonts</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font
+              License 1.1; Cyrillic extension 2016). Inter, © 2016 The Inter Project Authors (SIL
+              Open Font License 1.1).
+            </li>
+          </ul>
+          <p>
+            Splendor and the Splendor logo are trademarks of Space Cowboys (Asmodee). MARVEL, the
+            MARVEL logo and all related characters and names are ™ &amp; © MARVEL. Screenshots show
+            the Splendor and MARVEL logos and the automa card back, which belong to their owners.
+          </p>
+          <p>
+            <strong>Unofficial fan project.</strong> It isn’t affiliated with or endorsed by Space
+            Cowboys, Asmodee or Marvel, and you need the physical game to play.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <img src="favicon.svg" width="28" height="28" alt="" />
+      <span>Thanos Automa · a fan-made Splendor Marvel solo companion</span>
+      <a href="https://github.com/asilachev/splendor-marvel-automa">GitHub</a>
+    </footer>
+  </body>
+</html>
