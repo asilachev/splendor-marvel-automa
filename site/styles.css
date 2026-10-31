@@ -779,6 +779,14 @@ h3 {
   }
 }
 
+/* The guide, after the four steps (#83). */
+.steps-more {
+  margin: 44px 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  text-align: center;
+}
+
 /* Features */
 .features {
   display: grid;

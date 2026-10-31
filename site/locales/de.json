@@ -16,7 +16,7 @@
   "hero": {
     "caption": "Splendor Marvel · solo",
     "lead": "Spiele <strong>Splendor Marvel</strong> solo gegen das von Fans gemachte Thanos-Automa. Auf deinem Tisch liegt das Spiel – diese Handy-App steuert Thanos: sein Deck, seine Chips und sein Rennen zum Infinity-Handschuh.",
-    "guide": "Anleitung (Englisch)",
+    "app": "App öffnen",
     "github": "Auf GitHub ansehen",
     "highlights": "Das Wichtigste",
     "badges": ["Kostenlos, Code auf GitHub", "Funktioniert offline", "5 Sprachen", "Ohne Konto"],
@@ -40,6 +40,7 @@
   "how": {
     "caption": "So läuft eine Runde",
     "title": "Vier Tipper pro Runde",
+    "guide": "Alle Bildschirme Schritt für Schritt findest du in der <a href=\"{{links.guide}}\" hreflang=\"en\">Anleitung</a> (auf Englisch).",
     "steps": [
       {
         "alt": "Thanos ist am Zug: die Rückseite der Automa-Karte, zum Aufdecken tippen",
@@ -173,6 +174,7 @@
     "unofficial": "<strong>Inoffizielles Fan-Projekt.</strong> Weder verbunden mit noch unterstützt von Space Cowboys, Asmodee oder Marvel. Zum Spielen brauchst du das echte Spiel."
   },
   "footer": {
+    "app": "App",
     "tagline": "Thanos Automa · ein Solo-Begleiter für Splendor Marvel, von Fans gemacht"
   }
 }
