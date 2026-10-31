@@ -16,7 +16,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "reference": "gh release download reference-docs --dir docs/reference --pattern \"*.pdf\" --clobber"
   },
   "dependencies": {
     "react": "^19.3.1",

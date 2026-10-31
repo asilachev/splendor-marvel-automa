@@ -1,9 +1,10 @@
 # Splendor Marvel: official rules summary
 
 This is a summary, in our own words, of the parts of the official rules that this app depends on. The
-official English rulebook (Space Cowboys, 2020, 4 pages) is in
-[`reference/splendor-marvel-rulebook-en.pdf`](reference/splendor-marvel-rulebook-en.pdf). **If this
-summary and the rulebook disagree, the rulebook wins.** Fix the summary in the same PR as any code
+official English rulebook (Space Cowboys, 2020, 4 pages) is `splendor-marvel-rulebook-en.pdf` in the
+[`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs);
+`npm run reference` downloads it into `docs/reference/`. **If this summary and the rulebook disagree,
+the rulebook wins.** Fix the summary in the same PR as any code
 change that depends on it.
 
 Page numbers below refer to the rulebook PDF.

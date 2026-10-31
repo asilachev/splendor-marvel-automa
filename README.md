@@ -34,8 +34,10 @@ bookkeeping.
 ## Rules
 
 - **Official game rules.** [`docs/rules.md`](docs/rules.md) summarises everything the app relies on,
-  with page references. The official rulebook PDF is in [`docs/reference/`](docs/reference/), and the
-  game's page is on [BGG](https://boardgamegeek.com/boardgame/293296/splendor-marvel).
+  with page references. The official rulebook and the automa PDF are attached to the private
+  [`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs);
+  `npm run reference` downloads them into `docs/reference/`. The game's page is on
+  [BGG](https://boardgamegeek.com/boardgame/293296/splendor-marvel).
 - **Automa rules.** [`docs/automa.md`](docs/automa.md) has:
   - the full card list, checked against the PDF;
   - clarifications from BGG;
