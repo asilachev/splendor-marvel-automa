@@ -50,8 +50,9 @@ change to a rule or ruling updates the docs in the same PR.
   GitHub Pages (`site/`, #61).
   - Never commit the copyrighted PDFs. They live in the `reference-docs` release, which the owner
     chose to leave public (#17).
-  - Don't link to a hosted copy of the app from the landing page, and don't post links to the app on
-    BGG. See the community note in `docs/automa.md`.
+  - The landing page links the owner's copy of the app at `app.thanos.silachev.com`, by the owner's
+    decision (#83). Don't post links to the app on BGG; the community note in `docs/automa.md`
+    explains why.
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
 

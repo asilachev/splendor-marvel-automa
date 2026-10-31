@@ -16,7 +16,7 @@
   "hero": {
     "caption": "Splendor Marvel · solitario",
     "lead": "Juega a <strong>Splendor Marvel</strong> en solitario contra el automa de Thanos creado por fans. El juego está en tu mesa; esta app para el móvil mueve a Thanos: su mazo, sus fichas y su carrera hacia el Guantelete del Infinito.",
-    "guide": "Lee la guía (en inglés)",
+    "app": "Abrir la app",
     "github": "Ver en GitHub",
     "highlights": "Lo esencial",
     "badges": ["Gratis, código en GitHub", "Funciona sin conexión", "5 idiomas", "Sin cuentas"],
@@ -40,6 +40,7 @@
   "how": {
     "caption": "Cómo va una ronda",
     "title": "Cuatro toques por ronda",
+    "guide": "Todas las pantallas, paso a paso, están en <a href=\"{{links.guide}}\" hreflang=\"en\">la guía</a> (en inglés).",
     "steps": [
       {
         "alt": "Thanos hace su jugada: el dorso de la carta del automa, toca para revelarla",
@@ -179,6 +180,7 @@
     "unofficial": "<strong>Proyecto no oficial hecho por fans.</strong> No tiene relación con Space Cowboys, Asmodee ni Marvel, ni está avalado por ellos, y necesitas el juego físico para jugar."
   },
   "footer": {
+    "app": "App",
     "tagline": "Thanos Automa · un compañero en solitario para Splendor Marvel hecho por fans"
   }
 }

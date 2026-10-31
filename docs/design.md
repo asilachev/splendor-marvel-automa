@@ -117,8 +117,7 @@ https://thanos.silachev.com/ (English), then `ru/`, `sr/`, `es/` and `de/`.
 
 - **Domain:** a GitHub Pages custom domain (a CNAME to `asilachev.github.io`, HTTPS enforced);
   the old `asilachev.github.io/splendor-marvel-automa/` address redirects to it. The owner's copy of
-  the app runs on Vercel at `app.thanos.silachev.com`. The page doesn't link to it, because of the
-  community note in `docs/automa.md`.
+  the app runs on Vercel at `app.thanos.silachev.com`.
 
 - **Languages (#69):**
   - `site/index.html` is a template; each language's texts are in `site/locales/<lang>.json`.
@@ -169,8 +168,10 @@ https://thanos.silachev.com/ (English), then `ru/`, `sr/`, `es/` and `de/`.
     white focus ring.
   - Nav links get a wavy gold underline, the logo wiggles, and text links thicken their underline.
   - With reduced motion, the states keep their colours and shadows but don't tilt or animate.
-- **No app link.** It doesn't link to a hosted copy of the app (see the community note in
-  `docs/automa.md`).
+- **App link (#83).** "Open the app" is the hero's main button, next to "View on GitHub", and the
+  footer links the app too. Both open the owner's copy at `app.thanos.silachev.com`; the owner chose
+  to link it once it was deployed (it replaced the earlier "no app link" choice). The guide link sits
+  after the four steps, noting that the guide is in English.
 - **Build:** `npm run site:shots && npm run site` renders the pages and copies the screenshots,
   the fonts (Bangers Cyrillic, Inter Latin and Cyrillic) and the icons into `_site/`.
   `.github/workflows/pages.yml` builds it on pull requests and deploys it from `master` whenever the
