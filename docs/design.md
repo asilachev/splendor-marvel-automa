@@ -103,6 +103,29 @@ ordered stack by hand is the fiddliest part of the paper automa.
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
 
+## Landing page (#61)
+
+`site/` is a static page on GitHub Pages: https://asilachev.github.io/splendor-marvel-automa/.
+
+- **Look:** the app's visual language (ink and gold, Bangers and Inter, hard shadows) with the real
+  guide screenshots in phone frames.
+- **Sections:**
+  - a hero;
+  - "a companion, not a digital game";
+  - four taps a round;
+  - features;
+  - a gallery;
+  - the five languages;
+  - how to host your own copy;
+  - the credits.
+- **No app link.** It doesn't link to a hosted copy of the app (see the community note in
+  `docs/automa.md`).
+- **Build:** `npm run site` copies the page, the screenshots, the two fonts and the icons into
+  `_site/`, and fails if the page references a missing file. `.github/workflows/pages.yml` deploys it
+  when any of them change on `master`, so `npm run screenshots` updates the page too.
+- **Layout:** no sideways scrolling from 320 px up. The hero's two phones share one stage sized in
+  percentages.
+
 ## Motion (#52)
 
 Movement only when it means something, and then short and smooth.
@@ -216,8 +239,8 @@ Components & states board, a user-flow map and a PWA checklist.
 - The owner asked for the official Splendor and MARVEL logos and the automa card back to be used in the
   app (#30).
   - They live only in `src/ui/assets/official/` and are imported only through `OFFICIAL_ART`.
-  - They are for personal use.
-  - Remove or replace them before the repo goes public (#17).
+  - The repo is public, and the owner chose to keep them. The landing page shows them in the real
+    screenshots (#17, #61).
   - Don't add any other official art.
 
 ## Prior art

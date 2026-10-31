@@ -19,7 +19,7 @@ The app is a **companion**:
 | [`docs/rules.md`](docs/rules.md) | Summary of the official rules, with rulebook page references |
 | [`docs/automa.md`](docs/automa.md) | Automa rules, the **card list**, BGG clarifications, and the **rulings table** (defaults for every gap in the PDF) |
 | [`docs/design.md`](docs/design.md) | UX flow, screens, engine state and events, visual language |
-| [`docs/reference/`](docs/reference/) | Source PDFs: the official rulebook and the automa. They are gitignored; `npm run reference` downloads them from the private [`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs) (needs `gh` auth) |
+| [`docs/reference/`](docs/reference/) | Source PDFs: the official rulebook and the automa. They are gitignored; `npm run reference` downloads them from the [`reference-docs` release](https://github.com/asilachev/splendor-marvel-automa/releases/tag/reference-docs) (needs `gh` auth) |
 
 When behaviour depends on a rule, cite the doc section in code comments or tests. If the code needs a
 rule the docs don't cover, or contradicts them, **stop and raise it in the issue**. Don't guess. Any
@@ -35,7 +35,8 @@ change to a rule or ruling updates the docs in the same PR.
 - **Official art.** Only the owner-approved assets in `src/ui/assets/official/` may be used: the
   Splendor and MARVEL logos and the automa card back. They are imported only through `OFFICIAL_ART`.
   - Don't add any other official art.
-  - The folder must be removed or replaced before the repo goes public (#17).
+  - The repo is public, and the owner chose to keep them, including in the landing-page screenshots
+    (#17, #61).
   - Everything else (icons, tokens, the card face) is our own drawing.
 - **Faithful to the automa.** Each gap in the PDF is a setting, and its default comes from the
   rulings table in `docs/automa.md`. Don't silently change a default.
@@ -45,9 +46,12 @@ change to a rule or ruling updates the docs in the same PR.
   - Game state is a pure function of `(seed, settings, events)`.
 - **Credit** Marc André and Space Cowboys (game), Dukefanblue2005 (automa) and Shamus (Marvel
   re-theme) wherever credits appear.
-- **Visibility.** The repo is **private**. Never commit the copyrighted PDFs; they live in the
-  `reference-docs` release. Don't post links to the app on BGG; see the community note in
-  `docs/automa.md`. Going public has its own checklist (#17).
+- **Visibility.** The repo is **public**, by the owner's decision, and so is its landing page on
+  GitHub Pages (`site/`, #61).
+  - Never commit the copyrighted PDFs. They live in the `reference-docs` release, which the owner
+    chose to leave public (#17).
+  - Don't link to a hosted copy of the app from the landing page, and don't post links to the app on
+    BGG. See the community note in `docs/automa.md`.
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
 
@@ -68,11 +72,13 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run preview` | Serve the production build |
 | `docker build -t thanos-automa .` | Build the production image (nginx on port 8080); `docker compose up -d` runs the published one |
 | `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688) |
-| `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the private release |
+| `npm run site` | Assemble the landing page into `_site/`: `site/` plus the guide screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
+| `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
 and on every push to `master`. Run the same commands before pushing. `.github/workflows/docker.yml`
-builds the image on PRs and publishes it to GHCR from `master`.
+builds the image on PRs and publishes it to GHCR from `master`. `.github/workflows/pages.yml` deploys
+the landing page to GitHub Pages from `master`.
 
 ## Code layout
 
@@ -88,7 +94,8 @@ src/
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
-scripts/    repo tooling (logo/icon generator, guide screenshots)
+site/       landing page for GitHub Pages: static HTML and CSS, assembled by scripts/build-site.mjs
+scripts/    repo tooling (logo/icon generator, guide screenshots, landing page build)
 docs/       rules, automa spec, design, user guide with screenshots, reference PDFs
 ```
 
