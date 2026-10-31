@@ -19,13 +19,22 @@ export function Home({
   return (
     <main className={styles.home}>
       <header className={styles.hero}>
-        <img
-          src={OFFICIAL_ART.logoBanner}
-          width="534"
-          height="121"
-          alt="Splendor Marvel"
-          className={styles.banner}
-        />
+        <div className={styles.brand} role="img" aria-label="Splendor Marvel">
+          <img
+            src={OFFICIAL_ART.splendorLogo}
+            width="640"
+            height="233"
+            alt=""
+            className={styles.splendorLogo}
+          />
+          <img
+            src={OFFICIAL_ART.marvelLogo}
+            width="360"
+            height="145"
+            alt=""
+            className={styles.marvelLogo}
+          />
+        </div>
         <div className={styles.heroCard} aria-hidden="true">
           <img src={OFFICIAL_ART.cardBack} alt="" />
           <span>
