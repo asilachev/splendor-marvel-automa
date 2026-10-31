@@ -185,7 +185,14 @@ export function StoneRow({ stones, size = 22 }: { stones: readonly Stone[]; size
   )
 }
 
-/** Thanos's ordered stack: bottom (returned first) on the left. */
+const DISC = 34
+const DISC_STEP = 7
+
+/**
+ * Thanos's tokens as colour piles, the way they sit on the table (#38). The automa still returns
+ * the oldest tokens first, so a slim strip shows that order. Fix mode works per colour: − removes
+ * his newest token of that colour, + adds one on top.
+ */
 export function TokenStack({
   stack,
   fixing,
@@ -197,45 +204,67 @@ export function TokenStack({
   onRemove: (index: number) => void
   onAdd: (stone: Stone) => void
 }) {
+  const count = (stone: Stone) => stack.filter((s) => s === stone).length
+  const summary = STONES.filter((s) => count(s) > 0)
+    .map((s) => `${count(s)} ${STONE_LABEL[s]}`)
+    .join(', ')
   return (
     <div>
-      <div className={styles.stack} aria-label={`Thanos’s token stack, ${stack.length} tokens`}>
-        {stack.length === 0 ? <span className={styles.muted}>No tokens</span> : null}
-        {stack.map((stone, i) =>
-          fixing ? (
-            <button
-              key={i}
-              type="button"
-              className={styles.stackToken}
-              aria-label={`Remove ${STONE_LABEL[stone]} (position ${i + 1})`}
-              onClick={() => onRemove(i)}
-            >
-              <StoneIcon stone={stone} size={34} />
-            </button>
-          ) : (
-            <span key={i} className={styles.stackToken} title={STONE_LABEL[stone]}>
-              <StoneIcon stone={stone} size={34} />
-            </span>
-          ),
-        )}
-      </div>
-      <div className={styles.stackEnds}>
-        <span>← bottom (returned first)</span>
-        <span>top</span>
-      </div>
-      {fixing ? (
-        <div className={styles.stackAdd} role="group" aria-label="Add a token on top">
-          <span className={styles.muted}>Tap a token to remove it, or add on top:</span>
-          {STONES.map((stone) => (
-            <button
+      <div
+        className={styles.piles}
+        role="group"
+        aria-label={`Thanos’s tokens: ${summary || 'none'}`}
+      >
+        {stack.length === 0 && !fixing ? <span className={styles.muted}>No tokens</span> : null}
+        {STONES.map((stone) => {
+          const n = count(stone)
+          if (n === 0 && !fixing) return null
+          return (
+            <div
               key={stone}
-              type="button"
-              className={styles.stackToken}
-              aria-label={`Add ${STONE_LABEL[stone]} on top`}
-              onClick={() => onAdd(stone)}
+              className={styles.pile}
+              data-empty={n === 0}
+              aria-label={`${n} ${STONE_LABEL[stone]}`}
             >
-              <StoneIcon stone={stone} size={34} />
-            </button>
+              <div
+                className={styles.pileDiscs}
+                style={{ height: DISC + Math.max(0, n - 1) * DISC_STEP }}
+              >
+                {Array.from({ length: Math.max(n, 1) }, (_, i) => (
+                  <span key={i} className={styles.pileDisc} style={{ bottom: i * DISC_STEP }}>
+                    <StoneIcon stone={stone} size={DISC} hollow={n === 0} />
+                  </span>
+                ))}
+              </div>
+              <span className={styles.pileCount}>×{n}</span>
+              {fixing ? (
+                <div className={styles.pileFix}>
+                  <button
+                    type="button"
+                    aria-label={`Remove a ${STONE_LABEL[stone]} token`}
+                    disabled={n === 0}
+                    onClick={() => onRemove(stack.lastIndexOf(stone))}
+                  >
+                    −
+                  </button>
+                  <button
+                    type="button"
+                    aria-label={`Add a ${STONE_LABEL[stone]} token`}
+                    onClick={() => onAdd(stone)}
+                  >
+                    +
+                  </button>
+                </div>
+              ) : null}
+            </div>
+          )
+        })}
+      </div>
+      {stack.length > 0 ? (
+        <div className={styles.order} aria-label="Return order, oldest first">
+          <span>Returned first →</span>
+          {stack.map((stone, i) => (
+            <StoneIcon key={i} stone={stone} size={16} />
           ))}
         </div>
       ) : null}
