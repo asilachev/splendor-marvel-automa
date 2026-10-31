@@ -57,7 +57,14 @@ describe('home and setup (#8)', () => {
     const user = userEvent.setup()
     render(<App />)
     expect(screen.getByRole('heading', { name: 'Thanos Automa' })).toBeInTheDocument()
-    expect(screen.getByText(/Dukefanblue2005/)).toBeInTheDocument()
+    // Credits and copyright notes are always visible, not inside the rules accordion (#35).
+    const credits = screen.getByRole('contentinfo', { name: 'Credits and copyright' })
+    expect(credits).toBeVisible()
+    expect(within(credits).getByRole('link', { name: 'Dukefanblue2005' })).toBeVisible()
+    expect(within(credits).getByRole('link', { name: 'Shamus' })).toBeVisible()
+    expect(credits).toHaveTextContent('© 2020 Space Cowboys')
+    expect(credits).toHaveTextContent('™ & © MARVEL')
+    expect(credits).toHaveTextContent('personal, non-commercial use only')
 
     await user.click(screen.getByRole('button', { name: 'New game' }))
     expect(screen.getByText(/Return 3 tokens of each colour/)).toBeInTheDocument()
