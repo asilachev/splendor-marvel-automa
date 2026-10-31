@@ -6,3 +6,5 @@ package-lock.json
 docs/reference/
 # Markdown is hand-formatted (wide tables); keep Prettier to code and config.
 *.md
+# nginx config is not a Prettier language (it reflowed .inc files as prose)
+docker/
