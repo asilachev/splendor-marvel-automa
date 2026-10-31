@@ -16,6 +16,10 @@
   display: block;
   width: min(100%, 360px);
   height: auto;
+  /* The extracted banner's top 4 rows are the PDF's yellow header bar: crop them (121 → 117). */
+  aspect-ratio: 534 / 117;
+  object-fit: cover;
+  object-position: center bottom;
   margin: 0 auto;
   border-radius: 10px;
   box-shadow: 0 6px 24px rgb(0 0 0 / 45%);
