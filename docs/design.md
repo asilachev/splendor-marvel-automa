@@ -116,8 +116,9 @@ https://asilachev.github.io/splendor-marvel-automa/ (English), then `ru/`, `sr/`
     come from `npm run site:shots`, which captures the twelve screens the page shows into
     `.screenshots/<lang>/`. They aren't committed: the Pages workflow captures them on every build.
   - A globe chip in the nav opens a comic speech-bubble menu (#71): halftone paper, a thick
-    outline, a tail pointing at the chip, and the current language as a tilted gold sticker. It's
-    details/summary, so it works without JavaScript. The language chips link the pages too, the
+    outline, a tail pointing at the chip, and the current language as a tilted gold sticker.
+    Hovering a language outlines it with a hard shadow and a 1 px lift, without a fill or a tilt
+    (#73). It's details/summary, so it works without JavaScript. The language chips link the pages too, the
     current one in gold. Every page lists the others with `hreflang`.
   - On a first visit the English page opens the browser's language. A language picked on the page
     is remembered (`localStorage`), so English stays English for a Russian browser that picked it.
