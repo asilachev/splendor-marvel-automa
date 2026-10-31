@@ -1,4 +1,8 @@
-# Splendor Marvel: Solo Automa companion
+<p align="center">
+  <img src="docs/assets/logo.svg" width="112" height="112" alt="Logo: five coloured gems on a gold ring around a green gem">
+</p>
+
+<h1 align="center">Splendor Marvel: Solo Automa companion</h1>
 
 A phone-first web app (PWA) for playing **Splendor Marvel** solo against the fan-made **Thanos
 automa**.

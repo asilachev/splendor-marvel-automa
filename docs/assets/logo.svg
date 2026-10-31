@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Solo automa logo">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#232a5c"/>
+      <stop offset="1" stop-color="#0b0d1a"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="38" fill="none" stroke="#f2c14e" stroke-width="3.5"/>
+  <circle cx="64" cy="26" r="11" fill="#9b5de5" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="61" cy="23" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <polygon points="112.1,52.3 106.1,62.6 94.1,62.6 88.1,52.3 94.1,41.9 106.1,41.9" fill="#f7d046" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="97.1" cy="49.3" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <rect x="76.3" y="84.7" width="20" height="20" rx="3" fill="#3a86ff" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="83.3" cy="91.7" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <polygon points="41.7,83.2 52.9,102.7 30.4,102.7" fill="#ef233c" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="40.2" cy="93.7" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <polygon points="27.9,39.3 31.5,43.5 37.1,43.1 36.6,48.6 40.9,52.3 36.6,55.9 37.1,61.4 31.5,61 27.9,65.3 24.2,61 18.7,61.4 19.1,55.9 14.9,52.3 19.1,48.6 18.7,43.1 24.2,43.5" fill="#fb8500" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="24.9" cy="49.3" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <polygon points="64,50 78,64 64,78 50,64" fill="#2dc653" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="61.5" cy="60" r="2.2" fill="#fff" fill-opacity=".55"/>
+</svg>
