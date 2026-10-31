@@ -21,6 +21,11 @@
   --stone-soul: #fb8500;
   --stone-time: #2dc653;
 
+  /* Automa card phases. */
+  --phase-1: #7cb342;
+  --phase-2: #f2cb05;
+  --phase-3: #e53935;
+
   --radius: 14px;
   --radius-sm: 10px;
   --tap: 48px;
