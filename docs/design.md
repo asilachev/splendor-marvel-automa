@@ -95,10 +95,17 @@ ordered stack by hand is the fiddliest part of the paper automa.
 ## Tech and hosting
 
 - **Stack:** Vite, React and TypeScript, built to static files in `dist/`. There is no server code.
-- **Hosting:** self-hosted as a Docker image, with nginx serving `dist/`.
-  - CI publishes the image to GHCR (issue #10).
-  - The server must serve the app over **HTTPS**, because PWA install, offline mode and the screen
-    wake lock all require a secure context.
+- **Hosting:** two options serve the same `dist/` with the same caching and headers.
+  - **Docker:** nginx in a small image (`docker/nginx.conf`), self-hosted. CI publishes it to GHCR
+    (issue #10).
+  - **Vercel (#78):** `vercel.ts` (typed, `@vercel/config`) mirrors the nginx rules: a year's cache
+    for hashed `/assets/`, `no-cache` for everything else (app shell, service worker, manifest),
+    unknown paths fall back to `index.html`, and the same security headers. Vercel's Git
+    integration deploys `master` and previews pull requests; nothing in GitHub Actions.
+  - Both send `X-Robots-Tag: noindex`: the app is a tool, and the landing page is its public face.
+    A change to the headers or caching goes into both `docker/` and `vercel.ts`.
+  - The app must be served over **HTTPS**, because PWA install, offline mode and the screen wake
+    lock all require a secure context.
 - **Why not Next.js:** nothing here runs on a server. A static build is simpler to cache offline and
   simpler to host. Revisit this only if a backend becomes necessary, for example to sync game history
   across devices. The engine is framework-agnostic, so only the UI shell would move.
