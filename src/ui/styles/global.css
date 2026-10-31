@@ -1,38 +1,46 @@
-/* Design tokens. See docs/design.md → Visual language. */
+/* Design tokens: cosmic "Infinity Gauntlet" theme. See docs/design.md → Visual language. */
 :root {
   color-scheme: dark;
 
-  --bg: #0b0d1a;
-  --surface: #151935;
-  --surface-2: #1f2550;
-  --border: #2c3366;
-  --text: #eef0ff;
-  --text-muted: #a3a9cf;
-  --accent: #f2c14e;
-  --accent-text: #1a1400;
+  --bg: #06070f;
+  --surface: rgb(20 22 48 / 82%);
+  --surface-2: rgb(38 42 88 / 72%);
+  --surface-solid: #151735;
+  --border: rgb(255 214 120 / 16%);
+  --border-strong: rgb(255 214 120 / 38%);
+  --text: #f4f1ff;
+  --text-muted: #aaa7d0;
   --danger: #ff6b6b;
   --success: #4ade80;
 
-  /* Infinity Stones (token-board order) + Time. */
-  --stone-power: #9b5de5;
-  --stone-mind: #f7d046;
-  --stone-space: #3a86ff;
-  --stone-reality: #ef233c;
-  --stone-soul: #fb8500;
-  --stone-time: #2dc653;
+  /* Gauntlet gold */
+  --gold-1: #fff0b8;
+  --gold-2: #f2c14e;
+  --gold-3: #b07a18;
+  --gold: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 45%, var(--gold-3) 100%);
+  --accent: var(--gold-2);
+  --accent-text: #1d1300;
 
-  /* Automa card phases. */
-  --phase-1: #7cb342;
-  --phase-2: #f2cb05;
-  --phase-3: #e53935;
+  /* Infinity Stones (token-board order 1–5) + Time */
+  --stone-power: #8e44d6;
+  --stone-mind: #f2c200;
+  --stone-space: #2f8fdd;
+  --stone-reality: #e23b3b;
+  --stone-soul: #f07f1a;
+  --stone-time: #2fb36b;
 
-  --radius: 14px;
+  /* Automa card phases (as printed) */
+  --phase-1: #8bc34a;
+  --phase-2: #ffeb3b;
+  --phase-3: #f44336;
+
+  --radius: 16px;
   --radius-sm: 10px;
   --tap: 48px;
-  --gap: 12px;
   --gutter: 16px;
   --max-width: 480px;
 
+  --font-display: 'Bebas Neue', 'Impact', 'Arial Narrow', sans-serif;
   font-family:
     system-ui,
     -apple-system,
@@ -54,12 +62,37 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-  background: var(--bg);
   color: var(--text);
+  background-color: var(--bg);
 }
 
+/* Nebula glows over deep space, plus a faint star field. */
 body {
   min-height: 100dvh;
+  background-image:
+    radial-gradient(1000px 520px at 0% -10%, rgb(124 58 237 / 28%), transparent 60%),
+    radial-gradient(800px 480px at 110% 15%, rgb(37 99 235 / 22%), transparent 60%),
+    radial-gradient(700px 520px at 50% 115%, rgb(234 179 8 / 14%), transparent 60%);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 72% 8%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 40% 62%, #ffe9a8 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 44%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 25% 86%, #cfe0ff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 60% 30%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 5% 55%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 95% 92%, #ffe9a8 50%, transparent 51%);
+  background-size: 320px 420px;
 }
 
 #root {
@@ -77,7 +110,24 @@ button {
   color: inherit;
 }
 
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
 :focus-visible {
-  outline: 3px solid var(--accent);
+  outline: 3px solid var(--gold-2);
   outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

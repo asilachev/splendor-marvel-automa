@@ -2,6 +2,11 @@
   display: inline-block;
   flex: none;
   vertical-align: middle;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 45%));
+}
+
+.stoneIcon[data-hollow='true'] {
+  filter: none;
 }
 
 /* Pickers and segmented choices */
@@ -13,27 +18,44 @@
 }
 
 .stoneButton {
-  min-height: 68px;
+  position: relative;
+  min-height: 74px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
-  padding: 4px 2px;
-  border: 2px solid var(--border);
+  padding: 6px 2px;
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   font-size: 0.72rem;
   cursor: pointer;
+  transition:
+    transform 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.stoneButton small {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+}
+
+.stoneButton:active {
+  transform: scale(0.96);
 }
 
 .stoneButton[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: rgb(242 193 78 / 15%);
+  border-color: var(--gold-2);
+  box-shadow: 0 0 0 2px rgb(242 193 78 / 35%);
 }
 
 .stoneButton:disabled {
-  opacity: 0.25;
+  opacity: 0.22;
   cursor: default;
 }
 
@@ -46,8 +68,8 @@
 
 .fieldLabel {
   color: var(--text-muted);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -72,7 +94,7 @@
   align-items: center;
   justify-content: center;
   padding: 6px 10px;
-  border: 2px solid var(--border);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface-2);
   font-weight: 700;
@@ -86,8 +108,56 @@
 }
 
 .segment[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: rgb(242 193 78 / 15%);
+  border-color: var(--gold-2);
+  background: rgb(242 193 78 / 16%);
+  box-shadow: 0 0 0 1px rgb(242 193 78 / 40%) inset;
+}
+
+/* Rule tips (#31) */
+.tipButton {
+  width: 22px;
+  height: 22px;
+  margin-left: 6px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  background: rgb(242 193 78 / 12%);
+  color: var(--gold-2);
+  font-family: Georgia, serif;
+  font-size: 0.8rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 20px;
+  vertical-align: middle;
+  cursor: pointer;
+  /* Larger touch target than the visible circle. */
+  box-shadow: 0 0 0 11px transparent;
+}
+
+.tipButton[aria-expanded='true'] {
+  background: var(--gold-2);
+  color: var(--accent-text);
+}
+
+.tip {
+  display: block;
+  margin: 8px 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: rgb(12 13 32 / 92%);
+  color: var(--text);
+  font-family: system-ui, sans-serif;
+  font-size: 0.86rem;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+}
+
+.tip strong {
+  color: var(--gold-2);
 }
 
 /* Turn track */
@@ -99,9 +169,9 @@
 }
 
 .pip {
-  height: 8px;
+  height: 7px;
   border-radius: 2px;
-  background: var(--surface-2);
+  background: rgb(255 255 255 / 9%);
 }
 
 .pip[data-done='true'][data-phase='1'] {
@@ -115,33 +185,123 @@
 }
 
 .pip[data-now='true'] {
-  outline: 2px solid var(--text);
-  outline-offset: 1px;
+  background: var(--gold-2);
+  box-shadow: 0 0 8px 2px rgb(242 193 78 / 70%);
 }
 
-/* Automa card */
-.automaCard {
+/* Automa card: flip from the printed back to a face drawn like the PDF */
+.flipScene {
+  display: flex;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.flipCard {
   position: relative;
+  width: min(62vw, 232px);
+  aspect-ratio: 518 / 759;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1),
+    width 0.45s ease 0.5s;
+}
+
+.flipCard[data-flipped='true'] {
+  /* Smaller once flipped, so the action panel stays near the top. */
+  width: min(52vw, 196px);
+  transform: rotateY(180deg);
+}
+
+.cardBackFace,
+.cardFrontFace {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  border: 2px solid #000;
-  border-radius: var(--radius);
-  background: var(--surface-2);
+  border-radius: 14px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow:
+    0 18px 40px rgb(0 0 0 / 55%),
+    0 0 0 1px rgb(255 214 120 / 25%);
+}
+
+.cardFrontFace {
+  transform: rotateY(180deg);
+}
+
+.cardBackButton {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+  animation: glow 2.4s ease-in-out infinite;
+}
+
+.cardBackButton img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The PDF prints "SOLO AUTOMA" as text over the art, just under the Splendor logo. */
+.soloAutoma {
+  position: absolute;
+  top: 17.5%;
+  left: 0;
+  right: 0;
+  color: #f4f6ff;
+  font-family: system-ui, sans-serif;
+  font-size: clamp(0.62rem, 3.6vw, 0.82rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 80%);
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgb(242 193 78 / 0%));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgb(242 193 78 / 55%));
+  }
+}
+
+.automaCard {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  height: 100%;
+  border: 3px solid #0d0d0d;
+  background: #0d0d0d;
 }
 
 .band {
+  position: relative;
   display: grid;
-  grid-template-columns: 28px 1fr;
-  min-height: 40px;
-  opacity: 0.4;
-}
-
-.band + .band {
-  border-top: 2px solid #000;
+  grid-template-columns: 24px 1fr;
+  opacity: 0.45;
+  filter: saturate(0.5);
 }
 
 .band[data-active='true'] {
-  min-height: 76px;
   opacity: 1;
+  filter: none;
+}
+
+.band[data-active='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 3px var(--gold-2);
 }
 
 .bandNumber {
@@ -149,7 +309,8 @@
   align-items: center;
   justify-content: center;
   color: #111;
-  font-weight: 800;
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .band[data-phase='1'] .bandNumber {
@@ -162,38 +323,87 @@
   background: var(--phase-3);
 }
 
-.actionTokens {
+.sectionBody {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 6px 10px 6px 8px;
+  background: linear-gradient(180deg, #ececec 0%, #a3a3a3 55%, #707070 100%);
 }
 
-.actionText {
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  font-weight: 600;
+.takeNumbers {
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 2px 0 #3a3a3a,
+    0 0 6px rgb(0 0 0 / 60%);
 }
 
 .slotBadge {
-  padding: 2px 10px;
-  border-radius: 8px;
-  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 54px;
+  padding: 2px 8px 4px;
+  border-radius: 10px;
+  background: #0b0b0b;
   color: #fff;
-  font-size: 1.1rem;
-  font-weight: 800;
-}
-
-.band[data-active='true'] .slotBadge {
+  font-family: var(--font-display);
   font-size: 1.6rem;
+  line-height: 0.95;
 }
 
-.cardId {
+.check {
+  width: 26px;
+  height: 22px;
+}
+
+.discardMark {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.discardMark > svg:first-child {
   position: absolute;
-  right: 8px;
-  bottom: 4px;
-  color: var(--text-muted);
-  font-size: 0.7rem;
+  inset: 0;
+}
+
+.discardCross {
+  position: absolute;
+  inset: 4%;
+}
+
+.discardCount {
+  position: relative;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  text-shadow:
+    0 0 3px #000,
+    0 0 6px #000;
+}
+
+.cardNumber {
+  position: absolute;
+  bottom: 1px;
+  left: 28px;
+  color: #3557a8;
+  font-size: 0.55rem;
+}
+
+.cardStar {
+  position: absolute;
+  right: 5px;
+  bottom: 0;
+  color: var(--gold-2);
+  font-size: 1rem;
+  text-shadow: 0 0 2px #000;
 }
 
 /* Market grid */
@@ -207,7 +417,7 @@
 .marketRow {
   display: grid;
   grid-template-columns: 16px repeat(4, 1fr);
-  gap: 4px;
+  gap: 3px;
 }
 
 .marketLabel {
@@ -224,15 +434,16 @@
   aspect-ratio: 4 / 5;
   border: 1px solid var(--border);
   border-radius: 4px;
-  background: var(--surface-2);
-  font-size: 0.8rem;
-  font-weight: 800;
+  background: rgb(255 255 255 / 6%);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
 }
 
 .marketCell[data-hit='true'] {
-  border-color: var(--accent);
-  background: var(--accent);
+  border-color: var(--gold-2);
+  background: var(--gold);
   color: var(--accent-text);
+  box-shadow: 0 0 10px rgb(242 193 78 / 60%);
 }
 
 .stoneRow {
@@ -259,14 +470,15 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  border: 1px solid var(--border);
-  border-radius: 50%;
-  background: var(--surface-2);
+  border: 0;
+  background: transparent;
 }
 
 button.stackToken {
   width: var(--tap);
   height: var(--tap);
+  border: 1px dashed var(--border-strong);
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -290,16 +502,26 @@ button.stackToken {
   font-size: 0.85rem;
 }
 
-/* Side summaries */
+/* Side summaries: Thanos in purple, you in blue */
 .side {
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
+  backdrop-filter: blur(6px);
+}
+
+.side[data-side='thanos'] {
+  background: linear-gradient(160deg, rgb(110 50 180 / 35%), var(--surface) 60%);
+}
+
+.side[data-side='player'] {
+  background: linear-gradient(160deg, rgb(40 110 220 / 32%), var(--surface) 60%);
 }
 
 .side[data-gauntlet='true'] {
   border-color: var(--success);
+  box-shadow: 0 0 14px rgb(74 222 128 / 35%);
 }
 
 .sideTop {
@@ -308,21 +530,27 @@ button.stackToken {
   justify-content: space-between;
 }
 
+.sideName {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
 .points {
-  font-size: 1.6rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  line-height: 1;
 }
 
 .points small {
   color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 400;
+  font-size: 0.95rem;
 }
 
 .sideStones {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   margin: 6px 0;
 }
 
@@ -331,11 +559,11 @@ button.stackToken {
   flex-wrap: wrap;
   gap: 6px;
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
 }
 
 .tile {
-  color: var(--accent);
+  color: var(--gold-2);
   font-weight: 700;
 }
 

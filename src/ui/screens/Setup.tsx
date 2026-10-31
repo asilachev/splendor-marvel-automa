@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { PHASE_LENGTH_PRESETS, type PhaseLengths, type Settings } from '../../engine/index.ts'
 import { Segmented } from '../components/Choice.tsx'
+import { RuleTip } from '../components/RuleTip.tsx'
 import styles from './screens.module.css'
 
 type Preset = keyof typeof PHASE_LENGTH_PRESETS
@@ -54,6 +55,12 @@ export function Setup({
         <h2>Difficulty</h2>
         <Segmented<Preset>
           label="Game length"
+          tip={
+            <RuleTip title="Game length">
+              A community tweak from BGG for the base-game automa: 10/9/8 (27 rounds) was “still too
+              easy” and 8/8/8 (24) “pretty hard”.
+            </RuleTip>
+          }
           value={presetOf(settings.phaseLengths)}
           onChange={(preset) => set('phaseLengths', PHASE_LENGTH_PRESETS[preset])}
           options={[
@@ -64,6 +71,12 @@ export function Setup({
         />
         <Segmented<number>
           label="Cap on Thanos’s token stack"
+          tip={
+            <RuleTip title="Token cap">
+              A community suggestion: cap Thanos’s stack at 12. The oldest tokens beyond the cap go
+              back to the supply.
+            </RuleTip>
+          }
           value={settings.stackCap ?? 0}
           onChange={(cap) => set('stackCap', cap === 0 ? null : cap)}
           options={[
@@ -78,6 +91,13 @@ export function Setup({
         <p className={styles.hint}>Defaults follow the BGG clarifications (see docs/automa.md).</p>
         <Segmented<Settings['countedCards']>
           label="Which of Thanos’s cards count"
+          tip={
+            <RuleTip title="Which cards count">
+              The PDF says to box his cards without points or Avengers tags, which breaks its own
+              colour rule. Shamus clarified on BGG (2021): keep any card with a colour he needs,
+              points or tags, so in effect every colour counts.
+            </RuleTip>
+          }
           value={settings.countedCards}
           onChange={(v) => set('countedCards', v)}
           options={[
@@ -87,6 +107,12 @@ export function Setup({
         />
         <Segmented<number>
           label="Card 12, phase 3: tokens to return"
+          tip={
+            <RuleTip title="Card 12">
+              Card 12’s phase-3 section (“C1”) prints no number. The original base-game card is the
+              same, so it’s probably intentional.
+            </RuleTip>
+          }
           value={settings.unprintedDiscard}
           onChange={(v) => set('unprintedDiscard', v)}
           options={[
@@ -96,6 +122,12 @@ export function Setup({
         />
         <Segmented<Settings['emptySlot']>
           label="Targeted market slot is empty"
+          tip={
+            <RuleTip title="Empty slot">
+              Neither the PDF nor BGG covers this. “First card in the row” matches the left-to-right
+              scan of the colour rule.
+            </RuleTip>
+          }
           value={settings.emptySlot}
           onChange={(v) => set('emptySlot', v)}
           options={[
@@ -105,6 +137,13 @@ export function Setup({
         />
         <Segmented<Settings['ties']>
           label="Both complete the Gauntlet in the same round"
+          tip={
+            <RuleTip title="Ties">
+              The PDF says to apply the normal winning conditions and that Thanos wins a draw. By
+              default the official tiebreakers come first (points, Avengers tile, fewer cards), then
+              Thanos wins what’s left.
+            </RuleTip>
+          }
           value={settings.ties}
           onChange={(v) => set('ties', v)}
           options={[

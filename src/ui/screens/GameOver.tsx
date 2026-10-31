@@ -23,11 +23,13 @@ export function GameOver({
       <div className={styles.sides}>
         <SideSummary
           name="Thanos"
+          side="thanos"
           stats={sideStats(state, 'thanos')}
           holdsTile={state.avengers === 'thanos'}
         />
         <SideSummary
           name="You"
+          side="player"
           stats={sideStats(state, 'player')}
           holdsTile={state.avengers === 'player'}
         />

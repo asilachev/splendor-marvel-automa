@@ -6,6 +6,7 @@ import {
   isPhaseStart,
   LOCATIONS_IN_PLAY,
   missingColours,
+  phaseStarts,
   roundLimit,
   sideStats,
   type AvengersHolder,
@@ -14,11 +15,12 @@ import {
   type GameState,
   type Level,
   type RecruitedCard,
+  type Settings,
   type Stone,
   type TakeAction,
 } from '../../engine/index.ts'
 import {
-  AutomaCardView,
+  AutomaCardFlip,
   MarketGrid,
   SideSummary,
   StoneRow,
@@ -26,6 +28,7 @@ import {
   TurnTrack,
 } from '../components/Board.tsx'
 import { Segmented } from '../components/Choice.tsx'
+import { RuleTip } from '../components/RuleTip.tsx'
 import { StoneIcon, StonePicker } from '../components/Stone.tsx'
 import {
   cardLabel,
@@ -61,7 +64,7 @@ export function Game({
 }) {
   const settings = state.setup.settings
   const over = state.step === 'over'
-  const { phase } = currentRoundCard(state)
+  const { card, phase } = currentRoundCard(state)
   const [fixingStack, setFixingStack] = useState(false)
   useWakeLock(!over)
 
@@ -74,11 +77,14 @@ export function Game({
           </button>
           <div className={styles.roundInfo}>
             <span className={styles.round}>
-              {state.round}
+              Round {state.round}
               <small> / {roundLimit(settings)}</small>
             </span>
             <span className={styles.phaseTag} data-phase={phase}>
               Phase {phase} · {PHASE_COLOUR[phase]}
+              <RuleTip title="Phases">
+                <PhasesTip settings={settings} />
+              </RuleTip>
             </span>
           </div>
           <button type="button" className={styles.ghost} onClick={onUndo} disabled={!canUndo}>
@@ -88,32 +94,85 @@ export function Game({
         <TurnTrack round={state.round} settings={settings} over={over} />
       </header>
 
-      <div className={styles.sides}>
-        <SideSummary
-          name="Thanos"
-          stats={sideStats(state, 'thanos')}
-          holdsTile={state.avengers === 'thanos'}
-        />
-        <SideSummary
-          name="You"
-          stats={sideStats(state, 'player')}
-          holdsTile={state.avengers === 'player'}
-        />
-      </div>
-
       {over ? (
         <GameOver state={state} onUndo={onUndo} onNewGame={onNewGame} onHome={onHome} />
-      ) : state.step === 'reveal' ? (
-        <RevealStep state={state} dispatch={dispatch} />
-      ) : state.step === 'thanos' ? (
-        <ThanosTurn key={state.round} state={state} dispatch={dispatch} />
       ) : (
-        <PlayerTurn key={state.round} state={state} dispatch={dispatch} />
+        <section
+          className={styles.stage}
+          aria-label={state.step === 'player' ? 'Your turn' : 'Thanos’s turn'}
+        >
+          {state.step !== 'player' ? (
+            <>
+              {state.step === 'reveal' && isPhaseStart(state.round, settings) ? (
+                <p className={styles.notice} role="status">
+                  Deck reshuffled. Phase {phase} begins: Thanos now reads the {PHASE_COLOUR[phase]}{' '}
+                  section.
+                </p>
+              ) : null}
+              <AutomaCardFlip
+                key={state.round}
+                card={card}
+                phase={phase}
+                flipped={state.step === 'thanos'}
+                onFlip={() => dispatch({ type: 'reveal' })}
+              />
+              {state.step === 'reveal' ? (
+                <p className={styles.caption}>
+                  Thanos goes first: tap his card to flip it.
+                  <RuleTip title="Thanos’s turn">
+                    Each round Thanos flips the next automa card and does the action in the section
+                    for the current phase (the {PHASE_COLOUR[phase]} one now). Then you play your
+                    turn normally.
+                  </RuleTip>
+                </p>
+              ) : (
+                <ThanosAction key={state.round} state={state} dispatch={dispatch} />
+              )}
+            </>
+          ) : (
+            <PlayerTurn key={state.round} state={state} dispatch={dispatch} />
+          )}
+        </section>
       )}
+
+      <section aria-label="Race to the Infinity Gauntlet">
+        <h2 className={styles.sectionTitle}>
+          Race to the Gauntlet
+          <RuleTip title="Infinity Gauntlet">
+            <GauntletTip settings={settings} />
+          </RuleTip>
+          <RuleTip title="Avengers Assemble tile">
+            The first side with 3 or more Avengers tags takes the tile, worth 3 points. The other
+            side takes it only with <em>more</em> tags; a tie leaves it where it is. Thanos never
+            takes Locations.
+          </RuleTip>
+        </h2>
+        <div className={styles.sides}>
+          <SideSummary
+            name="Thanos"
+            side="thanos"
+            stats={sideStats(state, 'thanos')}
+            holdsTile={state.avengers === 'thanos'}
+          />
+          <SideSummary
+            name="You"
+            side="player"
+            stats={sideStats(state, 'player')}
+            holdsTile={state.avengers === 'player'}
+          />
+        </div>
+      </section>
 
       <section className={styles.box}>
         <div className={styles.boxHeader}>
-          <h2>Thanos’s tokens ({state.stack.length})</h2>
+          <h2>
+            Thanos’s tokens ({state.stack.length})
+            <RuleTip title="Thanos’s stack">
+              Order matters: new tokens go on top, and returns come from the bottom (oldest first).
+              A loose pile on the table is fine, because the app remembers the order. Use Fix if the
+              table and the app disagree.
+            </RuleTip>
+          </h2>
           {!over ? (
             <button
               type="button"
@@ -139,43 +198,38 @@ export function Game({
   )
 }
 
-function RevealStep({ state, dispatch }: { state: GameState; dispatch: Dispatch }) {
-  const { phase } = currentRoundCard(state)
-  const reshuffled = isPhaseStart(state.round, state.setup.settings)
+function PhasesTip({ settings }: { settings: Settings }) {
+  const [one, two, three] = phaseStarts(settings)
+  const limit = roundLimit(settings)
   return (
-    <section className={styles.stage}>
-      {reshuffled ? (
-        <p className={styles.notice} role="status">
-          Deck reshuffled. Phase {phase} begins: Thanos now reads the {PHASE_COLOUR[phase]} section.
-        </p>
-      ) : null}
-      <button
-        type="button"
-        className={styles.cardBack}
-        onClick={() => dispatch({ type: 'reveal' })}
-      >
-        <strong>Flip Thanos’s card</strong>
-        <span>
-          Thanos goes first. He reads the {PHASE_COLOUR[phase]} section ({phase}).
-        </span>
-      </button>
-    </section>
+    <>
+      Phase 1 is rounds {one}–{two - 1} (green section), phase 2 rounds {two}–{three - 1} (yellow),
+      phase 3 rounds {three}–{limit} (red). The deck is reshuffled between phases, so each card is
+      used once per phase. If nobody has won by the end of round {limit}, you lose.
+    </>
   )
 }
 
-function ThanosTurn({ state, dispatch }: { state: GameState; dispatch: Dispatch }) {
-  const { card, phase, action } = currentRoundCard(state)
+function GauntletTip({ settings }: { settings: Settings }) {
   return (
-    <section className={styles.stage} aria-label="Thanos’s turn">
-      <AutomaCardView card={card} phase={phase} />
-      <div className={styles.panel}>
-        {action.kind === 'take' ? (
-          <TakeStep action={action} dispatch={dispatch} />
-        ) : (
-          <GainStep state={state} action={action} dispatch={dispatch} />
-        )}
-      </div>
-    </section>
+    <>
+      Win at the end of a round with 16+ Infinity Points, a bonus of each of the five colours and
+      the green Time token, which comes with your first level-3 card. Thanos only targets level 3 in
+      phase 3, so he can’t complete it before round {phaseStarts(settings)[2]}.
+    </>
+  )
+}
+
+function ThanosAction({ state, dispatch }: { state: GameState; dispatch: Dispatch }) {
+  const { action } = currentRoundCard(state)
+  return (
+    <div className={styles.panel}>
+      {action.kind === 'take' ? (
+        <TakeStep action={action} dispatch={dispatch} />
+      ) : (
+        <GainStep state={state} action={action} dispatch={dispatch} />
+      )}
+    </div>
   )
 }
 
@@ -191,6 +245,11 @@ function TakeStep({ action, dispatch }: { action: TakeAction; dispatch: Dispatch
       <p className={styles.instruction}>
         Thanos takes <strong>{taken.length ? stoneList(taken) : 'nothing'}</strong> and stacks them
         in that order.
+        <RuleTip title="Taking tokens">
+          The numbers are the token board: 1 Power, 2 Mind, 3 Space, 4 Reality, 5 Soul. He takes
+          them in the printed order onto the top of his stack, skips any colour whose pile is empty,
+          and has no 10-token limit.
+        </RuleTip>
       </p>
       <div className={styles.tokenToggles} role="group" aria-label="Tokens to take">
         {action.tokens.map((stone) => {
@@ -203,16 +262,14 @@ function TakeStep({ action, dispatch }: { action: TakeAction; dispatch: Dispatch
               aria-pressed={!empty}
               onClick={() => toggle(stone)}
             >
-              <StoneIcon stone={stone} size={34} hollow={empty} />
+              <StoneIcon stone={stone} size={40} hollow={empty} />
               <span>{STONE_LABEL[stone]}</span>
               <small>{empty ? 'pile empty' : 'take'}</small>
             </button>
           )
         })}
       </div>
-      <p className={styles.hint}>
-        Pile empty? Tap that token to skip it. Thanos has no 10-token limit.
-      </p>
+      <p className={styles.hint}>Pile empty? Tap that token to skip it.</p>
       <button
         type="button"
         className={styles.primary}
@@ -267,6 +324,11 @@ function GainStep({
       <MarketGrid slot={slot} />
       <p className={styles.instruction}>
         Thanos recruits the card in <strong>{slot}</strong>, {ROW_LABEL[action.row]}.
+        <RuleTip title="Gaining a card">
+          The slot names a market card: row A is the top row (level 3), B the middle (level 2), C
+          the bottom (level 1); columns 1–4 count from the left. Refill the market as usual
+          afterwards.
+        </RuleTip>
       </p>
       <ReturnLine state={state} action={action} nothing={stage.name === 'nothing'} />
 
@@ -277,12 +339,30 @@ function GainStep({
               Slot {slot} is empty: use {which} instead.
             </p>
           ) : null}
-          <p className={styles.question}>What colour is {which}?</p>
+          <p className={styles.question}>
+            What colour is {which}?
+            <RuleTip title="Colour substitution">
+              If Thanos already has a card in that colour, he takes the first card in the same row
+              (scanning left to right) in a colour he lacks; if the row has none, he takes the
+              original card.{' '}
+              {settings.countedCards === 'all'
+                ? 'Every card he has counts for this (Shamus’s clarification on BGG).'
+                : 'Only his cards with points or Avengers tags count (as printed in the PDF).'}
+            </RuleTip>
+          </p>
           <StonePicker label={`Colour of ${which}`} onPick={pickColour} />
           {!slotEmpty ? (
-            <button type="button" className={styles.link} onClick={markEmpty}>
-              Slot {slot} is empty
-            </button>
+            <span className={styles.linkRow}>
+              <button type="button" className={styles.link} onClick={markEmpty}>
+                Slot {slot} is empty
+              </button>
+              <RuleTip title="Empty slot">
+                The PDF doesn’t cover this, so it’s a ruling setting.{' '}
+                {settings.emptySlot === 'firstInRow'
+                  ? 'This game: he takes the first card in that row from the left instead, and the colour rule still applies.'
+                  : 'This game: he takes nothing and returns no tokens.'}
+              </RuleTip>
+            </span>
           ) : (
             <button
               type="button"
@@ -300,7 +380,7 @@ function GainStep({
           <p className={styles.notice}>
             Thanos already has <strong>{STONE_LABEL[stage.target]}</strong>. Scan row {action.row}{' '}
             from the left for the first card in a colour he lacks:{' '}
-            <StoneRow stones={missing} size={18} />
+            <StoneRow stones={missing} size={20} />
           </p>
           <StonePicker
             label="Colour of the card Thanos takes instead"
@@ -320,7 +400,7 @@ function GainStep({
       {stage.name === 'details' ? (
         <>
           <p className={styles.chosen}>
-            <StoneIcon stone={stage.colour} size={26} /> {STONE_LABEL[stage.colour]} card
+            <StoneIcon stone={stage.colour} size={28} /> {STONE_LABEL[stage.colour]} card
             {stage.substituted ? ' (substitute)' : ''}
             <button
               type="button"
@@ -397,11 +477,28 @@ function ReturnLine({
 }) {
   const n = discardCount(state, action)
   const returned = discardPreview(state)
-  if (nothing || n === 0) return <p className={styles.hint}>No tokens to return.</p>
+  const tip = (
+    <RuleTip title="Returning tokens">
+      Tokens go back to the supply from the bottom of his stack, oldest first. He still takes the
+      card if he can’t return them all, or any.
+      {action.discard === null
+        ? ` This section prints no number; your ruling setting returns ${n}.`
+        : ''}
+    </RuleTip>
+  )
+  if (nothing || n === 0) {
+    return (
+      <p className={styles.hint}>
+        No tokens to return.
+        {tip}
+      </p>
+    )
+  }
   if (returned.length === 0) {
     return (
       <p className={styles.hint}>
         His stack is empty, so nothing to return. He still takes the card.
+        {tip}
       </p>
     )
   }
@@ -414,6 +511,7 @@ function ReturnLine({
           (only {returned.length} of {n}; he still takes the card)
         </small>
       ) : null}
+      {tip}
     </p>
   )
 }
@@ -445,8 +543,12 @@ function PlayerTurn({ state, dispatch }: { state: GameState; dispatch: Dispatch 
   const mine = state.log.filter((e) => e.kind === 'playerRecruit' && e.round === state.round)
   const tookLocation = state.log.some((e) => e.kind === 'playerLocation' && e.round === state.round)
   const canLocation = !tookLocation && state.playerLocations < LOCATIONS_IN_PLAY
+  const ties =
+    state.setup.settings.ties === 'thanosWins'
+      ? 'If both complete the Gauntlet in the same round, Thanos wins (your ruling setting).'
+      : 'If both complete the Gauntlet: more points wins, then the Avengers tile, then fewer cards, and Thanos wins any remaining tie.'
   return (
-    <section className={styles.stage} aria-label="Your turn">
+    <>
       {reminders.length ? (
         <ul className={styles.reminders} aria-label="Do this on the table">
           {reminders.map((r) => (
@@ -497,8 +599,12 @@ function PlayerTurn({ state, dispatch }: { state: GameState; dispatch: Dispatch 
         >
           End round {state.round}
         </button>
+        <p className={styles.caption}>
+          The app then checks both sides for the Gauntlet.
+          <RuleTip title="End of round">{ties}</RuleTip>
+        </p>
       </div>
-    </section>
+    </>
   )
 }
 
@@ -578,7 +684,7 @@ function Corrections({ state, dispatch }: { state: GameState; dispatch: Dispatch
           {cards.length === 0 ? <span className={styles.hint}>None yet</span> : null}
           {cards.map((card, index) => (
             <span key={index} className={styles.cardChip}>
-              <StoneIcon stone={card.colour} size={16} /> {cardLabel(card)}
+              <StoneIcon stone={card.colour} size={18} /> {cardLabel(card)}
               <button
                 type="button"
                 className={styles.link}

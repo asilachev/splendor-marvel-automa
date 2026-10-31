@@ -1,4 +1,5 @@
 import type { GameState } from '../../engine/index.ts'
+import { OFFICIAL_ART } from '../assets/official/index.ts'
 import { describeResult } from '../format.ts'
 import { Rules } from './Rules.tsx'
 import styles from './screens.module.css'
@@ -18,12 +19,25 @@ export function Home({
   return (
     <main className={styles.home}>
       <header className={styles.hero}>
-        <img src="favicon.svg" width="88" height="88" alt="" className={styles.logo} />
-        <p className={styles.kicker}>Splendor Marvel · solo</p>
+        <img
+          src={OFFICIAL_ART.logoBanner}
+          width="534"
+          height="121"
+          alt="Splendor Marvel"
+          className={styles.banner}
+        />
+        <div className={styles.heroCard} aria-hidden="true">
+          <img src={OFFICIAL_ART.cardBack} alt="" />
+          <span>
+            SOLO
+            <br />
+            AUTOMA
+          </span>
+        </div>
         <h1 className={styles.title}>Thanos Automa</h1>
         <p className={styles.lead}>
-          Play Splendor Marvel solo against the fan-made Thanos automa. Your table holds the game;
-          this app runs Thanos.
+          Face Thanos at your own table. Your physical game holds the market and your cards; this
+          app flips his automa deck, keeps his tokens and checks the Infinity Gauntlet.
         </p>
       </header>
 
