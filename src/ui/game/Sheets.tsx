@@ -30,8 +30,10 @@ import {
   SheetLabel,
   StonePicker,
 } from '../components/Kit.tsx'
+import { LanguagePicker } from '../components/LanguagePicker.tsx'
 import { Token } from '../components/Token.tsx'
 import { cardLabel, describeLog } from '../format.ts'
+import { useT } from '../i18n/index.ts'
 import styles from './game.module.css'
 import type { Dispatch } from './Steps.tsx'
 
@@ -45,13 +47,15 @@ export function HoardSheet({
   dispatch: Dispatch
   onClose: () => void
 }) {
+  const t = useT()
+  const h = t.hoard
   const [fixing, setFixing] = useState(false)
   return (
-    <Sheet title="THANOS’S HOARD" onClose={onClose}>
+    <Sheet title={h.title} onClose={onClose}>
       <div className={styles.sheetRow}>
-        <SheetLabel>TOKENS · {state.stack.length}</SheetLabel>
+        <SheetLabel>{h.tokens(state.stack.length)}</SheetLabel>
         <Button variant="small" aria-pressed={fixing} onClick={() => setFixing((f) => !f)}>
-          {fixing ? 'DONE' : 'FIX'}
+          {fixing ? h.done : h.fix}
         </Button>
       </div>
       <TokenPiles
@@ -60,19 +64,19 @@ export function HoardSheet({
         onRemove={(index) => dispatch({ type: 'stackRemove', index })}
         onAdd={(stone) => dispatch({ type: 'stackAdd', stone })}
       />
-      <SheetLabel>CARDS · {state.thanosCards.length}</SheetLabel>
+      <SheetLabel>{h.cards(state.thanosCards.length)}</SheetLabel>
       <div className={styles.chipsWrap}>
         {state.thanosCards.length === 0 ? (
-          <span className={styles.sheetNote}>No cards yet.</span>
+          <span className={styles.sheetNote}>{h.noCards}</span>
         ) : null}
         {state.thanosCards.map((c, index) => (
           <span key={index} className={styles.cardChip}>
             <Token stone={c.colour} size={20} />
-            {cardLabel(c)}
+            {cardLabel(t, c)}
             {fixing ? (
               <button
                 type="button"
-                aria-label={`Remove ${cardLabel(c)}`}
+                aria-label={h.removeCard(cardLabel(t, c))}
                 onClick={() => dispatch({ type: 'removeCard', side: 'thanos', index })}
               >
                 <X size={14} />
@@ -84,21 +88,17 @@ export function HoardSheet({
       {fixing ? (
         <Options
           paper
-          label="Avengers Assemble tile"
+          label={h.tile}
           value={state.avengers}
           onChange={(holder) => dispatch({ type: 'setAvengers', holder })}
           options={[
-            { value: 'none', label: 'MIDDLE' },
-            { value: 'thanos', label: 'THANOS' },
-            { value: 'player', label: 'YOU' },
+            { value: 'none', label: h.tileOptions.none },
+            { value: 'thanos', label: h.tileOptions.thanos },
+            { value: 'player', label: h.tileOptions.player },
           ]}
         />
       ) : null}
-      <p className={styles.sheetNote}>
-        {fixing
-          ? 'Fix only when the table and the app disagree — Undo is simpler for the last few steps.'
-          : 'Keep his tokens in colour piles on the table — the app remembers which go back first.'}
-      </p>
+      <p className={styles.sheetNote}>{fixing ? h.noteFix : h.note}</p>
     </Sheet>
   )
 }
@@ -117,17 +117,15 @@ const LOG_ICON: Record<LogEntry['kind'], [typeof Skull, string]> = {
 
 /** 6.3 — the game log, newest round first. */
 export function LogSheet({ state, onClose }: { state: GameState; onClose: () => void }) {
+  const t = useT()
   const rounds = [...new Set(state.log.map((e) => e.round))].sort((a, b) => b - a)
   return (
-    <Sheet title="GAME LOG" onClose={onClose}>
-      {rounds.length === 0 ? (
-        <p className={styles.sheetNote}>Nothing yet — flip Thanos’s first card.</p>
-      ) : null}
+    <Sheet title={t.logSheet.title} onClose={onClose}>
+      {rounds.length === 0 ? <p className={styles.sheetNote}>{t.logSheet.empty}</p> : null}
       {rounds.map((r) => (
-        <section key={r} aria-label={`Round ${r}`}>
+        <section key={r} aria-label={t.logSheet.round(r)}>
           <h3 className={styles.logRound}>
-            ROUND {r}
-            {r === state.round && state.step !== 'over' ? ' · NOW' : ''}
+            {t.logSheet.roundTitle(r, r === state.round && state.step !== 'over')}
           </h3>
           {state.log
             .filter((e) => e.round === r)
@@ -143,7 +141,7 @@ export function LogSheet({ state, onClose }: { state: GameState; onClose: () => 
                   >
                     <Icon size={14} />
                   </span>
-                  <span>{describeLog(e)}</span>
+                  <span>{describeLog(t, e)}</span>
                 </p>
               )
             })}
@@ -152,33 +150,6 @@ export function LogSheet({ state, onClose }: { state: GameState; onClose: () => 
     </Sheet>
   )
 }
-
-const RULES: readonly [string, string][] = [
-  [
-    'Thanos’s turn',
-    'Thanos goes first every round: flip the next automa card and do the action in the section for the current phase (green rounds 1–10, yellow 11–20, red 21–30). The deck is reshuffled between phases.',
-  ],
-  [
-    'Taking tokens',
-    'He takes the tokens shown, in printed order (1 Power, 2 Mind, 3 Space, 4 Reality, 5 Soul), onto his piles. Skip any colour whose pile is empty. He has no 10-token limit.',
-  ],
-  [
-    'Recruiting & colour substitution',
-    'He takes the card in the named slot (row A = level 3 on top, C = level 1 at the bottom; columns from the left). If he already has that colour, he takes the first card in the row in a colour he lacks; none? then the original.',
-  ],
-  [
-    'Returning tokens (oldest first)',
-    'When he recruits he returns the printed number of tokens, oldest first. He still takes the card if he can’t return them all, or any.',
-  ],
-  [
-    'Avengers tile & Locations',
-    'The first side with 3+ Avengers tags takes the Avengers Assemble tile (+3); only more tags take it away. Thanos never takes Locations.',
-  ],
-  [
-    'Winning & tiebreakers',
-    'At the end of a round, 16+ points, a bonus of every colour and the green Time token complete the Gauntlet. Ties: more points, then the Avengers tile, then fewer cards; then Thanos. After the last round without your Gauntlet, you lose.',
-  ],
-]
 
 /** 6.4 — the menu: leave or end the game, then rules, settings, rulings and credits (#53). */
 export function MenuSheet({
@@ -196,19 +167,21 @@ export function MenuSheet({
   onHome: () => void
   onEndGame: () => void
 }) {
+  const t = useT()
+  const m = t.menu
   const [open, setOpen] = useState<number | null>(null)
   const s = state.setup.settings
   return (
-    <Sheet title="MENU" onClose={onClose}>
+    <Sheet title={m.title} onClose={onClose}>
       <Button variant="secondary" icon={<House size={20} />} onClick={onHome}>
-        BACK TO HOME · GAME SAVED
+        {m.home}
       </Button>
       <Button variant="quietDanger" icon={<OctagonX size={20} />} onClick={onEndGame}>
-        END THIS GAME
+        {m.end}
       </Button>
-      <SheetLabel>RULES</SheetLabel>
+      <SheetLabel>{m.rules}</SheetLabel>
       <div>
-        {RULES.map(([title, text], i) => (
+        {t.rules.map(({ title, text }, i) => (
           <div key={title} className={styles.ruleRow}>
             <button
               type="button"
@@ -228,39 +201,29 @@ export function MenuSheet({
           </div>
         ))}
       </div>
-      <SheetLabel>SETTINGS</SheetLabel>
+      <SheetLabel>{m.settings}</SheetLabel>
       <div className={styles.setting}>
         <div>
-          <strong>Keep the screen awake</strong>
-          <small>during a game, so the phone doesn’t lock</small>
+          <strong>{m.wake}</strong>
+          <small>{m.wakeSub}</small>
         </div>
         <button
           type="button"
           role="switch"
           aria-checked={wakeLock}
-          aria-label="Keep the screen awake"
+          aria-label={m.wake}
           className={styles.switch}
           onClick={() => onWakeLock(!wakeLock)}
         />
       </div>
-      <SheetLabel>THIS GAME’S RULINGS</SheetLabel>
+      <LanguagePicker paper />
+      <SheetLabel>{m.rulingsTitle}</SheetLabel>
       <ul className={styles.rulings}>
-        <li>
-          {s.phaseLengths.join(' / ')} rounds per phase
-          {s.stackCap ? ` · token cap ${s.stackCap}` : ''}
-        </li>
-        <li>
-          Thanos’s cards that count:{' '}
-          {s.countedCards === 'all' ? 'all (Shamus’s clarification)' : 'points/Avengers only'}
-        </li>
-        <li>Card 12, phase 3 returns {s.unprintedDiscard}</li>
-        <li>
-          Empty slot: {s.emptySlot === 'firstInRow' ? 'first card in the row' : 'he takes nothing'}
-        </li>
-        <li>
-          Both complete the Gauntlet:{' '}
-          {s.ties === 'thanosWins' ? 'Thanos wins' : 'tiebreakers, then Thanos'}
-        </li>
+        <li>{m.rulingLength(s.phaseLengths, s.stackCap)}</li>
+        <li>{m.rulingCounted(s.countedCards === 'all')}</li>
+        <li>{m.rulingCard12(s.unprintedDiscard)}</li>
+        <li>{m.rulingEmpty(s.emptySlot === 'firstInRow')}</li>
+        <li>{m.rulingTies(s.ties === 'thanosWins')}</li>
       </ul>
       <Credits tone="paper" />
     </Sheet>
@@ -275,36 +238,38 @@ export function LogCardSheet({
   onAdd: (card: RecruitedCard) => void
   onClose: () => void
 }) {
+  const t = useT()
+  const c = t.logCard
   const [level, setLevel] = useState<Level>(1)
   const [colour, setColour] = useState<Stone | null>(null)
   const [points, setPoints] = useState(0)
   const [tags, setTags] = useState(0)
   return (
-    <Sheet title="LOG YOUR CARD" onClose={onClose}>
+    <Sheet title={c.title} onClose={onClose}>
       <NumberChips
         paper
-        label="Level"
+        label={c.level}
         values={[1, 2, 3]}
         value={level}
         onChange={(v) => setLevel(v as Level)}
       />
-      <SheetLabel>BONUS COLOUR</SheetLabel>
-      <StonePicker paper label="Bonus colour" selected={colour} onPick={setColour} />
+      <SheetLabel>{c.colour}</SheetLabel>
+      <StonePicker paper label={c.colourLabel} selected={colour} onPick={setColour} />
       <NumberChips
         paper
-        label="Points"
+        label={c.points}
         values={[0, 1, 2, 3, 4, 5]}
         value={points}
         onChange={setPoints}
       />
-      <NumberChips paper label="Avengers" values={[0, 1, 2]} value={tags} onChange={setTags} />
-      <p className={styles.sheetNote}>Level 3 cards also give you the green Time token.</p>
+      <NumberChips paper label={c.avengers} values={[0, 1, 2]} value={tags} onChange={setTags} />
+      <p className={styles.sheetNote}>{c.note}</p>
       <Button
         icon={<Plus size={22} />}
         disabled={colour === null}
         onClick={() => colour && onAdd({ level, colour, points, tags })}
       >
-        ADD CARD
+        {c.add}
       </Button>
     </Sheet>
   )

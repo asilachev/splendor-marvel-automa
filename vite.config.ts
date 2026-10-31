@@ -50,7 +50,7 @@ export default defineConfig({
         extends: true,
         test: {
           name: 'ui',
-          include: ['src/**/*.test.tsx'],
+          include: ['src/ui/**/*.test.{ts,tsx}'],
           environment: 'jsdom',
           setupFiles: ['src/test/setup.ts'],
         },

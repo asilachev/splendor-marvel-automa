@@ -2,6 +2,7 @@ import { Sparkles, WifiOff } from 'lucide-react'
 import { useEffect } from 'react'
 import { useRegisterSW } from 'virtual:pwa-register/react'
 import { useToasts } from '../components/toast.ts'
+import { useT } from '../i18n/index.ts'
 
 /**
  * 7.4 — the offline and update-ready toasts. The service worker is in prompt mode, so a new
@@ -10,6 +11,7 @@ import { useToasts } from '../components/toast.ts'
  */
 export function usePwaToasts(): void {
   const toasts = useToasts()
+  const t = useT()
   const {
     needRefresh: [needRefresh],
     updateServiceWorker,
@@ -20,19 +22,19 @@ export function usePwaToasts(): void {
     toasts.push({
       key: 'update',
       icon: <Sparkles size={20} />,
-      text: 'A new version is ready. Your game is saved.',
+      text: t.toasts.update,
       tone: 'gold',
       duration: 0,
-      action: { label: 'RELOAD', run: () => void updateServiceWorker(true) },
+      action: { label: t.toasts.reload, run: () => void updateServiceWorker(true) },
     })
-  }, [needRefresh, toasts, updateServiceWorker])
+  }, [needRefresh, toasts, updateServiceWorker, t])
 
   useEffect(() => {
     const offline = () =>
       toasts.push({
         key: 'network',
         icon: <WifiOff size={20} />,
-        text: 'You’re offline — everything still works.',
+        text: t.toasts.offline,
         tone: 'muted',
         duration: 5000,
       })
@@ -44,5 +46,5 @@ export function usePwaToasts(): void {
       window.removeEventListener('offline', offline)
       window.removeEventListener('online', online)
     }
-  }, [toasts])
+  }, [toasts, t])
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Gem } from '../format.ts'
-import { STONE_LABEL } from '../format.ts'
+import { useT } from '../i18n/index.ts'
 import styles from './kit.module.css'
 
 /** White symbols inside each token (24×24). Colour + symbol keeps stones distinguishable. */
@@ -62,10 +62,11 @@ export function Token({
 }
 
 export function GemRow({ gems, size = 22 }: { gems: readonly Gem[]; size?: number }) {
+  const t = useT()
   return (
     <span className={styles.gemRow}>
       {gems.map((g, i) => (
-        <span key={i} title={g === 'time' ? 'Time' : STONE_LABEL[g]}>
+        <span key={i} title={g === 'time' ? t.common.time : t.stone[g]}>
           <Token stone={g} size={size} />
         </span>
       ))}

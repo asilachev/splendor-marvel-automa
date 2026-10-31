@@ -33,6 +33,8 @@ bookkeeping.
   - works offline;
   - keeps the screen awake.
 - **Explains the rules in place.** Tap the "i" next to a rule to read it at the table.
+- **Speaks five languages:** English, Русский, Srpski, Español and Deutsch. It follows your phone's
+  language, and the globe button on Home switches it.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
   is no card database and no game art.
 

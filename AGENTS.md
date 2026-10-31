@@ -77,10 +77,11 @@ builds the image on PRs and publishes it to GHCR from `master`.
 ```
 src/
   engine/   pure TypeScript automa engine: no React, no DOM; *.test.ts runs on Node
-  ui/       React UI (v2 "Versus" design); *.test.tsx runs on jsdom with Testing Library
+  ui/       React UI (v2 "Versus" design); *.test.ts(x) runs on jsdom with Testing Library
     components/  comic kit: Token, Button, Caption, chips, stone tiles, sheets, dialog, toasts, Versus HUD, dock, cards
     game/        game screen: steps (reveal, take, recruit, table, phase change, game over) and dock sheets
     home/        home, setup and rulings
+    i18n/        message catalogs: en (source), ru, sr (Latin), es, de; plurals; language detection
     pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
@@ -94,6 +95,10 @@ docs/       rules, automa spec, design, user guide with screenshots, reference P
 - Imports use explicit `.ts` / `.tsx` extensions.
 - Use named exports.
 - Style with CSS Modules (`*.module.css`), using the tokens in `src/ui/styles/global.css`.
+- **All UI text lives in `src/ui/i18n/`.** Add each new string to `en.ts`, then translate it in
+  `ru.ts`, `sr.ts`, `es.ts` and `de.ts`. The typecheck fails if one is missing. Text with numbers
+  or names is a function, so each language can inflect it. Check new screens at 360 px in the
+  longest languages, German and Russian.
 - TypeScript is strict, with `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes`.
 
 ## Workflow

@@ -1,4 +1,5 @@
 import { useId, useState, type ReactNode } from 'react'
+import { useT } from '../i18n/index.ts'
 import { Collapse } from './Kit.tsx'
 import styles from './kit.module.css'
 
@@ -8,6 +9,7 @@ import styles from './kit.module.css'
  * docs/rules.md, in our own words.
  */
 export function RuleTip({ title, children }: { title: string; children: ReactNode }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const id = useId()
   return (
@@ -17,7 +19,7 @@ export function RuleTip({ title, children }: { title: string; children: ReactNod
         className={styles.tipButton}
         aria-expanded={open}
         aria-controls={id}
-        aria-label={`Rule: ${title}`}
+        aria-label={t.common.rule(title)}
         onClick={() => setOpen((o) => !o)}
       >
         i

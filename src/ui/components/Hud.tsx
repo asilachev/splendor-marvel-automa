@@ -7,12 +7,14 @@ import {
   type SideStats,
 } from '../../engine/index.ts'
 import { OFFICIAL_ART } from '../assets/official/index.ts'
+import { useT } from '../i18n/index.ts'
 import styles from './game-kit.module.css'
 import { Token } from './Token.tsx'
 
 const GAUNTLET = 16
 
 function Fighter({ side, stats }: { side: 'thanos' | 'player'; stats: SideStats }) {
+  const t = useT()
   const thanos = side === 'thanos'
   return (
     <div className={styles.fighter} data-mirrored={!thanos}>
@@ -25,10 +27,8 @@ function Fighter({ side, stats }: { side: 'thanos' | 'player'; stats: SideStats 
         {thanos ? null : <Shield size={22} />}
       </span>
       <span>
-        <span className={styles.fighterName}>{thanos ? 'THANOS' : 'YOU'}</span>
-        <span className={styles.fighterPoints}>
-          {stats.points} / {GAUNTLET} PTS
-        </span>
+        <span className={styles.fighterName}>{thanos ? t.hud.thanos : t.hud.you}</span>
+        <span className={styles.fighterPoints}>{t.hud.points(stats.points, GAUNTLET)}</span>
       </span>
     </div>
   )
@@ -59,22 +59,30 @@ function Sockets({ stats, mirrored }: { stats: SideStats; mirrored: boolean }) {
 
 /** Fighting-game style header: the race to the Gauntlet at a glance (design: Versus HUD). */
 export function VersusHud({ state }: { state: GameState }) {
+  const t = useT()
   const thanos = sideStats(state, 'thanos')
   const player = sideStats(state, 'player')
   const limit = roundLimit(state.setup.settings)
   const over = state.step === 'over'
   const last = !over && state.round === limit
-  const summary =
-    `Round ${state.round} of ${limit}. Thanos ${thanos.points} points, ${thanos.colours.length} colours${thanos.hasTime ? ' and Time' : ''}. ` +
-    `You ${player.points} points, ${player.colours.length} colours${player.hasTime ? ' and Time' : ''}.`
+  const summary = t.hud.summary({
+    round: state.round,
+    limit,
+    thanos: { points: thanos.points, colours: thanos.colours.length, time: thanos.hasTime },
+    you: { points: player.points, colours: player.colours.length, time: player.hasTime },
+  })
   return (
     <header className={styles.hud} aria-label={summary}>
       <div className={styles.fighters}>
         <Fighter side="thanos" stats={thanos} />
         <div className={styles.clock} data-last={last}>
-          <strong>{over ? 'GAME OVER' : `ROUND ${state.round}`}</strong>
+          <strong>{over ? t.hud.gameOver : t.hud.round(state.round)}</strong>
           <span>
-            {over ? `ROUND ${state.round}` : last ? 'LAST ROUND' : `${limit - state.round} LEFT`}
+            {over
+              ? t.hud.round(state.round)
+              : last
+                ? t.hud.lastRound
+                : t.hud.left(limit - state.round)}
           </span>
         </div>
         <Fighter side="player" stats={player} />
@@ -107,6 +115,7 @@ export function Dock({
   onUndo: () => void
   onOpen: (sheet: SheetName) => void
 }) {
+  const t = useT()
   const item = (sheet: SheetName, icon: React.ReactNode, label: string) => (
     <button
       type="button"
@@ -120,14 +129,14 @@ export function Dock({
     </button>
   )
   return (
-    <nav className={styles.dock} aria-label="Game menu">
+    <nav className={styles.dock} aria-label={t.dock.nav}>
       <button type="button" className={styles.dockItem} disabled={!canUndo} onClick={onUndo}>
         <Undo2 size={22} />
-        Undo
+        {t.dock.undo}
       </button>
-      {item('hoard', <Layers size={22} />, `Hoard · ${tokens}`)}
-      {item('log', <ScrollText size={22} />, 'Log')}
-      {item('menu', <Menu size={22} />, 'Menu')}
+      {item('hoard', <Layers size={22} />, t.dock.hoard(tokens))}
+      {item('log', <ScrollText size={22} />, t.dock.log)}
+      {item('menu', <Menu size={22} />, t.dock.menu)}
     </nav>
   )
 }

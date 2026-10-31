@@ -10,7 +10,7 @@ import {
 } from 'react'
 import { EXIT_MS, prefersReducedMotion } from '../motion.ts'
 import { STONES, type Stone } from '../../engine/index.ts'
-import { STONE_LABEL } from '../format.ts'
+import { useT } from '../i18n/index.ts'
 import styles from './kit.module.css'
 import { Token } from './Token.tsx'
 
@@ -121,6 +121,7 @@ export function StonePicker({
   lacks?: readonly Stone[]
   paper?: boolean
 }) {
+  const t = useT()
   return (
     <div className={styles.picker} role="group" aria-label={label} data-paper={paper}>
       {STONES.map((s, i) => (
@@ -134,7 +135,7 @@ export function StonePicker({
           onClick={() => onPick(s)}
         >
           <Token stone={s} size={40} />
-          <span>{STONE_LABEL[s]}</span>
+          <span>{t.stone[s]}</span>
           <small aria-hidden="true">{i + 1}</small>
         </button>
       ))}
@@ -323,6 +324,7 @@ export function Sheet({
   onClose: () => void
   children: ReactNode
 }) {
+  const t = useT()
   const [closing, close] = useAnimatedClose(onClose)
   useEscape(close)
   useScrollLock()
@@ -333,7 +335,7 @@ export function Sheet({
       <button
         type="button"
         className={styles.scrim}
-        aria-label="Close"
+        aria-label={t.common.close}
         tabIndex={-1}
         onClick={close}
       />
@@ -351,7 +353,7 @@ export function Sheet({
           <button
             type="button"
             className={styles.close}
-            aria-label={`Close ${title}`}
+            aria-label={t.common.closeTitle(title)}
             onClick={close}
           >
             <X size={20} />
@@ -377,6 +379,7 @@ export function Dialog({
   onClose: () => void
   children: ReactNode
 }) {
+  const t = useT()
   const [closing, close] = useAnimatedClose(onClose)
   useEscape(close)
   useScrollLock()
@@ -387,7 +390,7 @@ export function Dialog({
       <button
         type="button"
         className={styles.scrim}
-        aria-label="Close"
+        aria-label={t.common.close}
         tabIndex={-1}
         onClick={close}
       />

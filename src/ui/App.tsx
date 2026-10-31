@@ -1,11 +1,20 @@
 import { OctagonX, RotateCcw } from 'lucide-react'
-import { useLayoutEffect, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Button, Dialog } from './components/Kit.tsx'
 import { useToasts } from './components/toast.ts'
 import { Toaster } from './components/Toaster.tsx'
 import { Game } from './game/Game.tsx'
 import { Home } from './home/Home.tsx'
 import { Setup } from './home/Setup.tsx'
+import {
+  browserLanguages,
+  CATALOGS,
+  detectLang,
+  I18nContext,
+  LANGS,
+  useT,
+  type I18n,
+} from './i18n/index.ts'
 import {
   isIosSafari,
   isStandalone,
@@ -24,31 +33,51 @@ type Screen = 'home' | 'setup' | 'game'
 /** Confirmations that clear the saved game: a new game over it, or ending it (#53). */
 type Confirm = 'newGame' | 'endGame'
 
+type UpdatePrefs = (change: Partial<Prefs>) => void
+
+/**
+ * Device preferences live here, above the toasts, because the language (#54) is one of them:
+ * the browser's language on first launch, then whatever was picked.
+ */
 export function App() {
+  const [prefs, setPrefs] = useState<Prefs>(loadPrefs)
+  const updatePrefs = useCallback<UpdatePrefs>(
+    (change) =>
+      setPrefs((prev) => {
+        const next = { ...prev, ...change }
+        savePrefs(next)
+        return next
+      }),
+    [],
+  )
+  const lang = prefs.language ?? detectLang(browserLanguages())
+  const i18n = useMemo<I18n>(
+    () => ({ lang, t: CATALOGS[lang], setLang: (language) => updatePrefs({ language }) }),
+    [lang, updatePrefs],
+  )
+  useEffect(() => {
+    document.documentElement.lang = LANGS.find((l) => l.code === lang)?.tag ?? lang
+  }, [lang])
   return (
-    <Toaster>
-      <Shell />
-    </Toaster>
+    <I18nContext.Provider value={i18n}>
+      <Toaster>
+        <Shell prefs={prefs} updatePrefs={updatePrefs} />
+      </Toaster>
+    </I18nContext.Provider>
   )
 }
 
-function Shell() {
+function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs }) {
+  const t = useT()
   const game = useGame()
   // Every launch opens on Home; a saved game shows CONTINUE (design: 7.3 splash → 1.2).
   const [screen, setScreen] = useState<Screen>('home')
-  const [prefs, setPrefs] = useState<Prefs>(loadPrefs)
   const [confirm, setConfirm] = useState<Confirm | null>(null)
   const toasts = useToasts()
   const splash = useSplash()
   const installPrompt = useInstallPrompt()
   const [iosNotInstalled] = useState(() => isIosSafari() && !isStandalone())
   usePwaToasts()
-  const updatePrefs = (p: Partial<Prefs>) =>
-    setPrefs((prev) => {
-      const next = { ...prev, ...p }
-      savePrefs(next)
-      return next
-    })
   const inProgress = game.state !== null && game.state.step !== 'over'
   const newGame = () => (inProgress ? setConfirm('newGame') : setScreen('setup'))
   const endGame = () => setConfirm('endGame')
@@ -104,33 +133,31 @@ function Shell() {
     )
   }
 
+  const ending = confirm === 'endGame'
   return (
     <>
       {view}
       {confirm && game.state ? (
         <Dialog
-          title={confirm === 'endGame' ? 'END THIS GAME?' : 'ABANDON THIS GAME?'}
+          title={ending ? t.dialogs.endTitle : t.dialogs.abandonTitle}
           onClose={() => setConfirm(null)}
         >
           <p>
-            You’re in round {game.state.round}.{' '}
-            {confirm === 'endGame'
-              ? 'Ending it clears the saved game — Undo can’t bring it back.'
-              : 'Starting over clears it — Undo can’t bring it back.'}
+            {ending ? t.dialogs.endBody(game.state.round) : t.dialogs.abandonBody(game.state.round)}
           </p>
           <Button
             variant="danger"
-            icon={confirm === 'endGame' ? <OctagonX size={20} /> : <RotateCcw size={20} />}
+            icon={ending ? <OctagonX size={20} /> : <RotateCcw size={20} />}
             onClick={() => {
               setConfirm(null)
               game.abandon()
               updatePrefs({ played: true })
-              if (confirm === 'endGame') {
+              if (ending) {
                 setScreen('home')
                 toasts.push({
                   key: 'ended',
                   icon: <OctagonX size={20} />,
-                  text: 'Game ended.',
+                  text: t.toasts.ended,
                   tone: 'muted',
                 })
               } else {
@@ -138,10 +165,10 @@ function Shell() {
               }
             }}
           >
-            {confirm === 'endGame' ? 'END GAME' : 'START OVER'}
+            {ending ? t.dialogs.end : t.dialogs.startOver}
           </Button>
           <Button variant="secondary" onClick={() => setConfirm(null)}>
-            KEEP PLAYING
+            {t.common.keepPlaying}
           </Button>
         </Dialog>
       ) : null}

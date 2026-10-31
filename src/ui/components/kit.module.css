@@ -30,6 +30,7 @@
   font-size: 1.6rem;
   letter-spacing: 0.06em;
   line-height: 1;
+  text-wrap: balance;
   box-shadow: var(--shadow-3);
   cursor: pointer;
   transition:
@@ -216,7 +217,7 @@
 /* Stone picker */
 .picker {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 7px;
 }
 
@@ -240,6 +241,13 @@
     border-color 0.12s ease,
     box-shadow 0.12s ease,
     opacity 0.12s ease;
+}
+
+.tile > span {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
 }
 
 .tile small {
