@@ -18,5 +18,6 @@ You need an authenticated `gh` CLI with access to the repo.
 Text summaries are in [`../rules.md`](../rules.md) and [`../automa.md`](../automa.md).
 
 > **Copyright.** These PDFs belong to their authors and are for personal reference only. Never commit
-> them. The bootstrap commit still contains them in the history; purging that, and deleting the
-> release, is part of the go-public checklist (#17).
+> them again. **Keep them:** the owner wants them available for later. If the repository ever goes
+> public, first move the release assets somewhere private (don't delete them), and purge the copy
+> still in the bootstrap commit's history. Both steps are on the go-public checklist (#17).
