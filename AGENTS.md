@@ -65,6 +65,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run build` | Typecheck, then production build into `dist/` |
 | `npm run preview` | Serve the production build |
 | `docker build -t thanos-automa .` | Build the production image (nginx on port 8080); `docker compose up -d` runs the published one |
+| `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688) |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the private release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
@@ -84,8 +85,8 @@ src/
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
-scripts/    repo tooling (logo/icon generator)
-docs/       rules, automa spec, design, reference PDFs
+scripts/    repo tooling (logo/icon generator, guide screenshots)
+docs/       rules, automa spec, design, user guide with screenshots, reference PDFs
 ```
 
 **Conventions**
