@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@fontsource/bebas-neue/latin-400.css'
+import '@fontsource/bangers/latin-400.css'
 import './ui/styles/global.css'
 import { App } from './ui/App.tsx'
 

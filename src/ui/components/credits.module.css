@@ -1,0 +1,45 @@
+.credits {
+  padding: 4px 2px 8px;
+  border-top: 1px solid rgb(255 255 255 / 16%);
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.credits p {
+  margin: 0 0 6px;
+}
+
+.credits a {
+  color: var(--gold);
+}
+
+.credits strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.title {
+  margin: 10px 0 4px;
+  color: #fff;
+  font-size: 1.15rem;
+}
+
+.list {
+  margin: 0 0 6px;
+  padding-left: 18px;
+}
+
+.credits[data-tone='paper'] {
+  border-top-color: rgb(0 0 0 / 15%);
+  color: var(--paper-muted);
+}
+
+.credits[data-tone='paper'] .title,
+.credits[data-tone='paper'] strong {
+  color: var(--paper-ink);
+}
+
+.credits[data-tone='paper'] a {
+  color: var(--gold-deep);
+}

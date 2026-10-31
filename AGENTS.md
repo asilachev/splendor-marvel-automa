@@ -76,7 +76,11 @@ builds the image on PRs and publishes it to GHCR from `master`.
 ```
 src/
   engine/   pure TypeScript automa engine: no React, no DOM; *.test.ts runs on Node
-  ui/       React components and styles; *.test.tsx runs on jsdom with Testing Library
+  ui/       React UI (v2 "Versus" design); *.test.tsx runs on jsdom with Testing Library
+    components/  comic kit: Token, Button, Caption, chips, stone tiles, sheets, dialog, toasts, Versus HUD, dock, cards
+    game/        game screen: steps (reveal, take, recruit, table, phase change, game over) and dock sheets
+    home/        home, setup and rulings
+    state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
 scripts/    repo tooling (logo/icon generator)

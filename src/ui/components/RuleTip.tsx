@@ -1,9 +1,9 @@
 import { useId, useState, type ReactNode } from 'react'
-import styles from './components.module.css'
+import styles from './kit.module.css'
 
 /**
- * A tap-to-open rule explanation (#31): hover doesn't exist on phones, so an "i" button toggles a
- * short note inline. Wording follows docs/automa.md and docs/rules.md, in our own words.
+ * A tap-to-open rule explanation: hover doesn't exist on phones, so an "i" button toggles a short
+ * note inline. Wording follows docs/automa.md and docs/rules.md, in our own words.
  */
 export function RuleTip({ title, children }: { title: string; children: ReactNode }) {
   const [open, setOpen] = useState(false)
