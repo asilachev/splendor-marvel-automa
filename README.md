@@ -36,6 +36,20 @@ bookkeeping.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
   is no card database and no game art.
 
+## How to play
+
+Set up a normal 2-player game, then let the app run Thanos. Each round you flip his card, do what it
+says on the table, play your own turn and tap **END ROUND**. The app keeps his tokens, cards and
+points, and checks the Infinity Gauntlet for both sides. The
+**[step-by-step guide](docs/guide/README.md)** walks through every screen.
+
+<p>
+  <a href="docs/guide/README.md#3-thanoss-turn"><img src="docs/guide/screenshots/04-reveal.png" width="180" alt="Thanos makes his move"></a>
+  <a href="docs/guide/README.md#3-thanoss-turn"><img src="docs/guide/screenshots/06-recruit.png" width="180" alt="Thanos recruits a card"></a>
+  <a href="docs/guide/README.md#4-your-turn"><img src="docs/guide/screenshots/08-table.png" width="180" alt="At the table and your move"></a>
+  <a href="docs/guide/README.md#7-how-the-game-ends"><img src="docs/guide/screenshots/14-win.png" width="180" alt="You win"></a>
+</p>
+
 ## Rules
 
 - **Official game rules.** [`docs/rules.md`](docs/rules.md) summarises everything the app relies on,

@@ -32,8 +32,10 @@ function findSeed(pred) {
   throw new Error('No seed matches')
 }
 
-/** Colours you recruit, in order. */
+/** The cards you log, in order: colour, points and Avengers tags (all level 1, so no Time). */
 const YOURS = ['space', 'reality', 'soul', 'power', 'mind']
+const YOUR_POINTS = [0, 1, 1, 2, 1, 2, 1, 3, 1, 2, 1, 2, 1, 2, 1]
+const YOUR_TAGS = [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0]
 
 /**
  * A game played up to the start of `round`, plus Thanos's turn when `thanos` is set. Thanos takes
@@ -56,8 +58,9 @@ function game(seed, round, { thanos = false } = {}) {
     }
     const his = E.sideStats(state, 'thanos')
     const colour = E.STONES.find((c) => !his.colours.includes(c)) ?? 'mind'
-    const points = his.points < 10 ? { A: 2, B: 1, C: 0 }[action.row] : 0
-    const tags = action.row === 'A' ? 1 : 0
+    // Level 3 / 2 / 1 points as on real cards, but never enough for his Gauntlet.
+    const points = his.points <= 8 ? { A: 4, B: 2, C: state.round % 2 }[action.row] : 0
+    const tags = action.row === 'C' ? 0 : 1
     push({
       type: 'thanosGain',
       card: { colour, points, tags },
@@ -68,10 +71,15 @@ function game(seed, round, { thanos = false } = {}) {
   while (state.round < round) {
     thanosTurn()
     if (state.round % 2 === 0) {
-      const colour = YOURS[(state.round / 2 - 1) % YOURS.length]
+      const n = state.round / 2 - 1
       push({
         type: 'playerRecruit',
-        card: { level: 1, colour, points: state.round >= 4 ? 1 : 0, tags: 0 },
+        card: {
+          level: 1,
+          colour: YOURS[n % YOURS.length],
+          points: YOUR_POINTS[n % YOUR_POINTS.length],
+          tags: YOUR_TAGS[n % YOUR_TAGS.length],
+        },
       })
     }
     push({ type: 'endRound' })
@@ -82,9 +90,13 @@ function game(seed, round, { thanos = false } = {}) {
 }
 
 // Round 7 starts with "take tokens": reveal, take, then the table, the sheets and your card.
-const takeSeed = findSeed(
-  (s) => actionAt(s, 7).kind === 'take' && actionAt(s, 7).tokens.length === 3,
-)
+// Thanos already holds a few tokens and cards, so the hoard has something to show.
+const takeSeed = findSeed((s) => {
+  const a = actionAt(s, 7)
+  if (a.kind !== 'take' || a.tokens.length !== 3) return false
+  const { state } = game(s, 7)
+  return state.stack.length >= 4 && E.sideStats(state, 'thanos').cardCount >= 2
+})
 // Round 8 is a recruit that returns tokens, and Thanos already has a colour to substitute for.
 const recruitSeed = findSeed((s) => {
   const a = actionAt(s, 8)
@@ -230,9 +242,13 @@ await mkdir(OUT, { recursive: true })
 const server = await preview({ logLevel: 'error', preview: { port: 4180, open: false } })
 const url = server.resolvedUrls?.local[0]
 if (!url) throw new Error('vite preview did not start')
-const browser = await chromium.launch(
-  process.env.CHROME_PATH ? { executablePath: process.env.CHROME_PATH } : { channel: 'chrome' },
-)
+const browser = await chromium.launch({
+  ...(process.env.CHROME_PATH
+    ? { executablePath: process.env.CHROME_PATH }
+    : { channel: 'chrome' }),
+  // Software rendering and a fixed colour profile, so reruns produce the same pixels.
+  args: ['--disable-gpu', '--force-color-profile=srgb', '--font-render-hinting=none'],
+})
 
 try {
   for (const [name, [save, act, options = {}]] of Object.entries(SHOTS)) {
