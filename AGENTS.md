@@ -31,7 +31,7 @@ change to a rule or ruling updates the docs in the same PR.
   - Never add a card database, card art, card names or a digital market.
   - A recruited card is only `{ level, colour, points, tags }`.
 - **Official art.** Only the owner-approved assets in `src/ui/assets/official/` may be used: the
-  Splendor/MARVEL banner and the automa card back. They are imported only through `OFFICIAL_ART`.
+  Splendor and MARVEL logos and the automa card back. They are imported only through `OFFICIAL_ART`.
   - Don't add any other official art.
   - The folder must be removed or replaced before the repo goes public (#17).
   - Everything else (icons, tokens, the card face) is our own drawing.
