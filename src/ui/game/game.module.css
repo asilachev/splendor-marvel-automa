@@ -295,6 +295,25 @@
   cursor: default;
 }
 
+/* Without your cards logged: one wide "Gauntlet complete" toggle (#15) */
+.moveTile[data-wide='true'] {
+  grid-column: 1 / -1;
+}
+
+.tiebreak {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.tiebreakNote {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 .logged {
   display: flex;
   align-items: center;

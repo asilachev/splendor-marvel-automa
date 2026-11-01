@@ -7,6 +7,8 @@
     "back": "Atrás",
     "rule": "Regla: {title}",
     "keepPlaying": "SEGUIR JUGANDO",
+    "decrease": "Restar: {label}",
+    "increase": "Sumar: {label}",
     "level": "N{level}",
     "card": "N{level} {stone}",
     "points": "{n, plural, one {# pt} many {# pts} other {# pts}}",
@@ -34,6 +36,8 @@
     "left": "QUEDAN {n}",
     "lastRound": "ÚLTIMA RONDA",
     "gameOver": "FIN",
+    "unlogged": "? / {goal} PTS",
+    "summaryUnlogged": "Ronda {round} de {limit}. Thanos: {thanosPoints, plural, one {# punto} other {# puntos}}, {thanosColours} colores{thanosTime, select, true { y Tiempo} other {}}. Tus cartas no se anotan.",
     "summary": "Ronda {round} de {limit}. Thanos: {thanosPoints, plural, one {# punto} other {# puntos}}, {thanosColours} colores{thanosTime, select, true { y Tiempo} other {}}. Tú: {youPoints, plural, one {# punto} other {# puntos}}, {youColours} colores{youTime, select, true { y Tiempo} other {}}."
   },
   "dock": {
@@ -115,6 +119,22 @@
     "capTip": {
       "title": "Límite de fichas",
       "body": "Una propuesta de la comunidad: como máximo 12 fichas; las más antiguas por encima del límite vuelven a la reserva."
+    },
+    "yourCards": "3 · TUS CARTAS",
+    "logCards": "Anotar tus cartas",
+    "logCardsOptions": {
+      "log": {
+        "label": "ANOTARLAS",
+        "hint": "la app te puntúa"
+      },
+      "skip": {
+        "label": "NO ANOTAR",
+        "hint": "tú avisas del Guantelete"
+      }
+    },
+    "logCardsTip": {
+      "title": "Tus cartas",
+      "body": "Si anotas las cartas que reclutas, la app lleva tus puntos, colores y ficha de Tiempo, mueve la loseta de los Vengadores y resuelve los desempates. Si no las anotas, marca «Completé el Guantelete» en la ronda en que lo completes y mueve tú la loseta de los Vengadores. La app solo te pide tus puntos y tu número de cartas si hace falta un desempate."
     },
     "rulingsRow": "Decisiones para los huecos del automa",
     "customised": "personalizadas",
@@ -270,6 +290,14 @@
     "after": "¿Tomaste fichas o reservaste? No hay nada que anotar. Luego la app comprueba el Guantelete de los dos.",
     "tipTitle": "Fin de ronda",
     "ties": "{thanosWins, select, true {Si los dos completan el Guantelete en la misma ronda, gana Thanos (tu decisión).} other {Si los dos completan el Guantelete: gana quien tenga más puntos, luego la loseta de los Vengadores, luego menos cartas; cualquier empate restante lo gana Thanos.}}",
+    "gauntlet": "COMPLETÉ EL GUANTELETE",
+    "gauntletSub": "16+ puntos · los 5 colores · ficha de Tiempo",
+    "tiebreak": "DESEMPATE",
+    "tiebreakNote": "Thanos también completó el Guantelete, así que deciden tus totales:",
+    "yourPoints": "Tus puntos",
+    "yourCards": "Tus cartas",
+    "thanosHas": "Thanos: {n}",
+    "afterUnlogged": "Juega tu turno en la mesa; no hay nada que anotar. Marca la casilla solo en la ronda en que completes el Guantelete.",
     "cta": "TERMINAR RONDA {round}"
   },
   "over": {
@@ -278,6 +306,8 @@
     "thanos": "THANOS",
     "you": "TÚ",
     "pts": "{n, plural, one {# PTS} many {# PTS} other {# PTS}}",
+    "ptsUnknown": "— PTS",
+    "unlogged": "cartas sin anotar{tile, select, true { · loseta Vengadores} other {}}",
     "meta": "{colours} de 5 colores{time, select, true { + Tiempo} other {}}{tile, select, true { · loseta Vengadores} other {}}",
     "newGame": "NUEVA PARTIDA",
     "undo": "DESHACER EL ÚLTIMO PASO",
@@ -306,6 +336,7 @@
     "refillSlot": "Repón el hueco {slot} con el mazo de nivel {level}",
     "refillMarket": "Repón el mercado con el mazo de nivel {level}",
     "time": "Dale a Thanos una ficha verde de Tiempo",
+    "tileCheck": "Thanos ya tiene {n, plural, one {# símbolo} many {# símbolos} other {# símbolos}} de Vengadores: si son más que los tuyos, pásale la loseta",
     "tile": "Pasa la loseta de los Vengadores a Thanos"
   },
   "log": {
@@ -361,6 +392,7 @@
     "rulingCounted": "{all, select, true {Cartas de Thanos que cuentan: todas (aclaración en BGG)} other {Cartas de Thanos que cuentan: solo con puntos o Vengadores}}",
     "rulingCard12": "Carta 12, devolución en la fase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Hueco vacío: primera carta de la fila} other {Hueco vacío: no toma nada}}",
+    "rulingLog": "{logged, select, true {Tus cartas: se anotan} other {Tus cartas: no se anotan}}",
     "rulingTies": "{thanosWins, select, true {Ambos completan el Guantelete: gana Thanos} other {Ambos completan el Guantelete: desempates, luego Thanos}}"
   },
   "rules": [

@@ -26,6 +26,18 @@ export interface RecruitedCard {
 /** Thanos's card as entered at the table; its level comes from the automa card's row. */
 export type ThanosCardInput = Omit<RecruitedCard, 'level'>
 
+/**
+ * What you tell the app at the end of a round when you don't log your cards (#15): whether you
+ * completed the Gauntlet, and your totals when the tiebreakers need them.
+ */
+export interface PlayerReport {
+  readonly gauntlet: boolean
+  /** Your Infinity Points, tiles included: 16 or more. */
+  readonly points?: number
+  /** Your Character cards: at least 5, one per colour. */
+  readonly cards?: number
+}
+
 export type GameEvent =
   | { readonly type: 'reveal' }
   | { readonly type: 'thanosTake'; readonly skipped: readonly Stone[] }
@@ -45,7 +57,7 @@ export type GameEvent =
   | { readonly type: 'stackRemove'; readonly index: number }
   | { readonly type: 'addCard'; readonly side: Side; readonly card: RecruitedCard }
   | { readonly type: 'removeCard'; readonly side: Side; readonly index: number }
-  | { readonly type: 'endRound' }
+  | { readonly type: 'endRound'; readonly report?: PlayerReport }
 
 export type ResultReason =
   | 'gauntlet' // only one side completed the Infinity Gauntlet
@@ -118,6 +130,8 @@ export interface GameState {
   readonly playerCards: readonly RecruitedCard[]
   readonly playerLocations: number
   readonly avengers: AvengersHolder
+  /** Your report from the round that ended the game, when your cards aren't logged (#15). */
+  readonly playerReport: PlayerReport | null
   readonly result: GameResult | null
   readonly log: readonly LogEntry[]
 }
@@ -154,6 +168,7 @@ export function newGame(seed: number, settings: Settings): GameState {
     playerCards: [],
     playerLocations: 0,
     avengers: 'none',
+    playerReport: null,
     result: null,
     log: [],
   }
@@ -231,6 +246,7 @@ export function applyEvent(state: GameState, event: GameEvent): GameState {
       return thanosGain(state, event.card, event.substituted, event.slotEmpty)
     case 'playerRecruit':
       expectStep(state, 'player', event.type)
+      expectLogged(state, event.type)
       validateCard(event.card)
       return recruit(state, 'player', event.card)
     case 'playerLocation':
@@ -264,6 +280,7 @@ export function applyEvent(state: GameState, event: GameEvent): GameState {
       }
     }
     case 'addCard':
+      if (event.side === 'player') expectLogged(state, event.type)
       validateCard(event.card)
       return reconcileAvengers(
         withCards(state, event.side, [...cardsOf(state, event.side), event.card], {
@@ -275,6 +292,7 @@ export function applyEvent(state: GameState, event: GameEvent): GameState {
         }),
       )
     case 'removeCard': {
+      if (event.side === 'player') expectLogged(state, event.type)
       const card = cardsOf(state, event.side)[event.index]
       if (!card) throw new GameRuleError(`No ${event.side} card at index ${event.index}`)
       return reconcileAvengers(
@@ -288,7 +306,7 @@ export function applyEvent(state: GameState, event: GameEvent): GameState {
     }
     case 'endRound':
       expectStep(state, 'player', event.type)
-      return endRound(state)
+      return endRound(state, event.report)
   }
 }
 
@@ -384,12 +402,13 @@ function recruit(state: GameState, side: Side, card: RecruitedCard, logRecruit =
     }
   }
   // docs/rules.md → Avengers Assemble tile: first to 3 tags takes it; only MORE tags take it away.
+  // Without your cards logged your tags are unknown, so Thanos takes it only from the middle (#15).
   const holder = next.avengers
   const tags = sideStats(next, side).tags
   const takes =
     holder !== side &&
     tags >= AVENGERS_TILE_TAGS &&
-    (holder === 'none' || tags > sideStats(next, holder).tags)
+    (holder === 'none' || (isLogged(next) && tags > sideStats(next, holder).tags))
   if (!takes) return next
   return {
     ...next,
@@ -401,15 +420,21 @@ function recruit(state: GameState, side: Side, card: RecruitedCard, logRecruit =
 /** After a correction, keep the tile consistent with the tags on the table. */
 function reconcileAvengers(state: GameState): GameState {
   const thanos = sideStats(state, 'thanos').tags
-  const player = sideStats(state, 'player').tags
   let holder = state.avengers
-  const tagsOf = (side: Side) => (side === 'thanos' ? thanos : player)
-  if (holder !== 'none' && tagsOf(holder) < AVENGERS_TILE_TAGS) holder = 'none'
-  if (holder !== 'none') {
-    const other: Side = holder === 'thanos' ? 'player' : 'thanos'
-    if (tagsOf(other) > tagsOf(holder)) holder = other
-  } else if (Math.max(thanos, player) >= AVENGERS_TILE_TAGS && thanos !== player) {
-    holder = thanos > player ? 'thanos' : 'player'
+  if (!isLogged(state)) {
+    // Your tags aren't known (#15): keep only Thanos's claim in line with his cards.
+    if (holder === 'thanos' && thanos < AVENGERS_TILE_TAGS) holder = 'none'
+    else if (holder === 'none' && thanos >= AVENGERS_TILE_TAGS) holder = 'thanos'
+  } else {
+    const player = sideStats(state, 'player').tags
+    const tagsOf = (side: Side) => (side === 'thanos' ? thanos : player)
+    if (holder !== 'none' && tagsOf(holder) < AVENGERS_TILE_TAGS) holder = 'none'
+    if (holder !== 'none') {
+      const other: Side = holder === 'thanos' ? 'player' : 'thanos'
+      if (tagsOf(other) > tagsOf(holder)) holder = other
+    } else if (Math.max(thanos, player) >= AVENGERS_TILE_TAGS && thanos !== player) {
+      holder = thanos > player ? 'thanos' : 'player'
+    }
   }
   if (holder === state.avengers) return state
   return {
@@ -421,6 +446,7 @@ function reconcileAvengers(state: GameState): GameState {
 
 function playerLocation(state: GameState): GameState {
   expectStep(state, 'player', 'playerLocation')
+  expectLogged(state, 'playerLocation')
   if (state.playerLocations >= LOCATIONS_IN_PLAY) {
     throw new GameRuleError(`Only ${LOCATIONS_IN_PLAY} Locations are in play`)
   }
@@ -434,13 +460,18 @@ function playerLocation(state: GameState): GameState {
   }
 }
 
-function endRound(state: GameState): GameState {
-  const result = roundResult(state)
+function endRound(state: GameState, report: PlayerReport | undefined): GameState {
+  if (report !== undefined) {
+    if (isLogged(state)) throw new GameRuleError('Your cards are logged: the app checks your side')
+    validateReport(report)
+  }
+  const result = roundResult(state, report)
   if (result) {
     return {
       ...state,
       step: 'over',
       result,
+      playerReport: isLogged(state) ? null : (report ?? { gauntlet: false }),
       log: [...state.log, { kind: 'result', round: state.round, result }],
     }
   }
@@ -452,20 +483,29 @@ function endRound(state: GameState): GameState {
   return { ...state, round, step: 'reveal', log }
 }
 
-/** End-of-round check (docs/automa.md → Playing a round, docs/rules.md → End of the game). */
-export function roundResult(state: GameState): GameResult | null {
+/**
+ * End-of-round check (docs/automa.md → Playing a round, docs/rules.md → End of the game). When
+ * your cards aren't logged, your side comes from your `report` (#15).
+ */
+export function roundResult(state: GameState, report?: PlayerReport): GameResult | null {
   const round = state.round
   const thanos = sideStats(state, 'thanos')
-  const player = sideStats(state, 'player')
+  const player = isLogged(state)
+    ? sideStats(state, 'player')
+    : { gauntlet: report?.gauntlet ?? false, points: report?.points, cardCount: report?.cards }
   if (thanos.gauntlet && player.gauntlet) {
     const win = (winner: Side, reason: ResultReason): GameResult => ({ winner, reason, round })
     if (state.setup.settings.ties === 'thanosWins') return win('thanos', 'thanosWinsTies')
-    if (thanos.points !== player.points) {
-      return win(thanos.points > player.points ? 'thanos' : 'player', 'morePoints')
+    const { points, cardCount } = player
+    if (points === undefined || cardCount === undefined) {
+      throw new GameRuleError('The tiebreakers need your points and card count')
+    }
+    if (thanos.points !== points) {
+      return win(thanos.points > points ? 'thanos' : 'player', 'morePoints')
     }
     if (state.avengers !== 'none') return win(state.avengers, 'avengersTile')
-    if (thanos.cardCount !== player.cardCount) {
-      return win(thanos.cardCount < player.cardCount ? 'thanos' : 'player', 'fewerCards')
+    if (thanos.cardCount !== cardCount) {
+      return win(thanos.cardCount < cardCount ? 'thanos' : 'player', 'fewerCards')
     }
     return win('thanos', 'thanosWinsTies')
   }
@@ -481,6 +521,30 @@ export function roundResult(state: GameState): GameResult | null {
 function expectStep(state: GameState, step: Step, event: GameEvent['type']): void {
   if (state.step !== step) {
     throw new GameRuleError(`"${event}" is not allowed during the "${state.step}" step`)
+  }
+}
+
+/** You log your own cards in this game (the default; #15). */
+const isLogged = (state: GameState): boolean => state.setup.settings.logPlayerCards
+
+function expectLogged(state: GameState, event: GameEvent['type']): void {
+  if (!isLogged(state)) throw new GameRuleError(`"${event}" needs your cards logged`)
+}
+
+function validateReport(report: PlayerReport): void {
+  if (typeof report.gauntlet !== 'boolean') throw new GameRuleError('Say whether you completed it')
+  if (!report.gauntlet && (report.points !== undefined || report.cards !== undefined)) {
+    throw new GameRuleError('Your totals are needed only with the Gauntlet')
+  }
+  const { points, cards } = report
+  if (
+    points !== undefined &&
+    (!Number.isInteger(points) || points < GAUNTLET_POINTS || points > 99)
+  ) {
+    throw new GameRuleError(`Your points must be a whole number from ${GAUNTLET_POINTS} to 99`)
+  }
+  if (cards !== undefined && (!Number.isInteger(cards) || cards < STONES.length || cards > 99)) {
+    throw new GameRuleError(`Your card count must be a whole number from ${STONES.length} to 99`)
   }
 }
 

@@ -113,6 +113,7 @@ function parseSettings(value: unknown): Settings {
     ties: merged.ties,
     countedCards: merged.countedCards,
     stackCap: merged.stackCap,
+    logPlayerCards: merged.logPlayerCards,
   }
   if (
     !Array.isArray(settings.phaseLengths) ||

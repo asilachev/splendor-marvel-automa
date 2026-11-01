@@ -19,6 +19,11 @@ export interface Settings {
   readonly countedCards: 'all' | 'scoringOnly'
   /** Maximum tokens in Thanos's stack; the oldest beyond it go back to the supply. */
   readonly stackCap: number | null
+  /**
+   * You log the cards you recruit (default), or don't (#15): then you report the Gauntlet yourself
+   * at the end of a round, and the Avengers tile is yours to move.
+   */
+  readonly logPlayerCards: boolean
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -28,6 +33,7 @@ export const DEFAULT_SETTINGS: Settings = {
   ties: 'tiebreakersThenThanos',
   countedCards: 'all',
   stackCap: null,
+  logPlayerCards: true,
 }
 
 export const PHASE_LENGTH_PRESETS = {
@@ -50,5 +56,8 @@ export function validateSettings(settings: Settings): void {
     (!Number.isInteger(settings.stackCap) || settings.stackCap < 1)
   ) {
     throw new Error(`Stack cap must be a positive integer or null`)
+  }
+  if (typeof settings.logPlayerCards !== 'boolean') {
+    throw new Error(`"Log my cards" must be true or false`)
   }
 }

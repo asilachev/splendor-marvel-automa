@@ -7,6 +7,8 @@
     "back": "Back",
     "rule": "Rule: {title}",
     "keepPlaying": "KEEP PLAYING",
+    "decrease": "Decrease {label}",
+    "increase": "Increase {label}",
     "level": "L{level}",
     "card": "L{level} {stone}",
     "points": "{n, plural, one {# pt} other {# pts}}",
@@ -34,6 +36,8 @@
     "left": "{n} LEFT",
     "lastRound": "LAST ROUND",
     "gameOver": "GAME OVER",
+    "unlogged": "? / {goal} PTS",
+    "summaryUnlogged": "Round {round} of {limit}. Thanos {thanosPoints} points, {thanosColours} colours{thanosTime, select, true { and Time} other {}}. Your cards aren’t logged.",
     "summary": "Round {round} of {limit}. Thanos {thanosPoints} points, {thanosColours} colours{thanosTime, select, true { and Time} other {}}. You {youPoints} points, {youColours} colours{youTime, select, true { and Time} other {}}."
   },
   "dock": {
@@ -111,6 +115,22 @@
     "capTip": {
       "title": "Token cap",
       "body": "A community suggestion: cap his tokens at 12; the oldest beyond the cap go back to the supply."
+    },
+    "yourCards": "3 · YOUR CARDS",
+    "logCards": "Log the cards you recruit",
+    "logCardsOptions": {
+      "log": {
+        "label": "LOG THEM",
+        "hint": "the app scores you"
+      },
+      "skip": {
+        "label": "DON’T LOG",
+        "hint": "you report the Gauntlet"
+      }
+    },
+    "logCardsTip": {
+      "title": "Your cards",
+      "body": "Logging your recruits lets the app track your points, colours and Time token, move the Avengers tile and run the tiebreakers. If you don’t log them, tick “I completed the Gauntlet” in the round you complete it, and move the Avengers tile yourself. The app asks for your points and card count only if a tiebreaker needs them."
     },
     "rulingsRow": "Rulings for gaps in the automa",
     "customised": "customised",
@@ -266,6 +286,14 @@
     "after": "Took tokens or reserved? Nothing to log. Then the app checks both sides for the Gauntlet.",
     "tipTitle": "End of round",
     "ties": "{thanosWins, select, true {If both complete the Gauntlet in the same round, Thanos wins (your ruling).} other {If both complete the Gauntlet: more points wins, then the Avengers tile, then fewer cards — and Thanos wins any remaining tie.}}",
+    "gauntlet": "I COMPLETED THE GAUNTLET",
+    "gauntletSub": "16+ points · all 5 colours · a Time token",
+    "tiebreak": "TIEBREAKERS",
+    "tiebreakNote": "Thanos completed the Gauntlet too, so your totals decide:",
+    "yourPoints": "Your points",
+    "yourCards": "Your cards",
+    "thanosHas": "Thanos: {n}",
+    "afterUnlogged": "Play your turn at the table; there’s nothing to log. Tick the box only in the round you complete the Gauntlet.",
     "cta": "END ROUND {round}"
   },
   "over": {
@@ -274,6 +302,8 @@
     "thanos": "THANOS",
     "you": "YOU",
     "pts": "{n, plural, one {# PTS} other {# PTS}}",
+    "ptsUnknown": "— PTS",
+    "unlogged": "cards not logged{tile, select, true { · Avengers tile} other {}}",
     "meta": "{colours} of 5 colours{time, select, true { + Time} other {}}{tile, select, true { · Avengers tile} other {}}",
     "newGame": "NEW GAME",
     "undo": "UNDO THE LAST STEP",
@@ -302,6 +332,7 @@
     "refillSlot": "Refill slot {slot} from the level {level} deck",
     "refillMarket": "Refill the market from the level {level} deck",
     "time": "Give Thanos a green Time token",
+    "tileCheck": "Thanos has {n} Avengers tags now: if that’s more than yours, move the tile to him",
     "tile": "Move the Avengers tile to Thanos"
   },
   "log": {
@@ -357,6 +388,7 @@
     "rulingCounted": "{all, select, true {Thanos’s cards that count: all (BGG clarification)} other {Thanos’s cards that count: points/Avengers only}}",
     "rulingCard12": "Card 12, phase 3 returns {n}",
     "rulingEmpty": "{firstInRow, select, true {Empty slot: first card in the row} other {Empty slot: he takes nothing}}",
+    "rulingLog": "{logged, select, true {Your cards: logged} other {Your cards: not logged}}",
     "rulingTies": "{thanosWins, select, true {Both complete the Gauntlet: Thanos wins} other {Both complete the Gauntlet: tiebreakers, then Thanos}}"
   },
   "rules": [

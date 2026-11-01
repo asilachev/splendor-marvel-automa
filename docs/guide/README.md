@@ -46,6 +46,9 @@ screen awake during a game.
    Avengers and Gauntlet tiles. Leave some space for Thanos's token piles.
 3. **Choose the difficulty.** 30 rounds is the automa as printed; 27 and 24 rounds are community
    tweaks that make him harder. A cap of 12 tokens on his piles is another community tweak.
+   **Your cards:** keep **LOG THEM** so the app scores your side, or pick **DON'T LOG** to just play.
+   Then you tick **I COMPLETED THE GAUNTLET** in the round you do, and move the Avengers tile
+   yourself.
 4. **Rulings** (optional). The automa PDF leaves four gaps. The defaults follow the clarifications on
    BoardGameGeek; tap **i** next to each one to read why.
 5. Tap **START GAME**.
@@ -97,6 +100,9 @@ has, and the round clock.
      If you now have more Avengers tags than Thanos, the app tells you to take the Avengers tile.
    - Took a Location? Tap **I TOOK A LOCATION** (+3 points).
    - Took tokens or reserved a card? There is nothing to log.
+   - Not logging your cards? The two tiles become **I COMPLETED THE GAUNTLET**, ticked only in the
+     round you complete it, and the Avengers tile control. If Thanos completes it in the same round,
+     enter your points and card count for the tiebreakers.
 3. Tap **END ROUND N**. The app then checks both sides for the Infinity Gauntlet.
 
 <table>

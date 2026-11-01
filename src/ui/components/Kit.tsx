@@ -1,4 +1,4 @@
-import { X } from 'lucide-react'
+import { Minus, Plus, X } from 'lucide-react'
 import {
   useCallback,
   useEffect,
@@ -100,6 +100,54 @@ export function NumberChips({
             {v}
           </button>
         ))}
+      </div>
+    </div>
+  )
+}
+
+/** A number with − and + buttons, for totals too wide for chips (#15). */
+export function Stepper({
+  label,
+  value,
+  min,
+  max,
+  onChange,
+  hint,
+}: {
+  label: string
+  value: number
+  min: number
+  max: number
+  onChange: (v: number) => void
+  hint?: string
+}) {
+  const t = useT()
+  return (
+    <div className={styles.stepper} role="group" aria-label={label}>
+      <span className={styles.stepperLabel}>{label.toUpperCase()}</span>
+      <div className={styles.stepperRow}>
+        <button
+          type="button"
+          className={styles.stepperButton}
+          aria-label={t('common.decrease', { label })}
+          disabled={value <= min}
+          onClick={() => onChange(Math.max(min, value - 1))}
+        >
+          <Minus size={20} />
+        </button>
+        <output className={styles.stepperValue} aria-live="polite">
+          {value}
+        </output>
+        <button
+          type="button"
+          className={styles.stepperButton}
+          aria-label={t('common.increase', { label })}
+          disabled={value >= max}
+          onClick={() => onChange(Math.min(max, value + 1))}
+        >
+          <Plus size={20} />
+        </button>
+        {hint ? <small className={styles.stepperHint}>{hint}</small> : null}
       </div>
     </div>
   )

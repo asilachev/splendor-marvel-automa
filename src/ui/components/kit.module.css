@@ -214,6 +214,58 @@
   background: var(--gold);
 }
 
+/* Stepper: totals too wide for chips (#15). The label sits above, so long ones never wrap. */
+.stepper {
+  display: grid;
+  gap: 6px;
+}
+
+.stepperLabel {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.stepperRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stepperButton {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--ink-2);
+  color: #fff;
+  cursor: pointer;
+}
+
+.stepperButton:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.stepperValue {
+  min-width: 2.2ch;
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  line-height: 1;
+  text-align: center;
+}
+
+.stepperHint {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
 /* Stone picker */
 .picker {
   display: grid;

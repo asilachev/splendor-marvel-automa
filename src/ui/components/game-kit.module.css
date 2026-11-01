@@ -171,6 +171,15 @@
   gap: 4px;
 }
 
+/* Your side when your cards aren't logged (#15): nothing to measure, so no fill or sockets. */
+.bar[data-unlogged='true'] {
+  opacity: 0.35;
+}
+
+.socketRow[data-unlogged='true'] {
+  visibility: hidden;
+}
+
 /* Dock */
 .dock {
   display: grid;

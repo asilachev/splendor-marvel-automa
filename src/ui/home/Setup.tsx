@@ -211,6 +211,27 @@ export function Setup({
           ]}
           tip={<RuleTip title={t('setup.capTip.title')}>{t('setup.capTip.body')}</RuleTip>}
         />
+        <Caption tone="blue">{t('setup.yourCards')}</Caption>
+        <Options
+          label={t('setup.logCards')}
+          value={settings.logPlayerCards ? 'log' : 'skip'}
+          onChange={(v) => set('logPlayerCards', v === 'log')}
+          options={[
+            {
+              value: 'log',
+              label: t('setup.logCardsOptions.log.label'),
+              hint: t('setup.logCardsOptions.log.hint'),
+            },
+            {
+              value: 'skip',
+              label: t('setup.logCardsOptions.skip.label'),
+              hint: t('setup.logCardsOptions.skip.hint'),
+            },
+          ]}
+          tip={
+            <RuleTip title={t('setup.logCardsTip.title')}>{t('setup.logCardsTip.body')}</RuleTip>
+          }
+        />
         <button type="button" className={styles.rulingsRow} onClick={() => setRulings(true)}>
           <ChevronRight size={18} />
           <span>{t('setup.rulingsRow')}</span>
