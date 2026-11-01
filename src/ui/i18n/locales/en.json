@@ -319,6 +319,8 @@
     "yourMove": "YOUR MOVE",
     "recruited": "I RECRUITED",
     "recruitedSub": "log the card",
+    "recruitedDone": "CARD LOGGED",
+    "recruitedDoneSub": "one per turn",
     "location": "I TOOK A LOCATION",
     "locationSub": "+3 points",
     "locationTaken": "LOCATION TAKEN",

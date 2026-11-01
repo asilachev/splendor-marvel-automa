@@ -471,6 +471,9 @@ export function TableStep({
     setDone((d) => (d.has(k) ? new Set([...d].filter((x) => x !== k)) : new Set([...d, k])))
   const thisRound = state.log.filter((e) => e.round === state.round)
   const recruits = thisRound.filter((e) => e.kind === 'playerRecruit')
+  // One card per turn, like the Location (docs/rules.md → A turn): once logged, the tile is done.
+  // Undo brings it back. The engine still accepts more, so older saves keep loading (#99).
+  const recruited = recruits.length > 0
   const tookLocation = thisRound.some((e) => e.kind === 'playerLocation')
   const canLocation = !tookLocation && state.playerLocations < LOCATIONS_IN_PLAY
   const tileToYou = thisRound.some(
@@ -575,10 +578,17 @@ export function TableStep({
       ) : (
         <>
           <div className={styles.moveTiles}>
-            <button type="button" className={styles.moveTile} data-wide={hard} onClick={onLogCard}>
-              <SquarePlus size={26} />
-              <strong>{t('table.recruited')}</strong>
-              <small>{t('table.recruitedSub')}</small>
+            <button
+              type="button"
+              className={styles.moveTile}
+              data-wide={hard}
+              data-done={recruited}
+              disabled={recruited}
+              onClick={onLogCard}
+            >
+              {recruited ? <CircleCheck size={26} /> : <SquarePlus size={26} />}
+              <strong>{recruited ? t('table.recruitedDone') : t('table.recruited')}</strong>
+              <small>{recruited ? t('table.recruitedDoneSub') : t('table.recruitedSub')}</small>
             </button>
             {/* In the hard variant only Thanos claims Locations (#11). */}
             {hard ? null : (

@@ -323,6 +323,8 @@
     "yourMove": "DEIN ZUG",
     "recruited": "ANGEWORBEN",
     "recruitedSub": "Karte eintragen",
+    "recruitedDone": "KARTE EINGETRAGEN",
+    "recruitedDoneSub": "eine pro Zug",
     "location": "ORT GENOMMEN",
     "locationSub": "+3 Punkte",
     "locationTaken": "ORT EINGETRAGEN",
