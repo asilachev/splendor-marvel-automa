@@ -22,6 +22,10 @@ test('plays a round, undoes the end of it and resumes after a reload', async ({ 
     await expect(page.getByRole('heading', { name: 'THANOS AUTOMA' })).toBeVisible()
     await button('START YOUR FIRST GAME').tap()
     await expect(page.getByRole('heading', { name: 'NEW GAME' })).toBeVisible()
+    // START GAME waits until every setup step is ticked (#101).
+    await expect(button('START GAME')).toBeDisabled()
+    const steps = page.getByRole('checkbox', { checked: false })
+    while (await steps.count()) await steps.first().tap()
     await button('START GAME').tap()
     await expect(thanosMoves).toBeVisible()
     await expect(hud).toHaveAccessibleName(/^Round 1 of 30\./)
@@ -73,8 +77,17 @@ test('plays a round, undoes the end of it and resumes after a reload', async ({ 
     await expect(hud).toHaveAccessibleName(summary)
     await expect(dock.getByRole('button', { name: hoard, exact: true })).toBeVisible()
   }
+  // END ROUND waits until every box is ticked and your move is picked (#101).
+  const finishTurn = async () => {
+    await expect(button('END ROUND 1')).toBeDisabled()
+    const unticked = yourTurn.getByRole('checkbox', { checked: false })
+    while (await unticked.count()) await unticked.first().tap()
+    await yourTurn.getByRole('button', { name: /^I TOOK TOKENS/ }).tap()
+    await expect(button('END ROUND 1')).toBeEnabled()
+  }
 
   await test.step('end round 1: round 2 starts with Thanos’s turn', async () => {
+    await finishTurn()
     await button('END ROUND 1').tap()
     await expect(thanosMoves).toBeVisible()
     await expect(hud).toHaveAccessibleName(/^Round 2 of 30\./)
@@ -95,6 +108,7 @@ test('plays a round, undoes the end of it and resumes after a reload', async ({ 
     await button('CONTINUE · ROUND 1').tap()
     await expectTableAsItWas()
     // The resumed game plays on.
+    await finishTurn()
     await button('END ROUND 1').tap()
     await expect(thanosMoves).toBeVisible()
     await expect(hud).toHaveAccessibleName(/^Round 2 of 30\./)

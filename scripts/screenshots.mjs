@@ -189,6 +189,16 @@ function shotsFor(T) {
     await resume(page)
     await page.getByRole('button', { name, exact: true }).click()
   }
+  /** Your turn as at the table (#101): pick a move unless a card is logged, tick every box, end. */
+  const endRound = (round) => async (page) => {
+    await resume(page)
+    const turn = page.getByRole('main', { name: T('table.label') })
+    const tokens = turn.getByRole('button', { name: startsWith(T('table.tokens')) })
+    if (await tokens.isEnabled()) await tokens.click()
+    const unticked = turn.getByRole('checkbox', { checked: false })
+    while (await unticked.count()) await unticked.first().click()
+    await page.getByRole('button', { name: T('table.cta', { round }) }).click()
+  }
 
   /** name → [saved game or null, actions, context options]. Order = the guide's order. */
   const SHOTS = {
@@ -245,33 +255,15 @@ function shotsFor(T) {
         await group('logCard.points').getByRole('button', { name: '2' }).click()
       },
     ],
-    '10-phase-change': [
-      phaseEnd,
-      async (p) => {
-        await resume(p)
-        await p.getByRole('button', { name: T('table.cta', { round: 10 }) }).click()
-      },
-    ],
+    '10-phase-change': [phaseEnd, endRound(10)],
     '11-hoard': [
       table7,
       dock(T('dock.hoard', { n: E.replay(takeSeed, S, table7.events).stack.length })),
     ],
     '12-log': [table7, dock(T('dock.log'))],
     '13-menu': [table7, dock(T('dock.menu'))],
-    '14-win': [
-      win,
-      async (p) => {
-        await resume(p)
-        await p.getByRole('button', { name: T('table.cta', { round: 22 }) }).click()
-      },
-    ],
-    '15-snap': [
-      snap,
-      async (p) => {
-        await resume(p)
-        await p.getByRole('button', { name: T('table.cta', { round: 30 }) }).click()
-      },
-    ],
+    '14-win': [win, endRound(22)],
+    '15-snap': [snap, endRound(30)],
     '16-end-game': [
       table7,
       async (p) => {

@@ -2,6 +2,7 @@ import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { DEFAULT_SETTINGS } from '../../engine/index.ts'
+import { tickSetup } from '../../test/play.ts'
 import { App } from '../App.tsx'
 import { saveGame } from '../state/persistence.ts'
 import { loadPrefs } from '../state/prefs.ts'
@@ -163,6 +164,7 @@ describe('offline and updates (#45)', () => {
     render(<App />)
     await user.click(screen.getByRole('button', { name: 'START YOUR FIRST GAME' }))
     expect(persist).not.toHaveBeenCalled()
+    await tickSetup(user)
     await user.click(screen.getByRole('button', { name: 'START GAME' }))
     expect(persist).toHaveBeenCalledOnce()
   })

@@ -356,6 +356,14 @@
   text-align: center;
 }
 
+/* What END ROUND still waits for (#101), as on setup's START GAME */
+.ctaNote {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
 /* Phase change */
 .burst {
   display: flex;

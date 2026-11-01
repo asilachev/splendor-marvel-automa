@@ -13,6 +13,7 @@ import {
   type GameState,
   type Settings,
 } from '../engine/index.ts'
+import { endRound, tickSetup } from '../test/play.ts'
 import { App } from './App.tsx'
 import { loadGame, loadSettings, saveGame } from './state/persistence.ts'
 import { loadPrefs } from './state/prefs.ts'
@@ -88,6 +89,8 @@ describe('home, setup and rulings (#44)', () => {
     await user.click(screen.getByRole('button', { name: 'Rule: Which cards count' }))
     expect(screen.getByRole('note')).toHaveTextContent(/Clarified on BGG \(2021\)/)
     await user.click(screen.getByRole('button', { name: 'SAVE RULINGS' }))
+    expect(screen.getByRole('button', { name: 'START GAME' })).toBeDisabled()
+    await tickSetup(user)
     await user.click(screen.getByRole('button', { name: 'START GAME' }))
 
     expect(screen.getByRole('heading', { name: 'THANOS MAKES HIS MOVE' })).toBeInTheDocument()
@@ -197,14 +200,17 @@ describe('your turn, round end and game over (#41, #42)', () => {
     )
     await user.click(within(sheet).getByRole('button', { name: 'ADD CARD' }))
     expect(screen.getByText('Logged: L3 Space (4 pts)')).toBeInTheDocument()
-    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    expect(
+      screen.getByRole('checkbox', { name: /^Refill the market from the level 3 deck/ }),
+    ).toBeInTheDocument()
+    await endRound(user, 1)
     expect(screen.getByText('ROUND 2')).toBeInTheDocument()
   })
 
   it('announces the reshuffle at the start of phase 2', async () => {
     const user = userEvent.setup()
     await resume(user, 5, playTo(5, 10))
-    await user.click(screen.getByRole('button', { name: 'END ROUND 10' }))
+    await endRound(user, 10)
     expect(screen.getByRole('heading', { name: 'DECK RESHUFFLED!' })).toBeInTheDocument()
     expect(screen.getByText('PHASE 2 BEGINS')).toBeInTheDocument()
   })
@@ -219,7 +225,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
     ]
     const user = userEvent.setup()
     await resume(user, takeSeed, events)
-    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    await endRound(user, 1)
     expect(screen.getByRole('heading', { name: 'YOU WIN!' })).toBeInTheDocument()
     expect(screen.getByText('You completed the Infinity Gauntlet in round 1.')).toBeInTheDocument()
   })
@@ -227,7 +233,7 @@ describe('your turn, round end and game over (#41, #42)', () => {
   it('shows SNAP after the last round, and undo steps back with a toast', async () => {
     const user = userEvent.setup()
     await resume(user, 3, playTo(3, 30))
-    await user.click(screen.getByRole('button', { name: 'END ROUND 30' }))
+    await endRound(user, 30)
     expect(screen.getByRole('heading', { name: 'SNAP.' })).toBeInTheDocument()
     expect(screen.getByText('Round 30 ended without your Infinity Gauntlet.')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'UNDO THE LAST STEP' }))
@@ -306,7 +312,7 @@ describe('motion (#52)', () => {
     const user = userEvent.setup()
     await resume(user, takeSeed, thanosNeutral(newGame(takeSeed, DEFAULT_SETTINGS)))
     vi.mocked(window.scrollTo).mockClear()
-    await user.click(screen.getByRole('button', { name: 'END ROUND 1' }))
+    await endRound(user, 1)
     expect(window.scrollTo).toHaveBeenCalledWith(0, 0)
   })
 
