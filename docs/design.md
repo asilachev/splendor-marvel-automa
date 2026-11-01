@@ -78,7 +78,7 @@ Setup → **Your cards** → **Don't log** turns logging off for the whole game.
 | Setup | 2-player setup checklist · difficulty · rulings sub-screen · Start |
 | Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Menu |
 | Game over | Result, why, rounds taken, final tallies · New game |
-| History (v1) | Past games, win rate, average rounds to win |
+| History (#12) | Games, wins, win rate and average winning round · the same per difficulty (game length and cap) · finished games, newest first · Clear history. Reached from a row on Home once a game is finished |
 
 ## State and events (engine)
 
@@ -100,6 +100,10 @@ Setup → **Your cards** → **Don't log** turns logging off for the whole game.
   - `setAvengers`;
   - `endRound`, which carries `report { gauntlet, points?, cards? }` when your cards aren't
     logged (#15). The report that ends the game is kept as `playerReport`.
+- **History (#12):** a separate key, `thanos-automa:v1:history`, holds one summary per finished game
+  (seed, date, settings, result, both sides' points), newest first, at most 500. A game is added when
+  it ends, replaced if it ends again after an undo, and removed if an undo steps back from its result.
+  Starting or ending a game never touches it; only Clear history does.
 - **Persistence:** `{ version, seed, settings, events }` in `localStorage` under a versioned key.
   Every read and write is wrapped in try/catch.
 

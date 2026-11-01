@@ -146,6 +146,24 @@ describe('useGame (#5)', () => {
     expect(loadSettings()).toEqual(DEFAULT_SETTINGS)
   })
 
+  it('records each finished game in the history, and an undo takes it out (#12)', () => {
+    const { result } = renderHook(() => useGame())
+    act(() => result.current.start(DEFAULT_SETTINGS, 9))
+    for (const event of wholeGameEvents(9)) act(() => result.current.dispatch(event))
+    expect(result.current.state?.step).toBe('over')
+    expect(result.current.history.map((g) => g.id)).toEqual([9])
+    expect(renderHook(() => useGame()).result.current.history).toHaveLength(1)
+
+    act(() => result.current.undo())
+    expect(result.current.history).toEqual([])
+    act(() => result.current.dispatch({ type: 'endRound' }))
+    expect(result.current.history).toHaveLength(1)
+
+    act(() => result.current.clearHistory())
+    expect(result.current.history).toEqual([])
+    expect(renderHook(() => useGame()).result.current.history).toEqual([])
+  })
+
   it('rejects events the rules forbid without changing anything', () => {
     const { result } = renderHook(() => useGame())
     act(() => result.current.start(DEFAULT_SETTINGS, 1))

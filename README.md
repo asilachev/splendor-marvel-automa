@@ -39,6 +39,9 @@ screenshots, in English, [Русский](https://thanos.silachev.com/ru/),
   - works offline;
   - keeps the screen awake.
 - **Explains the rules in place.** Tap the "i" next to a rule to read it at the table.
+- **Keeps your history:** every finished game, with your win rate and average winning round, overall
+  and per difficulty.
+- **Lets you skip logging your cards:** tick "I completed the Gauntlet" in the round you do instead.
 - **Speaks five languages:** English, Русский, Српски, Español and Deutsch. It follows your phone's
   language, and the globe button on Home switches it.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
