@@ -24,5 +24,5 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "vercel.ts", "scripts/sim.ts"]
+  "include": ["vite.config.ts", "vercel.ts", "playwright.config.ts", "e2e", "scripts/sim.ts"]
 }
