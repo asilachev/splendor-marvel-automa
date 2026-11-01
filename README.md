@@ -103,6 +103,15 @@ The author of the Marvel re-theme dislikes web apps for it and asked for links t
 from its BGG file page. **Please don't post this app there.** See the
 [community note](docs/automa.md#community-note).
 
+## License
+
+The code is under the [MIT License](LICENSE). It covers our code only, not:
+- the game Splendor Marvel, its rules and artwork (© Space Cowboys / Asmodee, ™ & © MARVEL),
+  including the official art in `src/ui/assets/official/`;
+- the automa's design, by Dukefanblue2005, or its Marvel re-theme;
+- the fonts, which keep their own licenses (SIL Open Font License 1.1; see
+  [`src/ui/assets/fonts/README.md`](src/ui/assets/fonts/README.md)).
+
 ## Deploy
 
 The app is a static site. Host it on Vercel or on your own server with Docker: both serve the same
