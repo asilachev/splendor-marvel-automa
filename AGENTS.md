@@ -84,6 +84,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run site:shots` | Build, then capture the app in Russian, Serbian, Spanish and German for the landing page into `.screenshots/` (not committed; needs Google Chrome) |
 | `npm run site` | Render the landing page in five languages into `_site/` from `site/index.html` and `site/locales/*.json`, with the screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
+| `npm run sim` | Simulate Thanos playing alone on the engine and print Markdown tables per settings preset (see [`docs/automa.md`](docs/automa.md#simulation)). Options after `--`: `--runs N` (default 10,000 games), `--seed S` (default 1); the same options print the same tables |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
 and on every push to `master`, and `e2e` in a second job with the runner's Google Chrome. When `e2e`
@@ -110,7 +111,7 @@ src/
 e2e/        Playwright smoke test on a phone viewport, against the production build (npm run e2e)
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
 site/       landing page for GitHub Pages: an HTML template, CSS and locales/{en,ru,sr,es,de}.json, rendered by scripts/build-site.mjs
-scripts/    repo tooling (logo/icon generator, guide screenshots, landing page build)
+scripts/    repo tooling (logo/icon generator, guide screenshots, landing page build, difficulty simulator)
 docs/       rules, automa spec, design, user guide with screenshots, reference PDFs
 ```
 
