@@ -80,7 +80,6 @@ export function Setup({
     { length: LOCATIONS_IN_PLAY },
     (_, i): LocationRequirement => settings.locations[i] ?? {},
   )
-  const ready = !hard || locations.every((l) => Object.keys(l).length > 0)
   const setLocation = (index: number, value: LocationRequirement) =>
     setSettings((s) => ({ ...s, locations: locations.map((l, i) => (i === index ? value : l)) }))
   // The rulings sub-screen opens at its top, and so does setup when you come back (#52).
@@ -88,6 +87,11 @@ export function Setup({
     window.scrollTo(0, 0)
   }, [rulings])
   const [done, setDone] = useState<ReadonlySet<number>>(new Set())
+  const tableSteps = t.list('setup.table')
+  // The game starts once every setup step is ticked (#101), and both Locations are in (#11).
+  const tableReady = tableSteps.every((_, i) => done.has(i))
+  const locationsReady = !hard || locations.every((l) => Object.keys(l).length > 0)
+  const ready = tableReady && locationsReady
   const set = <K extends keyof Settings>(key: K, value: Settings[K]) =>
     setSettings((s) => ({ ...s, [key]: value }))
   const changed =
@@ -200,7 +204,7 @@ export function Setup({
         <Header title={t('setup.title')} onBack={onBack} />
         <Caption>{t('setup.tableCaption')}</Caption>
         <Panel className={styles.checklist}>
-          {t.list('setup.table').map((item, i) => (
+          {tableSteps.map((item, i) => (
             <CheckItem
               key={i}
               done={done.has(i)}
@@ -315,7 +319,11 @@ export function Setup({
         </button>
       </main>
       <footer className={styles.footer}>
-        {ready ? null : <p className={styles.footerNote}>{t('setup.locationsMissing')}</p>}
+        {ready ? null : (
+          <p className={styles.footerNote}>
+            {tableReady ? t('setup.locationsMissing') : t('setup.tableMissing')}
+          </p>
+        )}
         <Button
           icon={<Swords size={22} />}
           disabled={!ready}

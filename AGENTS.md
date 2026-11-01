@@ -107,7 +107,7 @@ src/
     i18n/        translations: locales/{en,ru,sr,es,de}.json (ICU; Serbian in Cyrillic), loader, t(), detection
     pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
-  test/     shared test setup
+  test/     shared test setup, and helpers that tick the setup and finish a turn (play.ts)
 e2e/        Playwright smoke test on a phone viewport, against the production build (npm run e2e)
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
 site/       landing page for GitHub Pages: an HTML template, CSS and locales/{en,ru,sr,es,de}.json, rendered by scripts/build-site.mjs

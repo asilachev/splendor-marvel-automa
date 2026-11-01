@@ -20,12 +20,14 @@
 ## A round
 
 ```
-Thanos's turn                        Your turn                End of round
-──────────────                       ─────────                ────────────
-[Reveal] → action for the phase      log recruits (optional)  Gauntlet check (both sides)
-  take:   tap empty piles → Done     +3 Location              tiebreakers → result
-  gain:   colour → (substitute?)     Avengers tile override   or next round / phase change
-          → points + tags → Confirm  [End round]              round limit reached → you lose
+Thanos's turn                        Your turn                 End of round
+──────────────                       ─────────                 ────────────
+[Reveal] → action for the phase      tick the table checklist  Gauntlet check (both sides)
+  take:   tap empty piles → Done     move: tokens, reserve or  tiebreakers → result
+  gain:   colour → (substitute?)       recruit (log the card)  or next round / phase change
+          → points + tags → Confirm  +3 Location · refill box  round limit reached → you lose
+                                     Avengers tile override
+                                     [End round] when all done
 ```
 
 ### Thanos takes tokens
@@ -53,13 +55,20 @@ ordered stack by hand is the fiddliest part of the paper automa.
 
 ### Your turn
 
-- Optionally log each card you recruit with the same picker, plus its level so the app can award your
-  Time token.
-- Tap **+3** for a Location.
-- Once used, each tile turns gold with a check (**CARD LOGGED**, **LOCATION TAKEN**) and stays done
-  for the rest of the turn: one card and one Location per turn (`rules.md` → A turn, Locations). Undo
-  takes the entry back and frees the tile. The engine still accepts a second card in a round, so
+- Tick each line of the table checklist as you do it.
+- Pick your move: **I TOOK TOKENS**, **I RESERVED** or **I RECRUITED**, exactly one per turn
+  (`rules.md` → A turn). The picked tile turns gold with a check. Tap another tile to switch, or the
+  same one to take it back. Taking tokens or reserving logs nothing, so that choice is screen state,
+  like the ticks, and the engine never sees it (#101).
+- **I RECRUITED** opens the card picker: level, colour, points and tags, so the app can award your
+  Time token. A logged card is your move: the tile shows **CARD LOGGED** and the move is locked for
+  the turn, until Undo takes the card back. The engine still accepts a second card in a round, so
   older saves keep loading (#99).
+- After you reserve or recruit, a box asks you to refill the market, from the logged card's level.
+  It notes when there's nothing to refill: a card from your reserve, or a deck's top card (#101).
+- Tap **+3** for a Location: **LOCATION TAKEN**, at most one per turn (`rules.md` → Locations).
+- **END ROUND** waits until every box is ticked and your move is picked. A note above it says what's
+  missing. Setup's **START GAME** waits for its checklist the same way (#101).
 - With these logged, the app can run the Avengers tile, the Gauntlet check and the tiebreakers for
   both sides.
 - A manual override for the Avengers tile holder covers mistakes and anyone who doesn't log.
@@ -69,7 +78,8 @@ ordered stack by hand is the fiddliest part of the paper automa.
 Setup → **Your cards** → **Don't log** turns logging off for the whole game.
 
 - Your turn shows one wide toggle, **I completed the Gauntlet**, ticked only in the round you
-  complete it, and the Avengers tile control (middle, Thanos, you).
+  complete it, and the Avengers tile control (middle, Thanos, you). There are no move tiles, as
+  there's nothing to log, but **END ROUND** still waits for the table checklist (#101).
 - Thanos still takes the tile on his own, but only from the middle: the app can't compare tags it
   doesn't know. When he gains tags while you hold it, the checklist reminds you to compare.
 - If Thanos completes the Gauntlet in the same round and the tiebreakers apply, two steppers ask for
@@ -92,7 +102,7 @@ still called Thanos (owner's decision).
 | Screen | Purpose |
 | --- | --- |
 | Home | Where every launch opens · Continue the saved game · New game · Install card · Credits |
-| Setup | 2-player setup checklist · difficulty, variant and the hard variant's Locations · your cards · rulings sub-screen · Start |
+| Setup | 2-player setup checklist · difficulty, variant and the hard variant's Locations · your cards · rulings sub-screen · Start, once the checklist is ticked |
 | Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Menu |
 | Game over | Result, why, rounds taken, final tallies · New game |
 | History (#12) | Games, wins, win rate and average winning round · the same per difficulty (game length and cap) · finished games, newest first · Clear history. Reached from a row on Home once a game is finished |

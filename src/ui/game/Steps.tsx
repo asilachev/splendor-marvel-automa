@@ -1,8 +1,10 @@
 import {
   Award,
   Ban,
+  Bookmark,
   Circle,
   CircleCheck,
+  Coins,
   CornerDownRight,
   Flag,
   MapPin,
@@ -12,7 +14,7 @@ import {
   ArrowRight,
   Check,
 } from 'lucide-react'
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import {
   currentRoundCard,
   discardCount,
@@ -452,6 +454,28 @@ export function RecruitStep({
   )
 }
 
+/** A tile under "your move": gold, with a check, once it's done (#99, #101). */
+function MoveTile({
+  done,
+  icon,
+  title,
+  sub,
+  ...button
+}: {
+  done: boolean
+  icon: ReactNode
+  title: string
+  sub: string
+} & Omit<ComponentPropsWithoutRef<'button'>, 'children' | 'className' | 'title' | 'type'>) {
+  return (
+    <button type="button" className={styles.moveTile} data-done={done} {...button}>
+      {done ? <CircleCheck size={26} /> : icon}
+      <strong>{title}</strong>
+      <small>{sub}</small>
+    </button>
+  )
+}
+
 /** 2.3 / 4.1 / 4.3 — at the table, then your move. */
 export function TableStep({
   state,
@@ -470,17 +494,32 @@ export function TableStep({
   const toggle = (k: string) =>
     setDone((d) => (d.has(k) ? new Set([...d].filter((x) => x !== k)) : new Set([...d, k])))
   const thisRound = state.log.filter((e) => e.round === state.round)
-  const recruits = thisRound.filter((e) => e.kind === 'playerRecruit')
+  const recruits = thisRound.flatMap((e) => (e.kind === 'playerRecruit' ? [e.card] : []))
   // One card per turn, like the Location (docs/rules.md → A turn): once logged, the tile is done.
   // Undo brings it back. The engine still accepts more, so older saves keep loading (#99).
   const recruited = recruits.length > 0
+  // Exactly one action per turn (docs/rules.md → A turn). Tokens and reserving log nothing, so
+  // that choice lives here with the ticks; a logged card means you recruited (#101).
+  const [choice, setChoice] = useState<'tokens' | 'reserve' | null>(null)
+  const move = recruited ? 'recruit' : choice
+  const pick = (next: 'tokens' | 'reserve') => setChoice((c) => (c === next ? null : next))
+  // A card taken from the market leaves a gap to refill, as on Thanos's checklist (#101).
+  const card = recruits.at(-1)
+  const refill =
+    move === 'recruit' && card
+      ? t('table.refillRecruit', { level: card.level })
+      : move === 'reserve'
+        ? t('table.refillReserve')
+        : null
+  // Its own tick for each move and level, so a box ticked for one card isn't ticked for another.
+  const refillKey = `refill-${move}-${card?.level ?? 0}`
   const tookLocation = thisRound.some((e) => e.kind === 'playerLocation')
   const canLocation = !tookLocation && state.playerLocations < LOCATIONS_IN_PLAY
   const tileToYou = thisRound.some(
     (e) => e.kind === 'avengers' && !e.manual && e.holder === 'player',
   )
   const logged = [
-    ...recruits.map((e) => (e.kind === 'playerRecruit' ? cardLabel(t, e.card) : '')),
+    ...recruits.map((c) => cardLabel(t, c)),
     ...(tookLocation ? [t('table.locationLogged')] : []),
   ]
   const settings = state.setup.settings
@@ -496,17 +535,29 @@ export function TableStep({
     unlogged && gauntlet && thanos.gauntlet && settings.ties === 'tiebreakersThenThanos'
   const report: PlayerReport | null =
     unlogged && gauntlet ? (tiebreak ? { gauntlet, points, cards } : { gauntlet }) : null
+  // The round ends once every box is ticked and, when you log your cards, your move is in (#101).
+  const ticked = [...items.map((it) => it.key), ...(refill ? [refillKey] : [])].every((k) =>
+    done.has(k),
+  )
+  const moved = unlogged || move !== null
+  const missing = moved ? 'boxes' : ticked ? 'move' : 'both'
   return (
     <StepFrame
       label={t('table.label')}
       dock={dock}
       cta={
-        <Button
-          icon={<Flag size={22} />}
-          onClick={() => dispatch(report ? { type: 'endRound', report } : { type: 'endRound' })}
-        >
-          {t('table.cta', { round: state.round })}
-        </Button>
+        <>
+          {ticked && moved ? null : (
+            <p className={styles.ctaNote}>{t('table.notReady', { missing })}</p>
+          )}
+          <Button
+            icon={<Flag size={22} />}
+            disabled={!ticked || !moved}
+            onClick={() => dispatch(report ? { type: 'endRound', report } : { type: 'endRound' })}
+          >
+            {t('table.cta', { round: state.round })}
+          </Button>
+        </>
       }
     >
       <Caption>{t('table.caption')}</Caption>
@@ -528,19 +579,16 @@ export function TableStep({
       {unlogged ? (
         <>
           <div className={styles.moveTiles}>
-            <button
-              type="button"
+            <MoveTile
               role="checkbox"
               aria-checked={gauntlet}
-              className={styles.moveTile}
               data-wide="true"
-              data-done={gauntlet}
+              done={gauntlet}
+              icon={<Circle size={26} />}
+              title={t('table.gauntlet')}
+              sub={t('table.gauntletSub')}
               onClick={() => setGauntlet((g) => !g)}
-            >
-              {gauntlet ? <CircleCheck size={26} /> : <Circle size={26} />}
-              <strong>{t('table.gauntlet')}</strong>
-              <small>{t('table.gauntletSub')}</small>
-            </button>
+            />
           </div>
           <Options
             label={t('hoard.tile')}
@@ -577,34 +625,54 @@ export function TableStep({
         </>
       ) : (
         <>
-          <div className={styles.moveTiles}>
-            <button
-              type="button"
-              className={styles.moveTile}
-              data-wide={hard}
-              data-done={recruited}
+          <div className={styles.moveTiles} role="group" aria-label={t('table.yourMove')}>
+            {/* Tokens or reserve: tap another tile to switch, the same one to take it back. */}
+            <MoveTile
+              aria-pressed={move === 'tokens'}
               disabled={recruited}
+              done={move === 'tokens'}
+              icon={<Coins size={26} />}
+              title={move === 'tokens' ? t('table.tokensDone') : t('table.tokens')}
+              sub={move === 'tokens' ? t('table.tokensDoneSub') : t('table.tokensSub')}
+              onClick={() => pick('tokens')}
+            />
+            <MoveTile
+              aria-pressed={move === 'reserve'}
+              disabled={recruited}
+              done={move === 'reserve'}
+              icon={<Bookmark size={26} />}
+              title={move === 'reserve' ? t('table.reserveDone') : t('table.reserve')}
+              sub={move === 'reserve' ? t('table.reserveDoneSub') : t('table.reserveSub')}
+              onClick={() => pick('reserve')}
+            />
+            <MoveTile
+              data-wide={hard}
+              disabled={recruited}
+              done={recruited}
+              icon={<SquarePlus size={26} />}
+              title={recruited ? t('table.recruitedDone') : t('table.recruited')}
+              sub={recruited ? t('table.recruitedDoneSub') : t('table.recruitedSub')}
               onClick={onLogCard}
-            >
-              {recruited ? <CircleCheck size={26} /> : <SquarePlus size={26} />}
-              <strong>{recruited ? t('table.recruitedDone') : t('table.recruited')}</strong>
-              <small>{recruited ? t('table.recruitedDoneSub') : t('table.recruitedSub')}</small>
-            </button>
+            />
             {/* In the hard variant only Thanos claims Locations (#11). */}
             {hard ? null : (
-              <button
-                type="button"
-                className={styles.moveTile}
-                data-done={tookLocation}
+              <MoveTile
                 disabled={!canLocation}
+                done={tookLocation}
+                icon={<MapPin size={26} />}
+                title={tookLocation ? t('table.locationTaken') : t('table.location')}
+                sub={tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}
                 onClick={() => dispatch({ type: 'playerLocation' })}
-              >
-                {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
-                <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
-                <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
-              </button>
+              />
             )}
           </div>
+          {refill ? (
+            <Panel className={styles.checklist}>
+              <CheckItem done={done.has(refillKey)} onToggle={() => toggle(refillKey)}>
+                {refill}
+              </CheckItem>
+            </Panel>
+          ) : null}
           {logged.length ? (
             <div className={styles.logged}>
               <CircleCheck size={18} />

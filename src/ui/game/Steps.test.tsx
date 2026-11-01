@@ -155,3 +155,111 @@ describe('your move when you log your cards (#99)', () => {
     expect(tile).toHaveAttribute('data-done', 'false')
   })
 })
+
+describe('your move and the end of the round (#101)', () => {
+  /** Your turn in round 1 after Thanos took Mind and Soul: one line to tick at the table. */
+  const afterTake = (settings = DEFAULT_SETTINGS): GameState => ({
+    ...newGame(1, settings),
+    step: 'player',
+    log: [{ kind: 'take', round: 1, taken: ['mind', 'soul'], skipped: [], capped: [] }],
+  })
+  const table = (state: GameState, dispatch = () => {}) => (
+    <TableStep state={state} dispatch={dispatch} dock={null} onLogCard={() => {}} />
+  )
+  const end = () => screen.getByRole('button', { name: 'END ROUND 1' })
+
+  it('ends the round once the checklist is ticked and your move is picked', async () => {
+    const user = userEvent.setup()
+    const dispatch = vi.fn()
+    render(table(afterTake(), dispatch))
+    expect(end()).toBeDisabled()
+    expect(
+      screen.getByText('Pick your move and tick off the checklist to end the round.'),
+    ).toBeInTheDocument()
+    await user.click(screen.getByRole('checkbox', { name: /^Put .* on his piles/ }))
+    expect(end()).toBeDisabled()
+    expect(screen.getByText('Pick your move to end the round.')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /^I TOOK TOKENS/ }))
+    expect(end()).toBeEnabled()
+    await user.click(end())
+    expect(dispatch).toHaveBeenLastCalledWith({ type: 'endRound' })
+  })
+
+  it('picks one move at a time, and a second tap takes it back', async () => {
+    const user = userEvent.setup()
+    render(table(afterTake()))
+    await user.click(screen.getByRole('button', { name: /^I TOOK TOKENS/ }))
+    expect(screen.getByRole('button', { name: /^TOKENS TAKEN/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await user.click(screen.getByRole('button', { name: /^I RESERVED/ }))
+    expect(screen.getByRole('button', { name: /^CARD RESERVED/ })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(screen.getByRole('button', { name: /^I TOOK TOKENS/ })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+    await user.click(screen.getByRole('button', { name: /^CARD RESERVED/ }))
+    expect(screen.getByRole('button', { name: /^I RESERVED/ })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+    expect(
+      screen.getByText('Pick your move and tick off the checklist to end the round.'),
+    ).toBeInTheDocument()
+  })
+
+  it('asks you to refill the market after you reserve', async () => {
+    const user = userEvent.setup()
+    render(table(afterTake()))
+    expect(screen.queryByRole('checkbox', { name: /^Refill the market/ })).toBeNull()
+    await user.click(screen.getByRole('button', { name: /^I RESERVED/ }))
+    await user.click(screen.getByRole('checkbox', { name: /^Put .* on his piles/ }))
+    expect(end()).toBeDisabled()
+    expect(screen.getByText('Tick off the checklist to end the round.')).toBeInTheDocument()
+    await user.click(
+      screen.getByRole('checkbox', {
+        name: 'Refill the market from the same level’s deck (not if you took a deck’s top card)',
+      }),
+    )
+    expect(end()).toBeEnabled()
+  })
+
+  it('asks for the refill again when a logged card replaces a reserve', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(table(afterTake()))
+    await user.click(screen.getByRole('button', { name: /^I RESERVED/ }))
+    await user.click(screen.getByRole('checkbox', { name: /^Refill the market/ }))
+    const card: RecruitedCard = { level: 3, colour: 'space', points: 4, tags: 0 }
+    rerender(table(applyEvent(afterTake(), { type: 'playerRecruit', card })))
+    expect(
+      screen.getByRole('checkbox', { name: /^Refill the market from the level 3 deck/ }),
+    ).toHaveAttribute('aria-checked', 'false')
+  })
+
+  it('takes a logged card as your move and asks to refill its level', () => {
+    const card: RecruitedCard = { level: 2, colour: 'mind', points: 2, tags: 0 }
+    render(table(applyEvent(afterTake(), { type: 'playerRecruit', card })))
+    expect(screen.getByRole('button', { name: /^I TOOK TOKENS/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /^I RESERVED/ })).toBeDisabled()
+    expect(
+      screen.getByRole('checkbox', {
+        name: 'Refill the market from the level 2 deck (not for a card from your reserve)',
+      }),
+    ).toHaveAttribute('aria-checked', 'false')
+    expect(screen.getByText('Tick off the checklist to end the round.')).toBeInTheDocument()
+  })
+
+  it('needs only the checklist when you don’t log your cards (#15)', async () => {
+    const user = userEvent.setup()
+    render(table(afterTake(unlogged)))
+    expect(screen.queryByRole('button', { name: /^I TOOK TOKENS/ })).toBeNull()
+    expect(end()).toBeDisabled()
+    expect(screen.getByText('Tick off the checklist to end the round.')).toBeInTheDocument()
+    await user.click(screen.getByRole('checkbox', { name: /^Put .* on his piles/ }))
+    expect(end()).toBeEnabled()
+  })
+})

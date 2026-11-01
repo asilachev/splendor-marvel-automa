@@ -53,7 +53,7 @@ screen awake during a game.
    yourself.
 4. **Rulings** (optional). The automa PDF leaves four gaps. The defaults follow the clarifications on
    BoardGameGeek; tap **i** next to each one to read why.
-5. Tap **START GAME**.
+5. Tap **START GAME**. It waits until every setup step is ticked.
 
 <table>
   <tr>
@@ -97,16 +97,20 @@ has, and the round clock.
 
 1. **At the table:** the checklist sums up what changes on the table after his move. Tick each line
    as you do it.
-2. **Your move:** play your turn on the table, exactly as in the normal game.
+2. **Your move:** play your turn on the table, exactly as in the normal game, then tap what you did.
+   The tile turns gold.
+   - Took tokens? Tap **I TOOK TOKENS**. Reserved a card? Tap **I RESERVED**. There is nothing to
+     log. Picked the wrong one? Tap another tile, or the same one again.
    - Recruited a card? Tap **I RECRUITED** and log its level, bonus colour, points and Avengers tags.
-     The tile turns gold, **CARD LOGGED**: one card per turn. Logged the wrong one? Tap **Undo**.
+     The tile shows **CARD LOGGED**: one card per turn. Logged the wrong one? Tap **Undo**.
      If you now have more Avengers tags than Thanos, the app tells you to take the Avengers tile.
+   - After you reserve or recruit, tick **Refill the market** once you've refilled it.
    - Took a Location? Tap **I TOOK A LOCATION** (+3 points). It turns gold too: **LOCATION TAKEN**.
-   - Took tokens or reserved a card? There is nothing to log.
-   - Not logging your cards? The two tiles become **I COMPLETED THE GAUNTLET**, ticked only in the
-     round you complete it, and the Avengers tile control. If Thanos completes it in the same round,
-     enter your points and card count for the tiebreakers.
-3. Tap **END ROUND N**. The app then checks both sides for the Infinity Gauntlet.
+   - Not logging your cards? Instead of these tiles there's **I COMPLETED THE GAUNTLET**, ticked only
+     in the round you complete it, and the Avengers tile control. If Thanos completes it in the same
+     round, enter your points and card count for the tiebreakers.
+3. Tap **END ROUND N**. It waits until every box is ticked and your move is picked; the note above
+   it says what's left. The app then checks both sides for the Infinity Gauntlet.
 
 <table>
   <tr>
