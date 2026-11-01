@@ -106,11 +106,12 @@ Checked against a high-resolution render of the PDF. Token numbers refer to the 
   - the non-star cards give 5 takes and 3 gains;
   - both star cards in the deck are level-3 gains.
 - **Thanos can't win before round 21.** He gets the Time token only with his first level-3 card, and
-  only the two star cards' phase-3 sections target row A. In simulation that first card arrives around
-  round 24 on average, and on round 26 or later about 22% of the time.
-- **Token pressure.** In a 2-player game there are only 4 tokens per colour. A simulation of Thanos
-  playing alone has him holding 2–5 tokens on average, and occasionally 10 or more after several takes
-  in a row.
+  only the two star cards' phase-3 sections target row A. In the [simulation](#simulation) that first
+  card arrives on round 23.6 on average (median 23), and on round 26 or later in 22% of games.
+- **Token pressure.** In a 2-player game there are only 4 tokens per colour. In the
+  [simulation](#simulation), Thanos playing alone holds 2–5 tokens on average: 3.4, 2.1 and 4.9 after
+  his turn in phases 1, 2 and 3. His stack grows through phase 3, to 7 by round 30, and it reaches 10
+  or more at some point in 62% of games.
 
 ## Clarifications from BGG
 
@@ -136,6 +137,8 @@ Checked against a high-resolution render of the PDF. Token numbers refer to the 
    - a cap of 12 on the token stack
      ([comment](https://boardgamegeek.com/geeklist/273639?itemid=7714470&commentid=10121350)).
 
+   The [simulation](#simulation) shows what each tweak changes for Thanos.
+
 ## Rulings this app uses
 
 Every gap in the PDF is an explicit setting with a documented default. Change a default only in a PR
@@ -149,6 +152,54 @@ that updates this table.
 | Both sides complete the Gauntlet in the same round | **Official tiebreakers, then Thanos wins any remaining tie** | Thanos wins outright | The PDF says "apply the normal game winning conditions" and "Thanos wins a draw" |
 | Phase lengths | **10 / 10 / 10** (30 rounds) | 10 / 9 / 8 (27), 8 / 8 / 8 (24) | Community tweak (6) |
 | Cap on Thanos's token stack | **None** | 12; the oldest tokens beyond the cap go back to the supply | Community tweak (6) |
+
+## Simulation
+
+`npm run sim` plays Thanos alone on the engine (`src/engine/sim.ts`) and prints Markdown tables for
+each preset: his stack per phase and per round, his first level-3 card, his discards, empty piles and
+the cap. `npm run sim -- --runs N --seed S` sets the number of games (default 10,000) and the seed
+(default 1). The same arguments always print the same tables.
+
+The model:
+
+- Your turns do nothing. The supply is a 2-player game's 4 tokens per colour, less his stack. Tokens he
+  returns, or loses to the cap, go back to it. A take skips a colour only when its pile is empty.
+- Every card he gains is worth 0 points, so he never completes the Gauntlet and every game runs to the
+  round limit. None of the figures depend on the cards.
+- Every preset plays the same shuffled decks.
+
+10,000 games per preset, seed 1:
+
+| Preset | Stack, mean in phases 1 / 2 / 3 | Stack reaches 10 | First level-3 card: mean (median) | On round 26+ | None | Gains short | Tokens missing | Sent back by the cap |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 10/10/10, no cap | 3.4 / 2.1 / 4.9 | 62% | 23.6 (23) | 22% | 0% | 41% | 16.6 | 0 |
+| 10/10/10, cap 12 | 3.4 / 2.0 / 4.8 | 62% | 23.6 (23) | 22% | 0% | 41% | 16.7 | 0.33 |
+| 10/9/8, no cap | 3.4 / 2.1 / 4.4 | 53% | 22.5 (22) | 11% | 2% | 42% | 15.3 | 0 |
+| 10/9/8, cap 12 | 3.4 / 2.1 / 4.4 | 53% | 22.5 (22) | 11% | 2% | 43% | 15.5 | 0.31 |
+| 8/8/8, no cap | 3.1 / 2.2 / 4.5 | 47% | 19.5 (19) | 0% | 2% | 43% | 14.0 | 0 |
+| 8/8/8, cap 12 | 3.1 / 2.1 / 4.4 | 47% | 19.5 (19) | 0% | 2% | 43% | 14.1 | 0.28 |
+| 10/10/10, no cap, card 12 −3 | 3.4 / 2.1 / 4.1 | 53% | 23.6 (23) | 22% | 0% | 44% | 17.8 | 0 |
+
+- **Stack** is his stack after his turn. **Stack reaches 10** counts the games where it gets to 10 or
+  more at least once.
+- **Gains short** is the share of his gains that can't return the whole discard. **Tokens missing**
+  and **sent back by the cap** are per game.
+
+What it shows:
+
+- **The Time token comes late.** The level-3 figures match the exact odds: the first star card in phase
+  3 is the k-th of the 10 with odds (10 − k)/45, which gives round 23.7 on average and round 26 or
+  later 10 times in 45. With 10/9/8 or 8/8/8, phase 3 draws only 8 cards and misses both star cards in
+  1 game in 45.
+- **Discards often come up short,** most of all in phase 2: he holds about 2 tokens, and over half of
+  his phase-2 gains can't return all 3.
+- **Alone, he rarely empties a pile.** Under 2% of games skip a token. In a real game your takes empty
+  piles too.
+- **The cap of 12 rarely bites.** It sends back about 0.3 tokens per game, in 12–15% of games.
+- **Card 12 discarding 3** lowers his phase-3 average from 4.9 to 4.1 tokens, and his round-30 average
+  from 7.1 to 5.2.
+- **Shorter phases** change his averages by half a token at most. They end the game sooner and bring
+  phase 3, and with it his Time token, earlier.
 
 ## Community note
 
