@@ -323,6 +323,8 @@
     "yourMove": "ВАШ ПОТЕЗ",
     "recruited": "УЗЕТА КАРТА",
     "recruitedSub": "упишите је",
+    "recruitedDone": "КАРТА УПИСАНА",
+    "recruitedDoneSub": "једна по потезу",
     "location": "УЗЕТА ЛОКАЦИЈА",
     "locationSub": "+3 поена",
     "locationTaken": "ЛОКАЦИЈА УПИСАНА",

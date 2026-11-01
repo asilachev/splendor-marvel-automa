@@ -56,6 +56,10 @@ ordered stack by hand is the fiddliest part of the paper automa.
 - Optionally log each card you recruit with the same picker, plus its level so the app can award your
   Time token.
 - Tap **+3** for a Location.
+- Once used, each tile turns gold with a check (**CARD LOGGED**, **LOCATION TAKEN**) and stays done
+  for the rest of the turn: one card and one Location per turn (`rules.md` → A turn, Locations). Undo
+  takes the entry back and frees the tile. The engine still accepts a second card in a round, so
+  older saves keep loading (#99).
 - With these logged, the app can run the Avengers tile, the Gauntlet check and the tiebreakers for
   both sides.
 - A manual override for the Avengers tile holder covers mistakes and anyone who doesn't log.

@@ -2,9 +2,11 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import {
+  applyEvent,
   DEFAULT_SETTINGS,
   newGame,
   STONES,
+  type GameEvent,
   type GameState,
   type RecruitedCard,
 } from '../../engine/index.ts'
@@ -102,5 +104,54 @@ describe('your turn in the hard variant (#11)', () => {
     expect(
       screen.getByRole('checkbox', { name: 'Thanos claims Location 2: give him the tile (+3)' }),
     ).toBeInTheDocument()
+  })
+
+  it('marks the wide card tile done once you log a card', () => {
+    const state = applyEvent(
+      { ...newGame(1, hard), step: 'player' },
+      { type: 'playerRecruit', card: { level: 1, colour: 'soul', points: 0, tags: 1 } },
+    )
+    render(<TableStep state={state} dispatch={() => {}} dock={null} onLogCard={() => {}} />)
+    const tile = screen.getByRole('button', { name: /CARD LOGGED/ })
+    expect(tile).toBeDisabled()
+    expect(tile).toHaveAttribute('data-wide', 'true')
+  })
+})
+
+describe('your move when you log your cards (#99)', () => {
+  const card: RecruitedCard = { level: 2, colour: 'mind', points: 2, tags: 0 }
+  const yourMove = (): GameState => ({ ...newGame(1, DEFAULT_SETTINGS), step: 'player' })
+
+  it('marks the card tile done once you log a card, like the Location', async () => {
+    const user = userEvent.setup()
+    const onLogCard = vi.fn()
+    const table = (state: GameState) => (
+      <TableStep state={state} dispatch={() => {}} dock={null} onLogCard={onLogCard} />
+    )
+    const { rerender } = render(table(yourMove()))
+    await user.click(screen.getByRole('button', { name: /I RECRUITED/ }))
+    expect(onLogCard).toHaveBeenCalledOnce()
+
+    const events: GameEvent[] = [{ type: 'playerRecruit', card }, { type: 'playerLocation' }]
+    rerender(table(events.reduce(applyEvent, yourMove())))
+    for (const name of [/CARD LOGGED/, /LOCATION TAKEN/]) {
+      const tile = screen.getByRole('button', { name })
+      expect(tile).toBeDisabled()
+      expect(tile).toHaveAttribute('data-done', 'true')
+    }
+    expect(screen.queryByRole('button', { name: /I RECRUITED/ })).toBeNull()
+    expect(screen.getByText('Logged: L2 Mind (2 pts) · Location +3')).toBeInTheDocument()
+  })
+
+  it('has the card tile ready again in the next round', () => {
+    const state: GameState = {
+      ...yourMove(),
+      round: 2,
+      log: [{ kind: 'playerRecruit', round: 1, card, gotTime: false }],
+    }
+    render(<TableStep state={state} dispatch={() => {}} dock={null} onLogCard={() => {}} />)
+    const tile = screen.getByRole('button', { name: /I RECRUITED/ })
+    expect(tile).toBeEnabled()
+    expect(tile).toHaveAttribute('data-done', 'false')
   })
 })

@@ -99,8 +99,9 @@ has, and the round clock.
    as you do it.
 2. **Your move:** play your turn on the table, exactly as in the normal game.
    - Recruited a card? Tap **I RECRUITED** and log its level, bonus colour, points and Avengers tags.
+     The tile turns gold, **CARD LOGGED**: one card per turn. Logged the wrong one? Tap **Undo**.
      If you now have more Avengers tags than Thanos, the app tells you to take the Avengers tile.
-   - Took a Location? Tap **I TOOK A LOCATION** (+3 points).
+   - Took a Location? Tap **I TOOK A LOCATION** (+3 points). It turns gold too: **LOCATION TAKEN**.
    - Took tokens or reserved a card? There is nothing to log.
    - Not logging your cards? The two tiles become **I COMPLETED THE GAUNTLET**, ticked only in the
      round you complete it, and the Avengers tile control. If Thanos completes it in the same round,

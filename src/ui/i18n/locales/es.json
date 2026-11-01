@@ -323,6 +323,8 @@
     "yourMove": "TU JUGADA",
     "recruited": "RECLUTÉ",
     "recruitedSub": "anota la carta",
+    "recruitedDone": "CARTA ANOTADA",
+    "recruitedDoneSub": "una por turno",
     "location": "TOMÉ UNA UBICACIÓN",
     "locationSub": "+3 puntos",
     "locationTaken": "UBICACIÓN ANOTADA",

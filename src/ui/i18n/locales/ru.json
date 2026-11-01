@@ -323,6 +323,8 @@
     "yourMove": "ВАШ ХОД",
     "recruited": "НАНЯЛИ КАРТУ",
     "recruitedSub": "записать её",
+    "recruitedDone": "КАРТА ЗАПИСАНА",
+    "recruitedDoneSub": "одна за ход",
     "location": "ВЗЯЛИ ЛОКАЦИЮ",
     "locationSub": "+3 очка",
     "locationTaken": "ЛОКАЦИЯ ЗАПИСАНА",
