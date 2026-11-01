@@ -74,7 +74,31 @@
     "continue": "WEITER · RUNDE {round}",
     "newGame": "NEUES SPIEL",
     "firstGame": "DEIN ERSTES SPIEL",
-    "endGame": "Dieses Spiel beenden"
+    "endGame": "Dieses Spiel beenden",
+    "history": "Spielverlauf",
+    "historyCount": "{n, plural, one {# Spiel} other {# Spiele}}"
+  },
+  "history": {
+    "title": "VERLAUF",
+    "empty": "Noch keine beendeten Spiele. Jedes Spiel, das du beendest, wird hier auf diesem Handy gespeichert.",
+    "games": "Spiele",
+    "wins": "Siege",
+    "winRate": "Siegquote",
+    "avgRound": "Ø Siegrunde",
+    "byDifficulty": "NACH SCHWIERIGKEIT",
+    "difficulty": "{rounds} Runden{cap, select, none {} other { · Limit {cap}}}",
+    "record": "{wins} von {games} gewonnen · {rate}",
+    "recordRound": "du gewinnst im Schnitt in Runde {round}",
+    "list": "BEENDETE SPIELE",
+    "won": "DU HAST GEWONNEN",
+    "lost": "THANOS HAT GEWONNEN",
+    "round": "Runde {round}",
+    "score": "Du {you} · Thanos {thanos}",
+    "clear": "VERLAUF LÖSCHEN",
+    "clearTitle": "VERLAUF LÖSCHEN?",
+    "clearBody": "{n, plural, one {Der Eintrag zu # Spiel wird von diesem Handy gelöscht.} other {Die Einträge zu # Spielen werden von diesem Handy gelöscht.}} Ein laufendes Spiel bleibt.",
+    "clearConfirm": "LÖSCHEN",
+    "keep": "BEHALTEN"
   },
   "setup": {
     "title": "NEUES SPIEL",
@@ -443,6 +467,7 @@
     "undone": "Rückgängig gemacht – ein Schritt zurück.",
     "undoMore": "NOCH EINEN",
     "ended": "Spiel beendet.",
+    "historyCleared": "Verlauf gelöscht.",
     "update": "Eine neue Version ist da. Dein Spiel ist gespeichert.",
     "reload": "NEU LADEN",
     "offline": "Du bist offline – alles funktioniert weiter."

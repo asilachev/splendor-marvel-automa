@@ -232,3 +232,121 @@
   font-size: 0.85rem;
   line-height: 1.45;
 }
+
+/* History (#12) */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  border: 2px solid #fff;
+  border-radius: var(--radius);
+  background: var(--ink-2);
+  box-shadow: 4px 4px 0 #000;
+}
+
+.stat dt {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stat dd {
+  margin: 0;
+  color: var(--gold);
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.historyPanel {
+  padding: 2px 14px;
+}
+
+.historyRow {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgb(0 0 0 / 12%);
+  color: var(--paper-ink);
+}
+
+.historyRow:last-child {
+  border-bottom: 0;
+}
+
+.historyRow strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.historyRow span {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.historyRow small {
+  color: var(--paper-muted);
+  font-size: 0.75rem;
+}
+
+.gameList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gameRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  align-items: baseline;
+  padding: 12px 14px;
+  border: 1.5px solid var(--line);
+  border-left: 5px solid #6b5f86;
+  border-radius: var(--radius);
+  background: var(--ink-2);
+}
+
+.gameRow[data-won='true'] {
+  border-left-color: var(--gold);
+}
+
+.gameRow strong {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.gameRow[data-won='true'] strong {
+  color: var(--gold);
+}
+
+.gameRow span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+.gameRow small {
+  grid-column: 1 / -1;
+  color: var(--muted);
+  font-size: 0.72rem;
+}

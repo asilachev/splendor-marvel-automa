@@ -156,6 +156,10 @@ round.
 
 Tap **NEW GAME** to play again, or **UNDO THE LAST STEP** if the ending came from a mistake.
 
+Every finished game goes into **Game history** on the home screen: your games, wins, win rate and
+average winning round, overall and per difficulty, with each game listed. Undoing a game's ending takes
+it out again, and **CLEAR HISTORY** empties it.
+
 <table>
   <tr>
     <td align="center" valign="top"><img src="screenshots/14-win.png" width="250" alt="You win: you completed the Infinity Gauntlet in round 22"><br><sub>You win</sub></td>

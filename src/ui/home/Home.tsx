@@ -1,4 +1,4 @@
-import { Globe, Play, Swords } from 'lucide-react'
+import { ChevronRight, Globe, Play, Swords } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import type { GameState } from '../../engine/index.ts'
 import { OFFICIAL_ART } from '../assets/official/index.ts'
@@ -15,19 +15,24 @@ export function Home({
   firstLaunch,
   corruptSave,
   install,
+  historyCount = 0,
   onContinue,
   onNewGame,
   onEndGame,
+  onHistory,
 }: {
   state: GameState | null
   /** No game was ever started on this device. */
   firstLaunch: boolean
   corruptSave: boolean
   install?: ReactNode
+  /** Finished games in the history (#12); the link shows once there's one. */
+  historyCount?: number
   onContinue: () => void
   onNewGame: () => void
   /** Asks to end the game in progress (#53). */
   onEndGame: () => void
+  onHistory?: () => void
 }) {
   const { t, lang } = useI18n()
   const [languages, setLanguages] = useState(false)
@@ -96,6 +101,13 @@ export function Home({
             {t('home.lastGame')} <strong>{describeResult(t, state.result).title}</strong>{' '}
             {t('home.lastGameRound', { round: state.result.round })}
           </p>
+        ) : null}
+        {historyCount > 0 && onHistory ? (
+          <button type="button" className={styles.rulingsRow} onClick={onHistory}>
+            <ChevronRight size={18} />
+            <span>{t('home.history')}</span>
+            <small>{t('home.historyCount', { n: historyCount })}</small>
+          </button>
         ) : null}
         <Credits />
       </main>

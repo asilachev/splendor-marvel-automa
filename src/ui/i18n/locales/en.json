@@ -70,7 +70,31 @@
     "continue": "CONTINUE · ROUND {round}",
     "newGame": "NEW GAME",
     "firstGame": "START YOUR FIRST GAME",
-    "endGame": "End this game"
+    "endGame": "End this game",
+    "history": "Game history",
+    "historyCount": "{n, plural, one {# game} other {# games}}"
+  },
+  "history": {
+    "title": "HISTORY",
+    "empty": "No finished games yet. Every game you finish is saved here, on this phone.",
+    "games": "Games",
+    "wins": "Wins",
+    "winRate": "Win rate",
+    "avgRound": "Avg. winning round",
+    "byDifficulty": "BY DIFFICULTY",
+    "difficulty": "{rounds} rounds{cap, select, none {} other { · cap {cap}}}",
+    "record": "{wins} of {games} won · {rate}",
+    "recordRound": "you win on round {round} on average",
+    "list": "FINISHED GAMES",
+    "won": "YOU WON",
+    "lost": "THANOS WON",
+    "round": "round {round}",
+    "score": "You {you} · Thanos {thanos}",
+    "clear": "CLEAR HISTORY",
+    "clearTitle": "CLEAR HISTORY?",
+    "clearBody": "{n, plural, one {This deletes the record of # game from this phone.} other {This deletes the records of # games from this phone.}} A game in progress isn’t affected.",
+    "clearConfirm": "CLEAR IT",
+    "keep": "KEEP IT"
   },
   "setup": {
     "title": "NEW GAME",
@@ -439,6 +463,7 @@
     "undone": "Undone — stepped back one action.",
     "undoMore": "UNDO MORE",
     "ended": "Game ended.",
+    "historyCleared": "History cleared.",
     "update": "A new version is ready. Your game is saved.",
     "reload": "RELOAD",
     "offline": "You’re offline — everything still works."

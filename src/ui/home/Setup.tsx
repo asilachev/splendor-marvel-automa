@@ -1,9 +1,10 @@
-import { ArrowLeft, ChevronRight, Check, Swords } from 'lucide-react'
+import { ChevronRight, Check, Swords } from 'lucide-react'
 import { useLayoutEffect, useState } from 'react'
 import { PHASE_LENGTH_PRESETS, type PhaseLengths, type Settings } from '../../engine/index.ts'
 import { Button, Caption, CheckItem, Options, Panel } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
 import { useT } from '../i18n/index.ts'
+import { Header } from './Header.tsx'
 import styles from './home.module.css'
 
 type Preset = keyof typeof PHASE_LENGTH_PRESETS
@@ -12,18 +13,6 @@ const presetOf = (lengths: PhaseLengths): Preset =>
   (Object.keys(PHASE_LENGTH_PRESETS) as Preset[]).find(
     (k) => PHASE_LENGTH_PRESETS[k].join() === lengths.join(),
   ) ?? 'standard'
-
-function Header({ title, onBack }: { title: string; onBack: () => void }) {
-  const t = useT()
-  return (
-    <header className={styles.header}>
-      <button type="button" className={styles.back} aria-label={t('common.back')} onClick={onBack}>
-        <ArrowLeft size={22} />
-      </button>
-      <h1 className={styles.screenTitle}>{title}</h1>
-    </header>
-  )
-}
 
 /** 1.3 — new game setup; 1.4 — rulings (a sub-screen). */
 export function Setup({

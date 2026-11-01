@@ -1,9 +1,10 @@
-import { OctagonX, RotateCcw } from 'lucide-react'
+import { OctagonX, RotateCcw, Trash2 } from 'lucide-react'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 import { Button, Dialog } from './components/Kit.tsx'
 import { useToasts } from './components/toast.ts'
 import { Toaster } from './components/Toaster.tsx'
 import { Game } from './game/Game.tsx'
+import { History } from './home/History.tsx'
 import { Home } from './home/Home.tsx'
 import { Setup } from './home/Setup.tsx'
 import {
@@ -31,7 +32,7 @@ import { loadSettings } from './state/persistence.ts'
 import { loadPrefs, savePrefs, type Prefs } from './state/prefs.ts'
 import { useGame } from './state/useGame.ts'
 
-type Screen = 'home' | 'setup' | 'game'
+type Screen = 'home' | 'setup' | 'game' | 'history'
 
 /** Confirmations that clear the saved game: a new game over it, or ending it (#53). */
 type Confirm = 'newGame' | 'endGame'
@@ -118,6 +119,22 @@ function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs 
         }}
       />
     )
+  } else if (screen === 'history') {
+    view = (
+      <History
+        history={game.history}
+        onBack={() => setScreen('home')}
+        onClear={() => {
+          game.clearHistory()
+          toasts.push({
+            key: 'historyCleared',
+            icon: <Trash2 size={20} />,
+            text: t('toasts.historyCleared'),
+            tone: 'muted',
+          })
+        }}
+      />
+    )
   } else if (screen === 'game' && game.state) {
     view = (
       <Game
@@ -143,9 +160,11 @@ function Shell({ prefs, updatePrefs }: { prefs: Prefs; updatePrefs: UpdatePrefs 
             <InstallCard onInstall={() => void installPrompt.install()} />
           ) : null
         }
+        historyCount={game.history.length}
         onContinue={() => setScreen('game')}
         onNewGame={newGame}
         onEndGame={endGame}
+        onHistory={() => setScreen('history')}
       />
     )
   }

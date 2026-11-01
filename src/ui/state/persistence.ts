@@ -102,7 +102,8 @@ function parseSavedGame(value: unknown): SavedGame {
   }
 }
 
-function parseSettings(value: unknown): Settings {
+/** Checks stored settings; missing keys fall back to defaults. Throws on anything invalid. */
+export function parseSettings(value: unknown): Settings {
   if (!isRecord(value)) throw new Error('Bad settings')
   // Unknown or missing keys fall back to defaults, so new settings don't break old saves.
   const merged = { ...DEFAULT_SETTINGS, ...value } as Settings

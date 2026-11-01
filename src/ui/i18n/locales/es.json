@@ -74,7 +74,31 @@
     "continue": "CONTINUAR · RONDA {round}",
     "newGame": "NUEVA PARTIDA",
     "firstGame": "EMPIEZA TU PRIMERA PARTIDA",
-    "endGame": "Terminar esta partida"
+    "endGame": "Terminar esta partida",
+    "history": "Historial",
+    "historyCount": "{n, plural, one {# partida} many {# partidas} other {# partidas}}"
+  },
+  "history": {
+    "title": "HISTORIAL",
+    "empty": "Aún no hay partidas terminadas. Cada partida que termines se guarda aquí, en este teléfono.",
+    "games": "Partidas",
+    "wins": "Victorias",
+    "winRate": "Victorias (%)",
+    "avgRound": "Ronda media de victoria",
+    "byDifficulty": "POR DIFICULTAD",
+    "difficulty": "{rounds} rondas{cap, select, none {} other { · límite {cap}}}",
+    "record": "{wins} de {games} ganadas · {rate}",
+    "recordRound": "de media ganas en la ronda {round}",
+    "list": "PARTIDAS TERMINADAS",
+    "won": "GANASTE",
+    "lost": "GANÓ THANOS",
+    "round": "ronda {round}",
+    "score": "Tú {you} · Thanos {thanos}",
+    "clear": "BORRAR EL HISTORIAL",
+    "clearTitle": "¿BORRAR EL HISTORIAL?",
+    "clearBody": "{n, plural, one {Se borra de este teléfono el registro de # partida.} many {Se borran de este teléfono los registros de # partidas.} other {Se borran de este teléfono los registros de # partidas.}} La partida en curso no cambia.",
+    "clearConfirm": "BORRAR",
+    "keep": "CONSERVAR"
   },
   "setup": {
     "title": "NUEVA PARTIDA",
@@ -443,6 +467,7 @@
     "undone": "Deshecho: un paso atrás.",
     "undoMore": "DESHACER MÁS",
     "ended": "Partida terminada.",
+    "historyCleared": "Historial borrado.",
     "update": "Hay una versión nueva. Tu partida está guardada.",
     "reload": "RECARGAR",
     "offline": "Sin conexión: todo sigue funcionando."
