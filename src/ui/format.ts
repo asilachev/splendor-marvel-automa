@@ -1,11 +1,13 @@
-import type {
-  AutomaAction,
-  GainAction,
-  GameResult,
-  GameState,
-  LogEntry,
-  RecruitedCard,
-  Stone,
+import {
+  AVENGERS_TILE_TAGS,
+  sideStats,
+  type AutomaAction,
+  type GainAction,
+  type GameResult,
+  type GameState,
+  type LogEntry,
+  type RecruitedCard,
+  type Stone,
 } from '../engine/index.ts'
 import type { Translate } from './i18n/index.ts'
 
@@ -151,6 +153,13 @@ export function tableChecklist(t: Translate, state: GameState): ChecklistItem[] 
           : t('checklist.refillSlot', { slot: e.slot, level: e.card.level }),
       })
       if (e.gotTime) out.push({ key: `${i}-time`, text: t('checklist.time'), gems: ['time'] })
+      // Without your cards logged the app can't compare tags, so it reminds you instead (#15).
+      if (!state.setup.settings.logPlayerCards && e.card.tags > 0 && state.avengers === 'player') {
+        const tags = sideStats(state, 'thanos').tags
+        if (tags >= AVENGERS_TILE_TAGS) {
+          out.push({ key: `${i}-tilecheck`, text: t('checklist.tileCheck', { n: tags }) })
+        }
+      }
     } else if (e.kind === 'avengers' && !e.manual && e.holder === 'thanos') {
       out.push({ key: `${i}-tile`, text: t('checklist.tile') })
     }

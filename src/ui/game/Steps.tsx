@@ -1,6 +1,7 @@
 import {
   Award,
   Ban,
+  Circle,
   CircleCheck,
   CornerDownRight,
   Flag,
@@ -16,13 +17,16 @@ import {
   currentRoundCard,
   discardCount,
   discardPreview,
+  GAUNTLET_POINTS,
   LOCATIONS_IN_PLAY,
   missingColours,
   phaseStarts,
   sideStats,
+  STONES,
   type GainAction,
   type GameEvent,
   type GameState,
+  type PlayerReport,
   type Stone,
   type TakeAction,
 } from '../../engine/index.ts'
@@ -31,10 +35,13 @@ import {
   Button,
   Caption,
   CheckItem,
+  Collapse,
   LinkButton,
   NumberChips,
+  Options,
   Panel,
   Speech,
+  Stepper,
   StonePicker,
 } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
@@ -473,13 +480,27 @@ export function TableStep({
     ...recruits.map((e) => (e.kind === 'playerRecruit' ? cardLabel(t, e.card) : '')),
     ...(tookLocation ? [t('table.locationLogged')] : []),
   ]
-  const ties = t('table.ties', { thanosWins: state.setup.settings.ties === 'thanosWins' })
+  const settings = state.setup.settings
+  const ties = t('table.ties', { thanosWins: settings.ties === 'thanosWins' })
+  // Without your cards logged, you report the Gauntlet yourself (#15).
+  const unlogged = !settings.logPlayerCards
+  const thanos = sideStats(state, 'thanos')
+  const [gauntlet, setGauntlet] = useState(false)
+  const [points, setPoints] = useState(GAUNTLET_POINTS)
+  const [cards, setCards] = useState(Math.max(STONES.length, thanos.cardCount))
+  const tiebreak =
+    unlogged && gauntlet && thanos.gauntlet && settings.ties === 'tiebreakersThenThanos'
+  const report: PlayerReport | null =
+    unlogged && gauntlet ? (tiebreak ? { gauntlet, points, cards } : { gauntlet }) : null
   return (
     <StepFrame
       label={t('table.label')}
       dock={dock}
       cta={
-        <Button icon={<Flag size={22} />} onClick={() => dispatch({ type: 'endRound' })}>
+        <Button
+          icon={<Flag size={22} />}
+          onClick={() => dispatch(report ? { type: 'endRound', report } : { type: 'endRound' })}
+        >
           {t('table.cta', { round: state.round })}
         </Button>
       }
@@ -500,38 +521,92 @@ export function TableStep({
         </Panel>
       ) : null}
       <Caption tone="blue">{t('table.yourMove')}</Caption>
-      <div className={styles.moveTiles}>
-        <button type="button" className={styles.moveTile} onClick={onLogCard}>
-          <SquarePlus size={26} />
-          <strong>{t('table.recruited')}</strong>
-          <small>{t('table.recruitedSub')}</small>
-        </button>
-        <button
-          type="button"
-          className={styles.moveTile}
-          data-done={tookLocation}
-          disabled={!canLocation}
-          onClick={() => dispatch({ type: 'playerLocation' })}
-        >
-          {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
-          <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
-          <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
-        </button>
-      </div>
-      {logged.length ? (
-        <div className={styles.logged}>
-          <CircleCheck size={18} />
-          <span>{t('table.logged', { items: logged.join(' · ') })}</span>
-        </div>
-      ) : null}
-      {tileToYou ? (
-        <div className={styles.inlineToast} role="status">
-          <Award size={20} />
-          <span>{t('table.tileToYou')}</span>
-        </div>
-      ) : null}
+      {unlogged ? (
+        <>
+          <div className={styles.moveTiles}>
+            <button
+              type="button"
+              role="checkbox"
+              aria-checked={gauntlet}
+              className={styles.moveTile}
+              data-wide="true"
+              data-done={gauntlet}
+              onClick={() => setGauntlet((g) => !g)}
+            >
+              {gauntlet ? <CircleCheck size={26} /> : <Circle size={26} />}
+              <strong>{t('table.gauntlet')}</strong>
+              <small>{t('table.gauntletSub')}</small>
+            </button>
+          </div>
+          <Options
+            label={t('hoard.tile')}
+            value={state.avengers}
+            onChange={(holder) => dispatch({ type: 'setAvengers', holder })}
+            options={[
+              { value: 'none', label: t('hoard.tileOptions.none') },
+              { value: 'thanos', label: t('hoard.tileOptions.thanos') },
+              { value: 'player', label: t('hoard.tileOptions.player') },
+            ]}
+          />
+          <Collapse open={tiebreak}>
+            <div className={styles.tiebreak}>
+              <Caption tone="red">{t('table.tiebreak')}</Caption>
+              <p className={styles.tiebreakNote}>{t('table.tiebreakNote')}</p>
+              <Stepper
+                label={t('table.yourPoints')}
+                value={points}
+                min={GAUNTLET_POINTS}
+                max={99}
+                onChange={setPoints}
+                hint={t('table.thanosHas', { n: thanos.points })}
+              />
+              <Stepper
+                label={t('table.yourCards')}
+                value={cards}
+                min={STONES.length}
+                max={99}
+                onChange={setCards}
+                hint={t('table.thanosHas', { n: thanos.cardCount })}
+              />
+            </div>
+          </Collapse>
+        </>
+      ) : (
+        <>
+          <div className={styles.moveTiles}>
+            <button type="button" className={styles.moveTile} onClick={onLogCard}>
+              <SquarePlus size={26} />
+              <strong>{t('table.recruited')}</strong>
+              <small>{t('table.recruitedSub')}</small>
+            </button>
+            <button
+              type="button"
+              className={styles.moveTile}
+              data-done={tookLocation}
+              disabled={!canLocation}
+              onClick={() => dispatch({ type: 'playerLocation' })}
+            >
+              {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
+              <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
+              <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
+            </button>
+          </div>
+          {logged.length ? (
+            <div className={styles.logged}>
+              <CircleCheck size={18} />
+              <span>{t('table.logged', { items: logged.join(' · ') })}</span>
+            </div>
+          ) : null}
+          {tileToYou ? (
+            <div className={styles.inlineToast} role="status">
+              <Award size={20} />
+              <span>{t('table.tileToYou')}</span>
+            </div>
+          ) : null}
+        </>
+      )}
       <p className={styles.after}>
-        {t('table.after')}
+        {unlogged ? t('table.afterUnlogged') : t('table.after')}
         <RuleTip title={t('table.tipTitle')}>{ties}</RuleTip>
       </p>
     </StepFrame>
@@ -570,19 +645,32 @@ export function GameOverStep({
         <p className={styles.resultText}>{text}</p>
       </section>
       <div className={styles.tallies}>
-        {sides.map(([side, who, s, won]) => (
-          <div key={side} className={styles.tally} data-winner={won && side === 'player'}>
-            <span className={styles.tallyWho}>{who}</span>
-            <span className={styles.tallyPts}>{t('over.pts', { n: s.points })}</span>
-            <span className={styles.tallyMeta}>
-              {t('over.meta', {
-                colours: s.colours.length,
-                time: s.hasTime,
-                tile: state.avengers === side,
-              })}
-            </span>
-          </div>
-        ))}
+        {sides.map(([side, who, s, won]) => {
+          // Without your cards logged, only what you reported is known about your side (#15).
+          const unknown = side === 'player' && !state.setup.settings.logPlayerCards
+          const reported = state.playerReport?.points
+          return (
+            <div key={side} className={styles.tally} data-winner={won && side === 'player'}>
+              <span className={styles.tallyWho}>{who}</span>
+              <span className={styles.tallyPts}>
+                {!unknown
+                  ? t('over.pts', { n: s.points })
+                  : reported !== undefined
+                    ? t('over.pts', { n: reported })
+                    : t('over.ptsUnknown')}
+              </span>
+              <span className={styles.tallyMeta}>
+                {unknown
+                  ? t('over.unlogged', { tile: state.avengers === side })
+                  : t('over.meta', {
+                      colours: s.colours.length,
+                      time: s.hasTime,
+                      tile: state.avengers === side,
+                    })}
+              </span>
+            </div>
+          )
+        })}
       </div>
       <div className={styles.actions}>
         <Button icon={<Swords size={22} />} onClick={onNewGame}>

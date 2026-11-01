@@ -13,7 +13,16 @@ import { Token } from './Token.tsx'
 
 const GAUNTLET = 16
 
-function Fighter({ side, stats }: { side: 'thanos' | 'player'; stats: SideStats }) {
+function Fighter({
+  side,
+  stats,
+  unlogged = false,
+}: {
+  side: 'thanos' | 'player'
+  stats: SideStats
+  /** Your cards aren't logged, so your points aren't known (#15). */
+  unlogged?: boolean
+}) {
   const t = useT()
   const thanos = side === 'thanos'
   return (
@@ -29,29 +38,52 @@ function Fighter({ side, stats }: { side: 'thanos' | 'player'; stats: SideStats 
       <span>
         <span className={styles.fighterName}>{thanos ? t('hud.thanos') : t('hud.you')}</span>
         <span className={styles.fighterPoints}>
-          {t('hud.points', { n: stats.points, goal: GAUNTLET })}
+          {unlogged
+            ? t('hud.unlogged', { goal: GAUNTLET })
+            : t('hud.points', { n: stats.points, goal: GAUNTLET })}
         </span>
       </span>
     </div>
   )
 }
 
-function Bar({ stats, mirrored }: { stats: SideStats; mirrored: boolean }) {
-  const pct = Math.min(stats.points, GAUNTLET) / GAUNTLET
+function Bar({
+  stats,
+  mirrored,
+  unlogged = false,
+}: {
+  stats: SideStats
+  mirrored: boolean
+  unlogged?: boolean
+}) {
+  const pct = unlogged ? 0 : Math.min(stats.points, GAUNTLET) / GAUNTLET
   return (
-    <div className={styles.bar} data-mirrored={mirrored} data-ready={stats.gauntlet}>
+    <div
+      className={styles.bar}
+      data-mirrored={mirrored}
+      data-ready={!unlogged && stats.gauntlet}
+      data-unlogged={unlogged}
+    >
       <div className={styles.barFill} style={{ transform: `scaleX(${pct})` }} />
     </div>
   )
 }
 
-function Sockets({ stats, mirrored }: { stats: SideStats; mirrored: boolean }) {
+function Sockets({
+  stats,
+  mirrored,
+  unlogged = false,
+}: {
+  stats: SideStats
+  mirrored: boolean
+  unlogged?: boolean
+}) {
   const gems = [
     ...STONES.map((s) => ({ gem: s, on: stats.colours.includes(s) })),
     { gem: 'time' as const, on: stats.hasTime },
   ]
   return (
-    <div className={styles.socketRow}>
+    <div className={styles.socketRow} data-unlogged={unlogged}>
       {(mirrored ? [...gems].reverse() : gems).map(({ gem, on }) => (
         <Token key={gem} stone={gem} size={18} hollow={!on} />
       ))}
@@ -67,16 +99,22 @@ export function VersusHud({ state }: { state: GameState }) {
   const limit = roundLimit(state.setup.settings)
   const over = state.step === 'over'
   const last = !over && state.round === limit
-  const summary = t('hud.summary', {
+  const unlogged = !state.setup.settings.logPlayerCards
+  const thanosSummary = {
     round: state.round,
     limit,
     thanosPoints: thanos.points,
     thanosColours: thanos.colours.length,
     thanosTime: thanos.hasTime,
-    youPoints: player.points,
-    youColours: player.colours.length,
-    youTime: player.hasTime,
-  })
+  }
+  const summary = unlogged
+    ? t('hud.summaryUnlogged', thanosSummary)
+    : t('hud.summary', {
+        ...thanosSummary,
+        youPoints: player.points,
+        youColours: player.colours.length,
+        youTime: player.hasTime,
+      })
   return (
     <header className={styles.hud} aria-label={summary}>
       <div className={styles.fighters}>
@@ -91,15 +129,15 @@ export function VersusHud({ state }: { state: GameState }) {
                 : t('hud.left', { n: limit - state.round })}
           </span>
         </div>
-        <Fighter side="player" stats={player} />
+        <Fighter side="player" stats={player} unlogged={unlogged} />
       </div>
       <div className={styles.bars}>
         <Bar stats={thanos} mirrored={false} />
-        <Bar stats={player} mirrored />
+        <Bar stats={player} mirrored unlogged={unlogged} />
       </div>
       <div className={styles.sockets}>
         <Sockets stats={thanos} mirrored={false} />
-        <Sockets stats={player} mirrored />
+        <Sockets stats={player} mirrored unlogged={unlogged} />
       </div>
     </header>
   )

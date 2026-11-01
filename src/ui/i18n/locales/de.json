@@ -7,6 +7,8 @@
     "back": "Zurück",
     "rule": "Regel: {title}",
     "keepPlaying": "WEITERSPIELEN",
+    "decrease": "{label} verringern",
+    "increase": "{label} erhöhen",
     "level": "S{level}",
     "card": "S{level} {stone}",
     "points": "{n, plural, one {# Pkt.} other {# Pkt.}}",
@@ -34,6 +36,8 @@
     "left": "NOCH {n}",
     "lastRound": "LETZTE RUNDE",
     "gameOver": "SPIELENDE",
+    "unlogged": "? / {goal} PKT.",
+    "summaryUnlogged": "Runde {round} von {limit}. Thanos: {thanosPoints, plural, one {# Punkt} other {# Punkte}}, {thanosColours} Farben{thanosTime, select, true { und Zeit} other {}}. Deine Karten werden nicht eingetragen.",
     "summary": "Runde {round} von {limit}. Thanos: {thanosPoints, plural, one {# Punkt} other {# Punkte}}, {thanosColours} Farben{thanosTime, select, true { und Zeit} other {}}. Du: {youPoints, plural, one {# Punkt} other {# Punkte}}, {youColours} Farben{youTime, select, true { und Zeit} other {}}."
   },
   "dock": {
@@ -115,6 +119,22 @@
     "capTip": {
       "title": "Chip-Limit",
       "body": "Ein Vorschlag aus der Community: höchstens 12 Chips; die ältesten über dem Limit gehen in den Vorrat zurück."
+    },
+    "yourCards": "3 · DEINE KARTEN",
+    "logCards": "Deine Karten eintragen",
+    "logCardsOptions": {
+      "log": {
+        "label": "EINTRAGEN",
+        "hint": "die App zählt für dich"
+      },
+      "skip": {
+        "label": "NICHT EINTRAGEN",
+        "hint": "den Handschuh meldest du"
+      }
+    },
+    "logCardsTip": {
+      "title": "Deine Karten",
+      "body": "Trägst du deine angeworbenen Karten ein, zählt die App deine Punkte, Farben und den Zeit-Chip, bewegt das Avengers-Plättchen und entscheidet Tiebreaker. Trägst du sie nicht ein, hakst du „Handschuh vollendet“ in der Runde ab, in der du ihn vollendest, und bewegst das Avengers-Plättchen selbst. Nach deinen Punkten und Karten fragt die App nur, wenn ein Tiebreaker sie braucht."
     },
     "rulingsRow": "Auslegungen für Lücken im Automa",
     "customised": "angepasst",
@@ -270,6 +290,14 @@
     "after": "Chips genommen oder reserviert? Nichts einzutragen. Danach prüft die App bei beiden den Handschuh.",
     "tipTitle": "Rundenende",
     "ties": "{thanosWins, select, true {Vollenden beide den Handschuh in derselben Runde, gewinnt Thanos (deine Auslegung).} other {Vollenden beide den Handschuh: mehr Punkte gewinnen, dann das Avengers-Plättchen, dann weniger Karten – jeden restlichen Gleichstand gewinnt Thanos.}}",
+    "gauntlet": "HANDSCHUH VOLLENDET",
+    "gauntletSub": "16+ Punkte · alle 5 Farben · ein Zeit-Chip",
+    "tiebreak": "TIEBREAKER",
+    "tiebreakNote": "Thanos hat den Handschuh auch vollendet, also entscheiden deine Summen:",
+    "yourPoints": "Deine Punkte",
+    "yourCards": "Deine Karten",
+    "thanosHas": "Thanos: {n}",
+    "afterUnlogged": "Spiel deinen Zug am Tisch; einzutragen gibt es nichts. Hak das Kästchen nur in der Runde ab, in der du den Handschuh vollendest.",
     "cta": "RUNDE {round} BEENDEN"
   },
   "over": {
@@ -278,6 +306,8 @@
     "thanos": "THANOS",
     "you": "DU",
     "pts": "{n, plural, one {# PKT.} other {# PKT.}}",
+    "ptsUnknown": "— PKT.",
+    "unlogged": "Karten nicht eingetragen{tile, select, true { · Avengers-Plättchen} other {}}",
     "meta": "{colours} von 5 Farben{time, select, true { + Zeit} other {}}{tile, select, true { · Avengers-Plättchen} other {}}",
     "newGame": "NEUES SPIEL",
     "undo": "LETZTEN SCHRITT ZURÜCK",
@@ -306,6 +336,7 @@
     "refillSlot": "Feld {slot} aus dem Stapel für Stufe {level} auffüllen",
     "refillMarket": "Markt aus dem Stapel für Stufe {level} auffüllen",
     "time": "Gib Thanos einen grünen Zeit-Chip",
+    "tileCheck": "Thanos hat jetzt {n, plural, one {# Avengers-Symbol} other {# Avengers-Symbole}}: Sind das mehr als deine, gib ihm das Plättchen",
     "tile": "Gib Thanos das Avengers-Plättchen"
   },
   "log": {
@@ -361,6 +392,7 @@
     "rulingCounted": "{all, select, true {Zählende Karten von Thanos: alle (Klarstellung auf BGG)} other {Zählende Karten von Thanos: nur mit Punkten oder Avengers}}",
     "rulingCard12": "Karte 12, Rückgabe in Phase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Leeres Feld: erste Karte der Reihe} other {Leeres Feld: er nimmt nichts}}",
+    "rulingLog": "{logged, select, true {Deine Karten: eingetragen} other {Deine Karten: nicht eingetragen}}",
     "rulingTies": "{thanosWins, select, true {Beide vollenden den Handschuh: Thanos gewinnt} other {Beide vollenden den Handschuh: Tiebreaker, dann Thanos}}"
   },
   "rules": [

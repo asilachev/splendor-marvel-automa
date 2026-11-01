@@ -43,6 +43,7 @@ export {
   type GameResult,
   type GameState,
   type LogEntry,
+  type PlayerReport,
   type RecruitedCard,
   type ResultReason,
   type Side,

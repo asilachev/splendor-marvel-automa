@@ -240,6 +240,7 @@ export function MenuSheet({
               cap: s.stackCap ?? 'none',
             })}
           </li>
+          <li>{t('menu.rulingLog', { logged: s.logPlayerCards })}</li>
           <li>{t('menu.rulingCounted', { all: s.countedCards === 'all' })}</li>
           <li>{t('menu.rulingCard12', { n: s.unprintedDiscard })}</li>
           <li>{t('menu.rulingEmpty', { firstInRow: s.emptySlot === 'firstInRow' })}</li>

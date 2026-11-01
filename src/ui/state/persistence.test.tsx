@@ -116,6 +116,15 @@ describe('persistence (#5)', () => {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({ phaseLengths: [0, 0, 0] }))
     expect(loadSettings()).toEqual(DEFAULT_SETTINGS)
   })
+
+  it('loads settings saved before “log my cards” existed with logging on (#15)', () => {
+    const { logPlayerCards, ...older } = DEFAULT_SETTINGS
+    expect(logPlayerCards).toBe(true)
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ ...older, stackCap: 12 }))
+    expect(loadSettings()).toEqual({ ...DEFAULT_SETTINGS, stackCap: 12 })
+    saveSettings({ ...DEFAULT_SETTINGS, logPlayerCards: false })
+    expect(loadSettings().logPlayerCards).toBe(false)
+  })
 })
 
 describe('useGame (#5)', () => {

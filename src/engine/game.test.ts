@@ -10,10 +10,16 @@ import {
   sideStats,
   type GameEvent,
   type GameState,
+  type PlayerReport,
   type RecruitedCard,
   type ThanosCardInput,
 } from './game.ts'
-import { DEFAULT_SETTINGS, PHASE_LENGTH_PRESETS, type Settings } from './settings.ts'
+import {
+  DEFAULT_SETTINGS,
+  PHASE_LENGTH_PRESETS,
+  validateSettings,
+  type Settings,
+} from './settings.ts'
 import { cardForRound } from './setup.ts'
 import { STONES, type Stone } from './stones.ts'
 import type { AutomaAction, Level } from './types.ts'
@@ -396,5 +402,112 @@ describe('a whole game', () => {
     expect(state.result).toMatchObject({ winner: 'thanos', reason: 'gauntlet' })
     expect(state.result!.round).toBeGreaterThanOrEqual(21)
     expect(replay(seed, S, events)).toEqual(state)
+  })
+})
+
+describe('playing without logging your cards (#15)', () => {
+  const U: Settings = { ...S, logPlayerCards: false }
+  const end = (overrides: Partial<GameState>, report?: PlayerReport, settings: Settings = U) =>
+    applyEvent(
+      at(1, { step: 'player', ...overrides }, settings),
+      report ? { type: 'endRound', report } : { type: 'endRound' },
+    )
+  /** Thanos with exactly 16 points, all five colours and the Time token, in 5 cards. */
+  const thanosDone = fullSet([5, 5, 3, 2, 1])
+
+  it('refuses your recruits, Locations and card fixes', () => {
+    const s = at(1, { step: 'player' }, U)
+    expect(() => applyEvent(s, { type: 'playerRecruit', card: card('mind') })).toThrow(
+      GameRuleError,
+    )
+    expect(() => applyEvent(s, { type: 'playerLocation' })).toThrow(GameRuleError)
+    expect(() => applyEvent(s, { type: 'addCard', side: 'player', card: card('mind') })).toThrow(
+      GameRuleError,
+    )
+  })
+
+  it('lets you win when you report the Gauntlet', () => {
+    const s = end({ round: 14 }, { gauntlet: true })
+    expect(s.result).toEqual({ winner: 'player', reason: 'gauntlet', round: 14 })
+    expect(s.playerReport).toEqual({ gauntlet: true })
+  })
+
+  it('goes on to the next round when you report nothing', () => {
+    expect(end({ round: 3 }).round).toBe(4)
+    expect(end({ round: 3 }, { gauntlet: false }).result).toBeNull()
+  })
+
+  it('still ends the game when Thanos completes it, and at the round limit', () => {
+    expect(end({ thanosCards: thanosDone }).result).toMatchObject({
+      winner: 'thanos',
+      reason: 'gauntlet',
+    })
+    expect(end({ round: 30 }).result).toMatchObject({ winner: 'thanos', reason: 'roundLimit' })
+  })
+
+  it('breaks a double Gauntlet with your reported points, then the tile, then cards', () => {
+    const both = (report: PlayerReport, overrides: Partial<GameState> = {}) =>
+      end({ thanosCards: thanosDone, ...overrides }, report).result
+    expect(both({ gauntlet: true, points: 17, cards: 9 })).toMatchObject({
+      winner: 'player',
+      reason: 'morePoints',
+    })
+    expect(both({ gauntlet: true, points: 16, cards: 9 }, { avengers: 'player' })).toMatchObject({
+      winner: 'player',
+      reason: 'avengersTile',
+    })
+    expect(both({ gauntlet: true, points: 16, cards: 6 })).toMatchObject({
+      winner: 'thanos',
+      reason: 'fewerCards',
+    })
+    expect(both({ gauntlet: true, points: 16, cards: 5 })).toMatchObject({
+      winner: 'thanos',
+      reason: 'thanosWinsTies',
+    })
+  })
+
+  it('needs your totals for the tiebreakers, unless Thanos wins ties outright', () => {
+    expect(() => end({ thanosCards: thanosDone }, { gauntlet: true })).toThrow(GameRuleError)
+    const outright = end(
+      { thanosCards: thanosDone },
+      { gauntlet: true },
+      { ...U, ties: 'thanosWins' },
+    )
+    expect(outright.result).toMatchObject({ winner: 'thanos', reason: 'thanosWinsTies' })
+  })
+
+  it('rejects a report when your cards are logged, and impossible totals', () => {
+    expect(() => end({}, { gauntlet: true }, S)).toThrow(GameRuleError)
+    expect(() => end({}, { gauntlet: true, points: 12, cards: 6 })).toThrow(GameRuleError)
+    expect(() => end({}, { gauntlet: true, points: 18, cards: 3 })).toThrow(GameRuleError)
+    expect(() => end({}, { gauntlet: false, points: 18 })).toThrow(GameRuleError)
+  })
+
+  it('lets Thanos take the Avengers tile only from the middle', () => {
+    const holderAfterGain = (avengers: GameState['avengers']) =>
+      applyEvent(
+        at(gainSeed, { thanosCards: [card('mind', 0, 2)], avengers }, U),
+        gain({ colour: 'soul', points: 0, tags: 1 }),
+      ).avengers
+    expect(holderAfterGain('none')).toBe('thanos')
+    expect(holderAfterGain('player')).toBe('player')
+  })
+
+  it('keeps Thanos’s claim in line when his cards are fixed, and leaves yours alone', () => {
+    const two = [card('mind', 0, 2), card('soul', 0, 1)]
+    let s = at(1, { step: 'player', thanosCards: two, avengers: 'thanos' }, U)
+    s = applyEvent(s, { type: 'removeCard', side: 'thanos', index: 1 })
+    expect(s.avengers).toBe('none')
+    s = applyEvent(s, { type: 'addCard', side: 'thanos', card: card('space', 0, 2) })
+    expect(s.avengers).toBe('thanos')
+    const yours = applyEvent(
+      at(1, { step: 'player', thanosCards: [card('mind', 0, 2)], avengers: 'player' }, U),
+      { type: 'addCard', side: 'thanos', card: card('space', 0, 2) },
+    )
+    expect(yours.avengers).toBe('player')
+  })
+
+  it('is a true/false setting', () => {
+    expect(() => validateSettings({ ...U, logPlayerCards: 'no' as unknown as boolean })).toThrow()
   })
 })

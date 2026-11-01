@@ -60,7 +60,17 @@ ordered stack by hand is the fiddliest part of the paper automa.
   both sides.
 - A manual override for the Avengers tile holder covers mistakes and anyone who doesn't log.
 
-## Screens
+### Not logging your cards (#15)
+
+Setup → **Your cards** → **Don't log** turns logging off for the whole game.
+
+- Your turn shows one wide toggle, **I completed the Gauntlet**, ticked only in the round you
+  complete it, and the Avengers tile control (middle, Thanos, you).
+- Thanos still takes the tile on his own, but only from the middle: the app can't compare tags it
+  doesn't know. When he gains tags while you hold it, the checklist reminds you to compare.
+- If Thanos completes the Gauntlet in the same round and the tiebreakers apply, two steppers ask for
+  your points and card count, with his beside them.
+- The HUD shows your side as "? / 16", with no stone sockets.
 
 | Screen | Purpose |
 | --- | --- |
@@ -88,7 +98,8 @@ ordered stack by hand is the fiddliest part of the paper automa.
   - `playerRecruit { level, colour, points, tags }`;
   - `playerLocation`;
   - `setAvengers`;
-  - `endRound`.
+  - `endRound`, which carries `report { gauntlet, points?, cards? }` when your cards aren't
+    logged (#15). The report that ends the game is kept as `playerReport`.
 - **Persistence:** `{ version, seed, settings, events }` in `localStorage` under a versioned key.
   Every read and write is wrapped in try/catch.
 
