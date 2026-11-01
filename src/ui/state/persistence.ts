@@ -115,10 +115,14 @@ export function parseSettings(value: unknown): Settings {
     countedCards: merged.countedCards,
     stackCap: merged.stackCap,
     logPlayerCards: merged.logPlayerCards,
+    variant: merged.variant,
+    locations: merged.locations,
   }
   if (
     !Array.isArray(settings.phaseLengths) ||
     settings.phaseLengths.length !== 3 ||
+    !Array.isArray(settings.locations) ||
+    !settings.locations.every(isRecord) ||
     !['firstInRow', 'nothing'].includes(settings.emptySlot) ||
     !['tiebreakersThenThanos', 'thanosWins'].includes(settings.ties) ||
     !['all', 'scoringOnly'].includes(settings.countedCards)

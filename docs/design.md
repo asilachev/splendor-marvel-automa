@@ -72,10 +72,23 @@ Setup → **Your cards** → **Don't log** turns logging off for the whole game.
   your points and card count, with his beside them.
 - The HUD shows your side as "? / 16", with no stone sockets.
 
+### Hard variant (#11)
+
+Setup → **Variant** → **Hard** plays the automa PDF's hard variant, with the rules only: the automa is
+still called Thanos (owner's decision).
+
+- Two pickers ask what the Locations in play want: five stone tiles each, tapped once per bonus
+  (0 to 5, then back to 0). **START** waits until both are entered. They're entered afresh for every
+  game, because the tiles are dealt at random.
+- In the game your Location tile disappears. When Thanos claims one, the checklist says so: "Thanos
+  claims Location 2: give him the tile (+3)". The log and the menu's rulings list note it too.
+
+## Screens
+
 | Screen | Purpose |
 | --- | --- |
 | Home | Where every launch opens · Continue the saved game · New game · Install card · Credits |
-| Setup | 2-player setup checklist · difficulty · rulings sub-screen · Start |
+| Setup | 2-player setup checklist · difficulty, variant and the hard variant's Locations · your cards · rulings sub-screen · Start |
 | Game | Versus HUD · current step with its one primary action · dock: Undo, Hoard, Log, Menu |
 | Game over | Result, why, rounds taken, final tallies · New game |
 | History (#12) | Games, wins, win rate and average winning round · the same per difficulty (game length and cap) · finished games, newest first · Clear history. Reached from a row on Home once a game is finished |
@@ -87,7 +100,7 @@ Setup → **Your cards** → **Don't log** turns logging off for the whole game.
 - `GameState = replay(createGame(seed, settings), events)`.
 - The three phase orders are drawn from the seed when the game is created.
 - **Thanos:** an ordered token stack (index 0 is the bottom, the oldest token), the cards he has
-  gained, and his Locations (hard mode).
+  gained, and the Locations he claimed in the hard variant (`thanosLocations`, #11).
 - **Derived values:** colours, points, tags, Time token, card count.
 - **Player:** the cards you have logged and your Locations.
 - **Avengers tile holder:** `none`, `thanos` or `player`.

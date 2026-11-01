@@ -46,6 +46,8 @@ screen awake during a game.
    Avengers and Gauntlet tiles. Leave some space for Thanos's token piles.
 3. **Choose the difficulty.** 30 rounds is the automa as printed; 27 and 24 rounds are community
    tweaks that make him harder. A cap of 12 tokens on his piles is another community tweak.
+   **Variant:** **HARD** is the automa PDF's hard variant, where Thanos also claims Locations and you
+   don't. Enter what the two Location tiles on the table ask for, tapping a stone once per bonus.
    **Your cards:** keep **LOG THEM** so the app scores your side, or pick **DON'T LOG** to just play.
    Then you tick **I COMPLETED THE GAUNTLET** in the round you do, and move the Avengers tile
    yourself.

@@ -484,6 +484,7 @@ export function TableStep({
   const ties = t('table.ties', { thanosWins: settings.ties === 'thanosWins' })
   // Without your cards logged, you report the Gauntlet yourself (#15).
   const unlogged = !settings.logPlayerCards
+  const hard = settings.variant === 'hard'
   const thanos = sideStats(state, 'thanos')
   const [gauntlet, setGauntlet] = useState(false)
   const [points, setPoints] = useState(GAUNTLET_POINTS)
@@ -574,22 +575,25 @@ export function TableStep({
       ) : (
         <>
           <div className={styles.moveTiles}>
-            <button type="button" className={styles.moveTile} onClick={onLogCard}>
+            <button type="button" className={styles.moveTile} data-wide={hard} onClick={onLogCard}>
               <SquarePlus size={26} />
               <strong>{t('table.recruited')}</strong>
               <small>{t('table.recruitedSub')}</small>
             </button>
-            <button
-              type="button"
-              className={styles.moveTile}
-              data-done={tookLocation}
-              disabled={!canLocation}
-              onClick={() => dispatch({ type: 'playerLocation' })}
-            >
-              {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
-              <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
-              <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
-            </button>
+            {/* In the hard variant only Thanos claims Locations (#11). */}
+            {hard ? null : (
+              <button
+                type="button"
+                className={styles.moveTile}
+                data-done={tookLocation}
+                disabled={!canLocation}
+                onClick={() => dispatch({ type: 'playerLocation' })}
+              >
+                {tookLocation ? <CircleCheck size={26} /> : <MapPin size={26} />}
+                <strong>{tookLocation ? t('table.locationTaken') : t('table.location')}</strong>
+                <small>{tookLocation ? t('table.locationTakenSub') : t('table.locationSub')}</small>
+              </button>
+            )}
           </div>
           {logged.length ? (
             <div className={styles.logged}>

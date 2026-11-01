@@ -28,8 +28,8 @@ export function History({
   const date = new Intl.DateTimeFormat(tag, { day: 'numeric', month: 'short', year: 'numeric' })
   const rate = (r: number | null) => (r === null ? '—' : percent.format(r))
   const round = (r: number | null) => (r === null ? '—' : decimal.format(r))
-  const difficulty = (rounds: number, cap: number | null) =>
-    t('history.difficulty', { rounds, cap: cap ?? 'none' })
+  const difficulty = (rounds: number, cap: number | null, hard: boolean) =>
+    t('history.difficulty', { rounds, cap: cap ?? 'none', hard })
   const all = statsOf(history)
 
   return (
@@ -57,9 +57,9 @@ export function History({
             </dl>
             <Caption tone="blue">{t('history.byDifficulty')}</Caption>
             <Panel className={styles.historyPanel}>
-              {statsByDifficulty(history).map(({ key, rounds, cap, stats }) => (
+              {statsByDifficulty(history).map(({ key, rounds, cap, hard, stats }) => (
                 <div key={key} className={styles.historyRow}>
-                  <strong>{difficulty(rounds, cap)}</strong>
+                  <strong>{difficulty(rounds, cap, hard)}</strong>
                   <span>
                     {t('history.record', {
                       wins: stats.wins,
@@ -93,7 +93,11 @@ export function History({
                       {[
                         date.format(new Date(g.finishedAt)),
                         t('history.round', { round: g.result.round }),
-                        difficulty(roundLimit(g.settings), g.settings.stackCap),
+                        difficulty(
+                          roundLimit(g.settings),
+                          g.settings.stackCap,
+                          g.settings.variant === 'hard',
+                        ),
                       ].join(' · ')}
                     </small>
                   </li>

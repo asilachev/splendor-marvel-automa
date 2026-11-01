@@ -18,6 +18,7 @@ import {
   DEFAULT_SETTINGS,
   PHASE_LENGTH_PRESETS,
   validateSettings,
+  type LocationRequirement,
   type Settings,
 } from './settings.ts'
 import { cardForRound } from './setup.ts'
@@ -509,5 +510,65 @@ describe('playing without logging your cards (#15)', () => {
 
   it('is a true/false setting', () => {
     expect(() => validateSettings({ ...U, logPlayerCards: 'no' as unknown as boolean })).toThrow()
+  })
+})
+
+describe('the hard variant: Thanos claims Locations (#11; docs/automa.md → Hard variant)', () => {
+  const H: Settings = { ...S, variant: 'hard', locations: [{ mind: 2, soul: 1 }, { power: 1 }] }
+  const take = { type: 'thanosTake', skipped: [] } as const
+
+  it('claims a Location at the end of his turn once his bonuses meet it (+3)', () => {
+    const s = applyEvent(
+      at(gainSeed, { thanosCards: [card('mind'), card('mind')] }, H),
+      gain({ colour: 'soul', points: 0, tags: 0 }),
+    )
+    expect(s.thanosLocations).toEqual([0])
+    expect(s.log.at(-1)).toEqual({ kind: 'thanosLocation', round: 1, index: 0 })
+    expect(sideStats(s, 'thanos').points).toBe(3)
+  })
+
+  it('claims at most one per turn: the first entered now, the other at a later turn’s end', () => {
+    const both = applyEvent(
+      at(gainSeed, { thanosCards: [card('mind'), card('mind'), card('power')] }, H),
+      gain({ colour: 'soul', points: 0, tags: 0 }),
+    )
+    expect(both.thanosLocations).toEqual([0])
+    const later = applyEvent(
+      at(takeSeed, { thanosCards: both.thanosCards, thanosLocations: [0] }, H),
+      take,
+    )
+    expect(later.thanosLocations).toEqual([0, 1])
+    expect(sideStats(later, 'thanos').points).toBe(6)
+  })
+
+  it('never claims in the standard game, and you never claim in the hard variant', () => {
+    const standard = applyEvent(at(takeSeed, { thanosCards: [card('power')] }), take)
+    expect(standard.thanosLocations).toEqual([])
+    expect(() => applyEvent(at(1, { step: 'player' }, H), { type: 'playerLocation' })).toThrow(
+      GameRuleError,
+    )
+  })
+
+  it('counts his bonuses from the cards that count', () => {
+    const scoringOnly: Settings = {
+      ...H,
+      countedCards: 'scoringOnly',
+      locations: [{ power: 1 }, { soul: 1 }],
+    }
+    const zero = applyEvent(at(takeSeed, { thanosCards: [card('power')] }, scoringOnly), take)
+    expect(zero.thanosLocations).toEqual([])
+    const scoring = applyEvent(at(takeSeed, { thanosCards: [card('power', 1)] }, scoringOnly), take)
+    expect(scoring.thanosLocations).toEqual([0])
+  })
+
+  it('needs both Locations, each asking for 1 to 5 bonuses of known colours', () => {
+    expect(() => validateSettings(H)).not.toThrow()
+    expect(() => validateSettings({ ...H, locations: [{ mind: 3 }] })).toThrow()
+    expect(() => validateSettings({ ...H, locations: [{ mind: 3 }, {}] })).toThrow()
+    expect(() => validateSettings({ ...H, locations: [{ mind: 6 }, { soul: 3 }] })).toThrow()
+    const gold = { gold: 3 } as unknown as LocationRequirement
+    expect(() => validateSettings({ ...H, locations: [gold, { soul: 3 }] })).toThrow()
+    expect(() => validateSettings({ ...H, variant: 'hardest' as 'hard' })).toThrow()
+    expect(() => validateSettings({ ...S, locations: [] })).not.toThrow()
   })
 })

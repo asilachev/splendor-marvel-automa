@@ -1,8 +1,17 @@
 import { ChevronRight, Check, Swords } from 'lucide-react'
 import { useLayoutEffect, useState } from 'react'
-import { PHASE_LENGTH_PRESETS, type PhaseLengths, type Settings } from '../../engine/index.ts'
-import { Button, Caption, CheckItem, Options, Panel } from '../components/Kit.tsx'
+import {
+  LOCATIONS_IN_PLAY,
+  MAX_LOCATION_BONUS,
+  PHASE_LENGTH_PRESETS,
+  STONES,
+  type LocationRequirement,
+  type PhaseLengths,
+  type Settings,
+} from '../../engine/index.ts'
+import { Button, Caption, CheckItem, Collapse, Options, Panel } from '../components/Kit.tsx'
 import { RuleTip } from '../components/RuleTip.tsx'
+import { Token } from '../components/Token.tsx'
 import { useT } from '../i18n/index.ts'
 import { Header } from './Header.tsx'
 import styles from './home.module.css'
@@ -13,6 +22,44 @@ const presetOf = (lengths: PhaseLengths): Preset =>
   (Object.keys(PHASE_LENGTH_PRESETS) as Preset[]).find(
     (k) => PHASE_LENGTH_PRESETS[k].join() === lengths.join(),
   ) ?? 'standard'
+
+/** One Location tile for the hard variant (#11): tap a stone to count its bonuses up, then to 0. */
+function LocationPicker({
+  label,
+  value,
+  onChange,
+}: {
+  label: string
+  value: LocationRequirement
+  onChange: (value: LocationRequirement) => void
+}) {
+  const t = useT()
+  return (
+    <div className={styles.location} role="group" aria-label={label}>
+      <span className={styles.locationLabel}>{label.toUpperCase()}</span>
+      <div className={styles.locationRow}>
+        {STONES.map((stone) => {
+          const n = value[stone] ?? 0
+          const next = n >= MAX_LOCATION_BONUS ? 0 : n + 1
+          const rest = Object.fromEntries(Object.entries(value).filter(([s]) => s !== stone))
+          return (
+            <button
+              key={stone}
+              type="button"
+              className={styles.locationTile}
+              data-on={n > 0}
+              aria-label={t('setup.locationStone', { stone: t(`stone.${stone}`), n })}
+              onClick={() => onChange(next ? { ...rest, [stone]: next } : rest)}
+            >
+              <Token stone={stone} size={26} hollow={n === 0} />
+              <strong>{n}</strong>
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 /** 1.3 — new game setup; 1.4 — rulings (a sub-screen). */
 export function Setup({
@@ -25,8 +72,17 @@ export function Setup({
   onBack: () => void
 }) {
   const t = useT()
-  const [settings, setSettings] = useState<Settings>(initial)
+  // Location tiles are dealt at random each game, so the hard variant's are always entered afresh.
+  const [settings, setSettings] = useState<Settings>({ ...initial, locations: [] })
   const [rulings, setRulings] = useState(false)
+  const hard = settings.variant === 'hard'
+  const locations = Array.from(
+    { length: LOCATIONS_IN_PLAY },
+    (_, i): LocationRequirement => settings.locations[i] ?? {},
+  )
+  const ready = !hard || locations.every((l) => Object.keys(l).length > 0)
+  const setLocation = (index: number, value: LocationRequirement) =>
+    setSettings((s) => ({ ...s, locations: locations.map((l, i) => (i === index ? value : l)) }))
   // The rulings sub-screen opens at its top, and so does setup when you come back (#52).
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
@@ -200,6 +256,37 @@ export function Setup({
           ]}
           tip={<RuleTip title={t('setup.capTip.title')}>{t('setup.capTip.body')}</RuleTip>}
         />
+        <Options
+          label={t('setup.variant')}
+          value={settings.variant}
+          onChange={(v) => set('variant', v)}
+          options={[
+            {
+              value: 'standard',
+              label: t('setup.variantOptions.standard.label'),
+              hint: t('setup.variantOptions.standard.hint'),
+            },
+            {
+              value: 'hard',
+              label: t('setup.variantOptions.hard.label'),
+              hint: t('setup.variantOptions.hard.hint'),
+            },
+          ]}
+          tip={<RuleTip title={t('setup.variantTip.title')}>{t('setup.variantTip.body')}</RuleTip>}
+        />
+        <Collapse open={hard}>
+          <div className={styles.locations}>
+            <p className={styles.intro}>{t('setup.locationHint')}</p>
+            {locations.map((value, i) => (
+              <LocationPicker
+                key={i}
+                label={t('setup.locationLabel', { n: i + 1 })}
+                value={value}
+                onChange={(v) => setLocation(i, v)}
+              />
+            ))}
+          </div>
+        </Collapse>
         <Caption tone="blue">{t('setup.yourCards')}</Caption>
         <Options
           label={t('setup.logCards')}
@@ -228,7 +315,12 @@ export function Setup({
         </button>
       </main>
       <footer className={styles.footer}>
-        <Button icon={<Swords size={22} />} onClick={() => onStart(settings)}>
+        {ready ? null : <p className={styles.footerNote}>{t('setup.locationsMissing')}</p>}
+        <Button
+          icon={<Swords size={22} />}
+          disabled={!ready}
+          onClick={() => onStart({ ...settings, locations: hard ? locations : [] })}
+        >
           {t('setup.start')}
         </Button>
       </footer>

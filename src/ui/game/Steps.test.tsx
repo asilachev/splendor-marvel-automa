@@ -81,3 +81,26 @@ describe('your turn without your cards logged (#15)', () => {
     expect(dispatch).toHaveBeenLastCalledWith({ type: 'setAvengers', holder: 'player' })
   })
 })
+
+describe('your turn in the hard variant (#11)', () => {
+  const hard = {
+    ...DEFAULT_SETTINGS,
+    variant: 'hard' as const,
+    locations: [{ mind: 1 }, { soul: 1 }],
+  }
+
+  it('has no Location tile for you, and tells you when Thanos claims one', () => {
+    const state: GameState = {
+      ...newGame(1, hard),
+      step: 'player',
+      thanosLocations: [1],
+      log: [{ kind: 'thanosLocation', round: 1, index: 1 }],
+    }
+    render(<TableStep state={state} dispatch={() => {}} dock={null} onLogCard={() => {}} />)
+    expect(screen.getByRole('button', { name: /I RECRUITED/ })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /I TOOK A LOCATION/ })).toBeNull()
+    expect(
+      screen.getByRole('checkbox', { name: 'Thanos claims Location 2: give him the tile (+3)' }),
+    ).toBeInTheDocument()
+  })
+})

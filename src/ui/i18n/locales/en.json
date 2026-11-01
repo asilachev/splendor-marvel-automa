@@ -82,7 +82,7 @@
     "winRate": "Win rate",
     "avgRound": "Avg. winning round",
     "byDifficulty": "BY DIFFICULTY",
-    "difficulty": "{rounds} rounds{cap, select, none {} other { · cap {cap}}}",
+    "difficulty": "{rounds} rounds{cap, select, none {} other { · cap {cap}}}{hard, select, true { · hard variant} other {}}",
     "record": "{wins} of {games} won · {rate}",
     "recordRound": "you win on round {round} on average",
     "list": "FINISHED GAMES",
@@ -140,6 +140,25 @@
       "title": "Token cap",
       "body": "A community suggestion: cap his tokens at 12; the oldest beyond the cap go back to the supply."
     },
+    "variant": "Variant",
+    "variantOptions": {
+      "standard": {
+        "label": "STANDARD",
+        "hint": "you claim Locations"
+      },
+      "hard": {
+        "label": "HARD",
+        "hint": "Thanos claims them"
+      }
+    },
+    "variantTip": {
+      "title": "Hard variant",
+      "body": "From the automa PDF: Thanos also claims Locations, and you never do. At the end of his turn he takes one whose requirement his bonuses meet (+3 points), at most one per turn. Enter the two Location tiles dealt for this game."
+    },
+    "locationLabel": "Location {n}",
+    "locationHint": "Tap a stone once for each bonus of that colour the tile asks for. After 5 it goes back to 0.",
+    "locationStone": "{stone}: {n}",
+    "locationsMissing": "Enter both Locations to start.",
     "yourCards": "3 · YOUR CARDS",
     "logCards": "Log the cards you recruit",
     "logCardsOptions": {
@@ -356,11 +375,13 @@
     "refillSlot": "Refill slot {slot} from the level {level} deck",
     "refillMarket": "Refill the market from the level {level} deck",
     "time": "Give Thanos a green Time token",
+    "location": "Thanos claims Location {n}: give him the tile (+3)",
     "tileCheck": "Thanos has {n} Avengers tags now: if that’s more than yours, move the tile to him",
     "tile": "Move the Avengers tile to Thanos"
   },
   "log": {
     "took": "Thanos took {stones}",
+    "thanosLocation": "Thanos claimed Location {n} (+3)",
     "tookNothing": "Thanos took nothing",
     "empty": "{stones} empty",
     "capReturned": "cap returned {stones}",
@@ -412,6 +433,7 @@
     "rulingCounted": "{all, select, true {Thanos’s cards that count: all (BGG clarification)} other {Thanos’s cards that count: points/Avengers only}}",
     "rulingCard12": "Card 12, phase 3 returns {n}",
     "rulingEmpty": "{firstInRow, select, true {Empty slot: first card in the row} other {Empty slot: he takes nothing}}",
+    "rulingVariant": "Hard variant: Thanos claims the Locations",
     "rulingLog": "{logged, select, true {Your cards: logged} other {Your cards: not logged}}",
     "rulingTies": "{thanosWins, select, true {Both complete the Gauntlet: Thanos wins} other {Both complete the Gauntlet: tiebreakers, then Thanos}}"
   },

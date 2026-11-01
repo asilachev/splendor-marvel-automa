@@ -3,6 +3,7 @@ import {
   ChevronRight,
   Flag,
   House,
+  MapPin,
   OctagonX,
   Plus,
   Shuffle,
@@ -108,6 +109,7 @@ const LOG_ICON: Record<LogEntry['kind'], [typeof Skull, string]> = {
   avengers: [Award, 'var(--green)'],
   playerRecruit: [User, 'var(--blue)'],
   playerLocation: [User, 'var(--blue)'],
+  thanosLocation: [MapPin, 'var(--purple)'],
   stackFix: [Wrench, '#6b5f86'],
   cardFix: [Wrench, '#6b5f86'],
   phase: [Shuffle, 'var(--gold-deep)'],
@@ -240,6 +242,7 @@ export function MenuSheet({
               cap: s.stackCap ?? 'none',
             })}
           </li>
+          {s.variant === 'hard' ? <li>{t('menu.rulingVariant')}</li> : null}
           <li>{t('menu.rulingLog', { logged: s.logPlayerCards })}</li>
           <li>{t('menu.rulingCounted', { all: s.countedCards === 'all' })}</li>
           <li>{t('menu.rulingCard12', { n: s.unprintedDiscard })}</li>
