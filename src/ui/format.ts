@@ -67,6 +67,8 @@ export function describeLog(t: Translate, entry: LogEntry): string {
       return `${t('log.youRecruited', { card: cardLabel(t, entry.card) })}${entry.gotTime ? ` · ${t('log.timeToken')}` : ''}`
     case 'playerLocation':
       return t('log.youLocation')
+    case 'thanosLocation':
+      return t('log.thanosLocation', { n: entry.index + 1 })
     case 'stackFix':
       return t('log.stackFix', { added: entry.change === 'add', stone: t(`stone.${entry.stone}`) })
     case 'cardFix':
@@ -162,6 +164,8 @@ export function tableChecklist(t: Translate, state: GameState): ChecklistItem[] 
       }
     } else if (e.kind === 'avengers' && !e.manual && e.holder === 'thanos') {
       out.push({ key: `${i}-tile`, text: t('checklist.tile') })
+    } else if (e.kind === 'thanosLocation') {
+      out.push({ key: `${i}-location`, text: t('checklist.location', { n: e.index + 1 }) })
     }
   }
   return out

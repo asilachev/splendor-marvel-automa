@@ -71,6 +71,14 @@ The automa this app runs. A copy of the PDF, `splendor-marvel-solo-automa-v1.pdf
 You play as Thanos and don't claim Locations. The automa plays the heroes and claims a Location as
 soon as its bonuses meet the requirement.
 
+The app offers it as a setup option (#11). By the owner's decision it changes the rules only, not the
+names: the automa is still called Thanos.
+
+- At setup you enter what each of the 2 Locations in play asks for: bonuses per colour.
+- At the end of each of his turns, Thanos claims a Location his bonuses meet (+3 points), at most one
+  per turn. His bonuses come from the cards the "which cards count" ruling counts.
+- You don't claim Locations.
+
 ## Card list
 
 Checked against a high-resolution render of the PDF. Token numbers refer to the board above. In the
@@ -152,6 +160,7 @@ that updates this table.
 | Both sides complete the Gauntlet in the same round | **Official tiebreakers, then Thanos wins any remaining tie** | Thanos wins outright | The PDF says "apply the normal game winning conditions" and "Thanos wins a draw" |
 | Phase lengths | **10 / 10 / 10** (30 rounds) | 10 / 9 / 8 (27), 8 / 8 / 8 (24) | Community tweak (6) |
 | Cap on Thanos's token stack | **None** | 12; the oldest tokens beyond the cap go back to the supply | Community tweak (6) |
+| Hard variant: Thanos meets both Locations in the same turn | **The one entered first at setup**; he takes the other at the end of a later turn if he still meets it | None: both are worth 3 | The rules allow one Location per turn and let a player choose; the automa can't choose |
 
 ## Simulation
 

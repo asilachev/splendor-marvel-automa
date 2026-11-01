@@ -37,11 +37,12 @@ export interface Stats {
   readonly avgWinRound: number | null
 }
 
-/** The games played at one difficulty: the setup screen's game length and token cap. */
+/** The games played at one difficulty: the game length, the token cap and the variant (#11). */
 export interface DifficultyStats {
   readonly key: string
   readonly rounds: number
   readonly cap: number | null
+  readonly hard: boolean
   readonly stats: Stats
 }
 
@@ -119,14 +120,25 @@ export function statsByDifficulty(games: readonly GameSummary[]): DifficultyStat
   return [...groups.entries()]
     .map(([key, group]) => {
       const { settings } = group[0]!
-      return { key, rounds: roundLimit(settings), cap: settings.stackCap, stats: statsOf(group) }
+      return {
+        key,
+        rounds: roundLimit(settings),
+        cap: settings.stackCap,
+        hard: settings.variant === 'hard',
+        stats: statsOf(group),
+      }
     })
     .sort(
-      (a, b) => b.stats.games - a.stats.games || b.rounds - a.rounds || (a.cap ?? 0) - (b.cap ?? 0),
+      (a, b) =>
+        b.stats.games - a.stats.games ||
+        b.rounds - a.rounds ||
+        (a.cap ?? 0) - (b.cap ?? 0) ||
+        Number(a.hard) - Number(b.hard),
     )
 }
 
-const difficultyKey = (s: Settings): string => `${s.phaseLengths.join('/')}|${s.stackCap ?? 'none'}`
+const difficultyKey = (s: Settings): string =>
+  `${s.phaseLengths.join('/')}|${s.stackCap ?? 'none'}|${s.variant}`
 
 const REASONS: readonly ResultReason[] = [
   'gauntlet',

@@ -86,7 +86,7 @@
     "winRate": "Victorias (%)",
     "avgRound": "Ronda media de victoria",
     "byDifficulty": "POR DIFICULTAD",
-    "difficulty": "{rounds} rondas{cap, select, none {} other { · límite {cap}}}",
+    "difficulty": "{rounds} rondas{cap, select, none {} other { · límite {cap}}}{hard, select, true { · variante difícil} other {}}",
     "record": "{wins} de {games} ganadas · {rate}",
     "recordRound": "de media ganas en la ronda {round}",
     "list": "PARTIDAS TERMINADAS",
@@ -144,6 +144,25 @@
       "title": "Límite de fichas",
       "body": "Una propuesta de la comunidad: como máximo 12 fichas; las más antiguas por encima del límite vuelven a la reserva."
     },
+    "variant": "Variante",
+    "variantOptions": {
+      "standard": {
+        "label": "NORMAL",
+        "hint": "tú tomas las ubicaciones"
+      },
+      "hard": {
+        "label": "DIFÍCIL",
+        "hint": "las toma Thanos"
+      }
+    },
+    "variantTip": {
+      "title": "Variante difícil",
+      "body": "Del PDF del automa: Thanos también toma ubicaciones, y tú nunca. Al final de su turno toma una cuyos requisitos cumplan sus bonificaciones (+3 puntos), como máximo una por turno. Indica las dos ubicaciones repartidas en esta partida."
+    },
+    "locationLabel": "Ubicación {n}",
+    "locationHint": "Toca una piedra una vez por cada bonificación de ese color que pida la loseta. Después de 5 vuelve a 0.",
+    "locationStone": "{stone}: {n}",
+    "locationsMissing": "Indica las dos ubicaciones para empezar.",
     "yourCards": "3 · TUS CARTAS",
     "logCards": "Anotar tus cartas",
     "logCardsOptions": {
@@ -360,11 +379,13 @@
     "refillSlot": "Repón el hueco {slot} con el mazo de nivel {level}",
     "refillMarket": "Repón el mercado con el mazo de nivel {level}",
     "time": "Dale a Thanos una ficha verde de Tiempo",
+    "location": "Thanos toma la ubicación {n}: dale la loseta (+3)",
     "tileCheck": "Thanos ya tiene {n, plural, one {# símbolo} many {# símbolos} other {# símbolos}} de Vengadores: si son más que los tuyos, pásale la loseta",
     "tile": "Pasa la loseta de los Vengadores a Thanos"
   },
   "log": {
     "took": "Thanos tomó {stones}",
+    "thanosLocation": "Thanos tomó la ubicación {n} (+3)",
     "tookNothing": "Thanos no tomó nada",
     "empty": "agotadas: {stones}",
     "capReturned": "el límite devolvió {stones}",
@@ -416,6 +437,7 @@
     "rulingCounted": "{all, select, true {Cartas de Thanos que cuentan: todas (aclaración en BGG)} other {Cartas de Thanos que cuentan: solo con puntos o Vengadores}}",
     "rulingCard12": "Carta 12, devolución en la fase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Hueco vacío: primera carta de la fila} other {Hueco vacío: no toma nada}}",
+    "rulingVariant": "Variante difícil: Thanos toma las ubicaciones",
     "rulingLog": "{logged, select, true {Tus cartas: se anotan} other {Tus cartas: no se anotan}}",
     "rulingTies": "{thanosWins, select, true {Ambos completan el Guantelete: gana Thanos} other {Ambos completan el Guantelete: desempates, luego Thanos}}"
   },

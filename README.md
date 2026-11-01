@@ -42,6 +42,7 @@ screenshots, in English, [Русский](https://thanos.silachev.com/ru/),
 - **Keeps your history:** every finished game, with your win rate and average winning round, overall
   and per difficulty.
 - **Lets you skip logging your cards:** tick "I completed the Gauntlet" in the round you do instead.
+- **Plays the PDF's hard variant:** Thanos also claims the Locations, and you don't.
 - **Speaks five languages:** English, Русский, Српски, Español and Deutsch. It follows your phone's
   language, and the globe button on Home switches it.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There

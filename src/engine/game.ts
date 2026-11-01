@@ -3,7 +3,7 @@
  *   state = replay(seed, settings, events)
  * Rules: docs/rules.md, docs/automa.md. Rulings: docs/automa.md → Rulings this app uses.
  */
-import type { Settings } from './settings.ts'
+import { LOCATIONS_IN_PLAY, type Settings } from './settings.ts'
 import { cardForRound, createSetup, isPhaseStart, phaseOfRound, roundLimit } from './setup.ts'
 import type { RoundCard, Setup } from './setup.ts'
 import { STONES, type Stone } from './stones.ts'
@@ -104,6 +104,8 @@ export type LogEntry =
       readonly gotTime: boolean
     }
   | { readonly kind: 'playerLocation'; readonly round: number }
+  /** Hard variant (#11): Thanos claimed the Location at `index` in setup order. */
+  | { readonly kind: 'thanosLocation'; readonly round: number; readonly index: number }
   | {
       readonly kind: 'stackFix'
       readonly round: number
@@ -129,6 +131,8 @@ export interface GameState {
   readonly thanosCards: readonly RecruitedCard[]
   readonly playerCards: readonly RecruitedCard[]
   readonly playerLocations: number
+  /** Hard variant (#11): the Locations Thanos claimed, as indexes in setup order. */
+  readonly thanosLocations: readonly number[]
   readonly avengers: AvengersHolder
   /** Your report from the round that ended the game, when your cards aren't logged (#15). */
   readonly playerReport: PlayerReport | null
@@ -155,8 +159,7 @@ export const GAUNTLET_POINTS = 16
 export const AVENGERS_TILE_TAGS = 3
 export const AVENGERS_TILE_POINTS = 3
 export const LOCATION_POINTS = 3
-/** Location tiles in a 2-player game (docs/rules.md → Setup). */
-export const LOCATIONS_IN_PLAY = 2
+export { LOCATIONS_IN_PLAY }
 
 export function newGame(seed: number, settings: Settings): GameState {
   return {
@@ -167,6 +170,7 @@ export function newGame(seed: number, settings: Settings): GameState {
     thanosCards: [],
     playerCards: [],
     playerLocations: 0,
+    thanosLocations: [],
     avengers: 'none',
     playerReport: null,
     result: null,
@@ -215,7 +219,7 @@ export function sideStats(state: GameState, side: Side): SideStats {
   const points =
     cards.reduce((sum, c) => sum + c.points, 0) +
     (state.avengers === side ? AVENGERS_TILE_POINTS : 0) +
-    (side === 'player' ? state.playerLocations * LOCATION_POINTS : 0)
+    (side === 'player' ? state.playerLocations : state.thanosLocations.length) * LOCATION_POINTS
   return {
     points,
     colours,
@@ -240,10 +244,11 @@ export function applyEvent(state: GameState, event: GameEvent): GameState {
     case 'reveal':
       expectStep(state, 'reveal', event.type)
       return { ...state, step: 'thanos' }
+    // Either action ends his turn; then, in the hard variant, he may claim a Location.
     case 'thanosTake':
-      return thanosTake(state, event.skipped)
+      return claimLocation(thanosTake(state, event.skipped))
     case 'thanosGain':
-      return thanosGain(state, event.card, event.substituted, event.slotEmpty)
+      return claimLocation(thanosGain(state, event.card, event.substituted, event.slotEmpty))
     case 'playerRecruit':
       expectStep(state, 'player', event.type)
       expectLogged(state, event.type)
@@ -444,9 +449,37 @@ function reconcileAvengers(state: GameState): GameState {
   }
 }
 
+/**
+ * Hard variant (#11; docs/automa.md → Hard variant): at the end of his turn Thanos claims a Location
+ * his bonuses meet, at most one per turn. His bonuses come from the cards that count. If he meets
+ * both, he takes the first entered at setup (docs/automa.md → Rulings this app uses).
+ */
+function claimLocation(state: GameState): GameState {
+  const { variant, locations } = state.setup.settings
+  if (variant !== 'hard') return state
+  const bonuses = new Map<Stone, number>()
+  for (const card of countedThanosCards(state)) {
+    bonuses.set(card.colour, (bonuses.get(card.colour) ?? 0) + 1)
+  }
+  const index = locations.findIndex(
+    (requirement, i) =>
+      !state.thanosLocations.includes(i) &&
+      STONES.every((stone) => (bonuses.get(stone) ?? 0) >= (requirement[stone] ?? 0)),
+  )
+  if (index < 0) return state
+  return {
+    ...state,
+    thanosLocations: [...state.thanosLocations, index],
+    log: [...state.log, { kind: 'thanosLocation', round: state.round, index }],
+  }
+}
+
 function playerLocation(state: GameState): GameState {
   expectStep(state, 'player', 'playerLocation')
   expectLogged(state, 'playerLocation')
+  if (state.setup.settings.variant === 'hard') {
+    throw new GameRuleError('In the hard variant only Thanos claims Locations')
+  }
   if (state.playerLocations >= LOCATIONS_IN_PLAY) {
     throw new GameRuleError(`Only ${LOCATIONS_IN_PLAY} Locations are in play`)
   }

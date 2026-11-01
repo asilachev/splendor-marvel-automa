@@ -86,7 +86,7 @@
     "winRate": "Siegquote",
     "avgRound": "Ø Siegrunde",
     "byDifficulty": "NACH SCHWIERIGKEIT",
-    "difficulty": "{rounds} Runden{cap, select, none {} other { · Limit {cap}}}",
+    "difficulty": "{rounds} Runden{cap, select, none {} other { · Limit {cap}}}{hard, select, true { · schwere Variante} other {}}",
     "record": "{wins} von {games} gewonnen · {rate}",
     "recordRound": "du gewinnst im Schnitt in Runde {round}",
     "list": "BEENDETE SPIELE",
@@ -144,6 +144,25 @@
       "title": "Chip-Limit",
       "body": "Ein Vorschlag aus der Community: höchstens 12 Chips; die ältesten über dem Limit gehen in den Vorrat zurück."
     },
+    "variant": "Variante",
+    "variantOptions": {
+      "standard": {
+        "label": "NORMAL",
+        "hint": "Orte nimmst du"
+      },
+      "hard": {
+        "label": "SCHWER",
+        "hint": "Orte nimmt Thanos"
+      }
+    },
+    "variantTip": {
+      "title": "Schwere Variante",
+      "body": "Aus dem Automa-PDF: Auch Thanos nimmt Orte, du dagegen nie. Am Ende seines Zuges nimmt er einen Ort, dessen Bedingung seine Boni erfüllen (+3 Punkte), höchstens einen pro Zug. Gib die beiden Orte an, die in diesem Spiel ausliegen."
+    },
+    "locationLabel": "Ort {n}",
+    "locationHint": "Tippe einen Stein so oft an, wie das Plättchen Boni dieser Farbe verlangt. Nach 5 geht es zurück auf 0.",
+    "locationStone": "{stone}: {n}",
+    "locationsMissing": "Gib beide Orte an, um zu starten.",
     "yourCards": "3 · DEINE KARTEN",
     "logCards": "Deine Karten eintragen",
     "logCardsOptions": {
@@ -360,11 +379,13 @@
     "refillSlot": "Feld {slot} aus dem Stapel für Stufe {level} auffüllen",
     "refillMarket": "Markt aus dem Stapel für Stufe {level} auffüllen",
     "time": "Gib Thanos einen grünen Zeit-Chip",
+    "location": "Thanos nimmt Ort {n}: Gib ihm das Plättchen (+3)",
     "tileCheck": "Thanos hat jetzt {n, plural, one {# Avengers-Symbol} other {# Avengers-Symbole}}: Sind das mehr als deine, gib ihm das Plättchen",
     "tile": "Gib Thanos das Avengers-Plättchen"
   },
   "log": {
     "took": "Thanos nahm {stones}",
+    "thanosLocation": "Thanos nahm Ort {n} (+3)",
     "tookNothing": "Thanos nahm nichts",
     "empty": "leer: {stones}",
     "capReturned": "Limit gab {stones} zurück",
@@ -416,6 +437,7 @@
     "rulingCounted": "{all, select, true {Zählende Karten von Thanos: alle (Klarstellung auf BGG)} other {Zählende Karten von Thanos: nur mit Punkten oder Avengers}}",
     "rulingCard12": "Karte 12, Rückgabe in Phase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Leeres Feld: erste Karte der Reihe} other {Leeres Feld: er nimmt nichts}}",
+    "rulingVariant": "Schwere Variante: Thanos nimmt die Orte",
     "rulingLog": "{logged, select, true {Deine Karten: eingetragen} other {Deine Karten: nicht eingetragen}}",
     "rulingTies": "{thanosWins, select, true {Beide vollenden den Handschuh: Thanos gewinnt} other {Beide vollenden den Handschuh: Tiebreaker, dann Thanos}}"
   },

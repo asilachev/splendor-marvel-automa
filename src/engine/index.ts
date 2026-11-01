@@ -3,8 +3,10 @@ export { AUTOMA_CARDS, cardById, STAR_CARD_IDS } from './cards.ts'
 export { newSeed } from './rng.ts'
 export {
   DEFAULT_SETTINGS,
+  MAX_LOCATION_BONUS,
   PHASE_LENGTH_PRESETS,
   validateSettings,
+  type LocationRequirement,
   type PhaseLengths,
   type Settings,
 } from './settings.ts'
