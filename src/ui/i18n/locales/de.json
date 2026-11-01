@@ -128,7 +128,7 @@
     "countedOptions": {
       "all": {
         "label": "ALLE",
-        "hint": "Klarstellung von Shamus"
+        "hint": "Klarstellung auf BGG"
       },
       "scoringOnly": {
         "label": "PUNKTE / AVENGERS",
@@ -137,7 +137,7 @@
     },
     "countedTip": {
       "title": "Welche Karten zählen",
-      "body": "Das PDF legt seine Karten ohne Punkte oder Avengers-Symbole beiseite, was seine eigene Farbregel bricht. Shamus hat auf BGG klargestellt (2021): Jede Karte in einer Farbe, die er braucht, bleibt – praktisch zählt also jede Farbe."
+      "body": "Das PDF legt seine Karten ohne Punkte oder Avengers-Symbole beiseite, was seine eigene Farbregel bricht. Auf BGG wurde klargestellt (2021): Jede Karte in einer Farbe, die er braucht, bleibt – praktisch zählt also jede Farbe."
     },
     "card12": "Karte 12 · Rückgabe in Phase 3",
     "card12Options": {
@@ -241,7 +241,7 @@
     "question": "WELCHER STEIN IST DARAUF?",
     "questionEmpty": "WELCHER STEIN IST AUF DER ERSTEN KARTE VON REIHE {row}?",
     "substitutionTipTitle": "Farbersatz",
-    "substitutionTip": "{allCount, select, true {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Alle seine Karten zählen (Klarstellung von Shamus).} other {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Nur seine Karten mit Punkten oder Avengers-Symbolen zählen.}}",
+    "substitutionTip": "{allCount, select, true {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Alle seine Karten zählen (Klarstellung auf BGG).} other {Hat er schon eine Karte dieser Farbe, nimmt er die erste Karte derselben Reihe (von links nach rechts) in einer Farbe, die ihm fehlt – gibt es keine, die ursprüngliche Karte. Nur seine Karten mit Punkten oder Avengers-Symbolen zählen.}}",
     "colourLabel": "Farbe der Karte in {slot}",
     "colourLabelEmpty": "Farbe der ersten Karte in Reihe {row}",
     "rowEmpty": "Auch Reihe {row} ist leer – er nimmt nichts und gibt nichts zurück",
@@ -358,7 +358,7 @@
     "wakeSub": "während des Spiels, damit das Handy nicht sperrt",
     "rulingsTitle": "AUSLEGUNGEN DIESES SPIELS",
     "rulingLength": "{cap, select, none {{lengths} Runden je Phase} other {{lengths} Runden je Phase · Chip-Limit {cap}}}",
-    "rulingCounted": "{all, select, true {Zählende Karten von Thanos: alle (Klarstellung von Shamus)} other {Zählende Karten von Thanos: nur mit Punkten oder Avengers}}",
+    "rulingCounted": "{all, select, true {Zählende Karten von Thanos: alle (Klarstellung auf BGG)} other {Zählende Karten von Thanos: nur mit Punkten oder Avengers}}",
     "rulingCard12": "Karte 12, Rückgabe in Phase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Leeres Feld: erste Karte der Reihe} other {Leeres Feld: er nimmt nichts}}",
     "rulingTies": "{thanosWins, select, true {Beide vollenden den Handschuh: Thanos gewinnt} other {Beide vollenden den Handschuh: Tiebreaker, dann Thanos}}"
@@ -442,11 +442,6 @@
       "before": "entworfen von",
       "after": "auf BoardGameGeek."
     },
-    "retheme": {
-      "name": "Marvel-Fassung des Automa",
-      "before": "von",
-      "after": "auf BoardGameGeek."
-    },
     "fonts": {
       "name": "Schriften",
       "text": "Bangers Cyrillic — © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; kyrillische Erweiterung von 2016). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1)."
@@ -455,7 +450,7 @@
     "notices": [
       "Splendor und das Splendor-Logo sind Marken von Space Cowboys (Asmodee). Spielregeln und Schachtelgrafik © 2020 Space Cowboys.",
       "MARVEL, das MARVEL-Logo und alle zugehörigen Figuren und Namen sind ™ & © MARVEL.",
-      "Die Logos und die Rückseite der Automa-Karten (Schachtelgrafik © Space Cowboys und © MARVEL, Kartendesign von Shamus) werden nur privat und nicht kommerziell genutzt.",
+      "Die Logos und die Rückseite der Automa-Karten (Schachtelgrafik © Space Cowboys und © MARVEL) werden nur privat und nicht kommerziell genutzt.",
       "Inoffizielles Fan-Tool, weder verbunden mit noch unterstützt von Space Cowboys, Asmodee oder Marvel. Zum Spielen brauchst du das echte Spiel."
     ]
   }

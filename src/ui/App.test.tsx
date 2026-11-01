@@ -86,7 +86,7 @@ describe('home, setup and rulings (#44)', () => {
     await user.click(screen.getByRole('button', { name: /12 TOKENS/ }))
     await user.click(screen.getByRole('button', { name: /Rulings for gaps/ }))
     await user.click(screen.getByRole('button', { name: 'Rule: Which cards count' }))
-    expect(screen.getByRole('note')).toHaveTextContent(/Shamus clarified on BGG/)
+    expect(screen.getByRole('note')).toHaveTextContent(/Clarified on BGG \(2021\)/)
     await user.click(screen.getByRole('button', { name: 'SAVE RULINGS' }))
     await user.click(screen.getByRole('button', { name: 'START GAME' }))
 

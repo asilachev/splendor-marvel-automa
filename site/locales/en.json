@@ -171,7 +171,6 @@
     "title": "Credits",
     "game": "<strong>Splendor Marvel</strong>: game by Marc André, published by <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Find a copy with the <a href=\"{{links.store}}\">Asmodee store locator</a>.",
     "automa": "<strong>Solo automa</strong>: designed by <a href=\"{{links.automa}}\">Dukefanblue2005</a> on BoardGameGeek.",
-    "retheme": "<strong>Marvel re-theme of the automa</strong>: by <a href=\"{{links.retheme}}\">Shamus</a> on BoardGameGeek.",
     "fonts": "<strong>Fonts</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; Cyrillic extension 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor and the Splendor logo are trademarks of Space Cowboys (Asmodee). MARVEL, the MARVEL logo and all related characters and names are ™ &amp; © MARVEL. Screenshots show the Splendor and MARVEL logos and the automa card back, which belong to their owners.",
     "privacy": "<strong>Privacy.</strong> No accounts and no cookies. The app at app.thanos.silachev.com counts visits anonymously with Vercel Web Analytics; copies you host yourself count nothing.",

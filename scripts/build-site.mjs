@@ -41,7 +41,6 @@ const links = (code) => ({
   store: `https://storelocator.asmodee.com/${STORE[code] ?? ''}`,
   bgg: 'https://boardgamegeek.com/boardgame/293296/splendor-marvel',
   automa: 'https://boardgamegeek.com/filepage/201926',
-  retheme: 'https://boardgamegeek.com/filepage/215783',
 })
 
 /** First visit to the English page: go to the browser's language, unless one was picked here. */

@@ -180,6 +180,5 @@ It fails if any image has a different size.
 
 ## Credits
 
-Splendor Marvel is by Marc André, published by Space Cowboys. The solo automa is by Dukefanblue2005,
-and its Marvel re-theme by Shamus, both on BoardGameGeek. This is an unofficial fan tool; see the
-[main README](../../README.md#credits).
+Splendor Marvel is by Marc André, published by Space Cowboys. The solo automa is by Dukefanblue2005
+on BoardGameGeek. This is an unofficial fan tool; see the [main README](../../README.md#credits).
