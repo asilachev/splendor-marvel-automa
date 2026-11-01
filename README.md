@@ -162,6 +162,7 @@ iPhone, follow the sheet: Share → *Add to Home Screen*.
 npm ci
 npm run dev        # http://localhost:5173 (use `npm run dev -- --host` to open it on your phone)
 npm test           # Vitest
+npm run e2e        # end-to-end smoke test on a phone viewport (Playwright, in your Google Chrome)
 npm run build      # production build in dist/
 npm run site:shots # the app in four more languages, for the landing page
 npm run site       # landing page in _site/, five languages (deployed to GitHub Pages from master)
