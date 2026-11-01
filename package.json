@@ -2,6 +2,7 @@
   "name": "splendor-marvel-automa",
   "private": true,
   "version": "0.1.0",
+  "license": "MIT",
   "description": "Phone-first companion app for playing Splendor Marvel solo against the fan-made Thanos automa.",
   "type": "module",
   "engines": {

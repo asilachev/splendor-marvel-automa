@@ -55,6 +55,8 @@ change to a rule or ruling updates the docs in the same PR.
   - The landing page links the owner's copy of the app at `app.thanos.silachev.com`, by the owner's
     decision (#83). Don't post links to the app on BGG; the community note in `docs/automa.md`
     explains why.
+  - The code is under the MIT License (`LICENSE`, #17). It doesn't cover the game, its rules and art,
+    the official art, the automa design or the fonts; README → License says so.
 - **No secrets.** There is no backend. Don't add analytics, accounts or network calls without an issue
   that approves them.
   - The one approved analytics is Vercel Web Analytics (#87): anonymous, cookieless page views, only in
