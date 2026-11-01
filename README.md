@@ -81,9 +81,8 @@ points, and checks the Infinity Gauntlet for both sides. The
     [BoardGameGeek page](https://boardgamegeek.com/boardgame/293296/splendor-marvel). You need the
     physical game to use the app.
 - **The solo automa** was designed by **Dukefanblue2005** on BGG, originally for Splendor
-  ([Splendor Automa](https://boardgamegeek.com/filepage/201926)).
-- **The Marvel re-theme of the automa** is by **Shamus** on BGG
-  ([Splendor Marvel Solo Automa V1](https://boardgamegeek.com/filepage/215783)).
+  ([Splendor Automa](https://boardgamegeek.com/filepage/201926)). The app runs its Marvel re-theme,
+  whose author prefers not to be credited.
 
 **Fonts:**
 - **Bangers Cyrillic** is the display font for every language: Bangers © 2011 Vernon Adams, under the
@@ -100,8 +99,8 @@ their owners. They are used here for personal, non-commercial use only.
 This is an unofficial personal fan project. It is not affiliated with or endorsed by Space Cowboys,
 Asmodee or Marvel, and you need the physical game to use it.
 
-Shamus has said he dislikes web apps for his automa and asked that links to them be removed from his
-BGG file page. **Please don't post this app there.** See the
+The author of the Marvel re-theme dislikes web apps for it and asked for links to them to be removed
+from its BGG file page. **Please don't post this app there.** See the
 [community note](docs/automa.md#community-note).
 
 ## Deploy

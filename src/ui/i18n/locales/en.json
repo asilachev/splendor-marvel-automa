@@ -124,7 +124,7 @@
     "countedOptions": {
       "all": {
         "label": "ALL",
-        "hint": "Shamus’s clarification"
+        "hint": "BGG clarification"
       },
       "scoringOnly": {
         "label": "POINTS / AVENGERS",
@@ -133,7 +133,7 @@
     },
     "countedTip": {
       "title": "Which cards count",
-      "body": "The PDF boxes his cards without points or Avengers tags, which breaks its own colour rule. Shamus clarified on BGG (2021): keep any card with a colour he needs — so in effect every colour counts."
+      "body": "The PDF boxes his cards without points or Avengers tags, which breaks its own colour rule. Clarified on BGG (2021): keep any card with a colour he needs — so in effect every colour counts."
     },
     "card12": "Card 12 · phase 3 returns",
     "card12Options": {
@@ -237,7 +237,7 @@
     "question": "WHICH STONE IS ON IT?",
     "questionEmpty": "WHICH STONE IS ON ROW {row}’S FIRST CARD?",
     "substitutionTipTitle": "Colour substitution",
-    "substitutionTip": "{allCount, select, true {If he already has a card in that colour, he takes the first card in the same row (left to right) in a colour he lacks — none? then the original card. Every card he has counts (Shamus’s clarification).} other {If he already has a card in that colour, he takes the first card in the same row (left to right) in a colour he lacks — none? then the original card. Only his cards with points or Avengers tags count.}}",
+    "substitutionTip": "{allCount, select, true {If he already has a card in that colour, he takes the first card in the same row (left to right) in a colour he lacks — none? then the original card. Every card he has counts (BGG clarification).} other {If he already has a card in that colour, he takes the first card in the same row (left to right) in a colour he lacks — none? then the original card. Only his cards with points or Avengers tags count.}}",
     "colourLabel": "Colour of the card in {slot}",
     "colourLabelEmpty": "Colour of the first card in row {row}",
     "rowEmpty": "Row {row} is empty too — he takes nothing, returns nothing",
@@ -354,7 +354,7 @@
     "wakeSub": "during a game, so the phone doesn’t lock",
     "rulingsTitle": "THIS GAME’S RULINGS",
     "rulingLength": "{cap, select, none {{lengths} rounds per phase} other {{lengths} rounds per phase · token cap {cap}}}",
-    "rulingCounted": "{all, select, true {Thanos’s cards that count: all (Shamus’s clarification)} other {Thanos’s cards that count: points/Avengers only}}",
+    "rulingCounted": "{all, select, true {Thanos’s cards that count: all (BGG clarification)} other {Thanos’s cards that count: points/Avengers only}}",
     "rulingCard12": "Card 12, phase 3 returns {n}",
     "rulingEmpty": "{firstInRow, select, true {Empty slot: first card in the row} other {Empty slot: he takes nothing}}",
     "rulingTies": "{thanosWins, select, true {Both complete the Gauntlet: Thanos wins} other {Both complete the Gauntlet: tiebreakers, then Thanos}}"
@@ -438,11 +438,6 @@
       "before": "designed by",
       "after": "on BoardGameGeek."
     },
-    "retheme": {
-      "name": "Marvel re-theme of the automa",
-      "before": "by",
-      "after": "on BoardGameGeek."
-    },
     "fonts": {
       "name": "Fonts",
       "text": "Bangers Cyrillic — © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; Cyrillic extension, 2016). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1)."
@@ -451,7 +446,7 @@
     "notices": [
       "Splendor and the Splendor logo are trademarks of Space Cowboys (Asmodee). Game rules and box artwork © 2020 Space Cowboys.",
       "MARVEL, the MARVEL logo and all related characters and names are ™ & © MARVEL.",
-      "The logos and the automa card back (box art © Space Cowboys and © MARVEL, card design by Shamus) are used for personal, non-commercial use only.",
+      "The logos and the automa card back (box art © Space Cowboys and © MARVEL) are used for personal, non-commercial use only.",
       "Unofficial fan tool, not affiliated with or endorsed by Space Cowboys, Asmodee or Marvel. You need the physical game to play."
     ]
   }

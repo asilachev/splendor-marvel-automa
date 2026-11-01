@@ -22,13 +22,6 @@ export function Credits({ tone = 'dark' }: { tone?: 'dark' | 'paper' }) {
           {t('credits.automa.after')}
         </li>
         <li>
-          <strong>{t('credits.retheme.name')}</strong>: {t('credits.retheme.before')}{' '}
-          <a href="https://boardgamegeek.com/filepage/215783" target="_blank" rel="noreferrer">
-            Shamus
-          </a>{' '}
-          {t('credits.retheme.after')}
-        </li>
-        <li>
           <strong>{t('credits.fonts.name')}</strong>: {t('credits.fonts.text')}
         </li>
       </ul>

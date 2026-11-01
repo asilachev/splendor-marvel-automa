@@ -165,7 +165,6 @@
     "title": "Аутори",
     "game": "<strong>Splendor Marvel</strong>: игра Марка Андреа, издавач <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Продавнице потражите у <a href=\"{{links.store}}\">Asmodee претрази продавница</a>.",
     "automa": "<strong>Соло аутома</strong>: аутор <a href=\"{{links.automa}}\">Dukefanblue2005</a> на BoardGameGeek-у.",
-    "retheme": "<strong>Marvel верзија аутоме</strong>: аутор <a href=\"{{links.retheme}}\">Shamus</a> на BoardGameGeek-у.",
     "fonts": "<strong>Фонтови</strong>: Bangers Cyrillic – © 2011 Vernon Adams (Bangers, лиценца SIL Open Font License 1.1; ћирилично проширење из 2016). Inter – © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor и лого Splendor су жигови компаније Space Cowboys (Asmodee). MARVEL, лого MARVEL и сви повезани ликови и имена су ™ и © MARVEL. Снимци екрана приказују логотипе Splendor и MARVEL и полеђину карата аутоме, који припадају својим власницима.",
     "privacy": "<strong>Приватност.</strong> Без налога и колачића. Апликација на app.thanos.silachev.com анонимно броји посете преко Vercel Web Analytics; копије које сами хостујете не броје ништа.",

@@ -9,9 +9,11 @@ The automa this app runs. A copy of the PDF, `splendor-marvel-solo-automa-v1.pdf
 - **Automa design:** Dukefanblue2005 (BGG), originally made for base Splendor:
   [Splendor Automa](https://boardgamegeek.com/filepage/201926),
   [design thread](https://boardgamegeek.com/thread/2430634).
-- **Marvel re-theme:** Shamus (BGG):
-  [Splendor Marvel Solo Automa V1](https://boardgamegeek.com/filepage/215783). The 12 Marvel cards are
-  a 1:1 renumbered port of the base-game cards. There is no Marvel V2.
+- **Marvel re-theme:**
+  [Splendor Marvel Solo Automa V1](https://boardgamegeek.com/filepage/215783) on BGG. Its author
+  prefers not to be credited, so this project doesn't name them (see the
+  [community note](#community-note)). The 12 Marvel cards are a 1:1 renumbered port of the base-game
+  cards. There is no Marvel V2.
 
 ## Components
 
@@ -113,7 +115,7 @@ Checked against a high-resolution render of the PDF. Token numbers refer to the 
 ## Clarifications from BGG
 
 1. **Which cards Thanos keeps.** The PDF says to box cards without points or Avengers tags, which
-   breaks the colour rule. Shamus,
+   breaks the colour rule. The re-theme's author clarified on its file page,
    [2021-07-18](https://boardgamegeek.com/filepage/215783?commentid=10332239):
 
    > "keep the card if is has a colour the automa needs or if it provides points or it has the
@@ -141,7 +143,7 @@ that updates this table.
 
 | Question | Default | Alternatives | Basis |
 | --- | --- | --- | --- |
-| Which of Thanos's cards count for colours and the Gauntlet | **All of them** | Only cards with points or Avengers tags (as printed) | Shamus's clarification (1) |
+| Which of Thanos's cards count for colours and the Gauntlet | **All of them** | Only cards with points or Avengers tags (as printed) | BGG clarification by the re-theme's author (1) |
 | Card 12, phase 3 discard | **0** | 3 | Matches the base-game card (3) |
 | Targeted slot is empty | **First card in that row from the left** (colour substitution still applies) | Thanos takes nothing and discards nothing | No ruling (4); left-to-right matches the substitution scan |
 | Both sides complete the Gauntlet in the same round | **Official tiebreakers, then Thanos wins any remaining tie** | Thanos wins outright | The PDF says "apply the normal game winning conditions" and "Thanos wins a draw" |
@@ -150,12 +152,20 @@ that updates this table.
 
 ## Community note
 
-On 2026-10-06 Shamus wrote that he "really hate[s] the idea of a webapp", and asked for two app links
-to be removed from his file page
+On 2026-10-06 the re-theme's author wrote that they "really hate the idea of a webapp", and asked for
+two app links to be removed from its file page
 ([comment 1](https://boardgamegeek.com/filepage/215783?commentid=13729218),
 [comment 2](https://boardgamegeek.com/filepage/215783?commentid=13730978)). By contrast,
 Dukefanblue2005 promoted RIFO's web app for the base-game automa
 ([comment](https://boardgamegeek.com/filepage/201926?commentid=10065450)).
 
-This is a personal project. **Don't post it on Shamus's file page.** Credit both designers, and don't
-use the PDF's artwork.
+Before sharing anything, the owner asked the re-theme's author by GeekMail. The reply, on 2026-10-31:
+"I prefer not to be credited. I don't own any of the IP."
+
+So:
+
+- **Don't post this app on the re-theme's file page.**
+- **Don't name the re-theme's author**, in the app, docs, commits or posts (#90). Credit
+  Dukefanblue2005 for the automa, and cite clarifications as "BGG clarification", with the link.
+- **Don't add more of the PDF's artwork.** The card back is the one exception the owner approved
+  (`src/ui/assets/official/`).

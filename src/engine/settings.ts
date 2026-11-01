@@ -15,7 +15,7 @@ export interface Settings {
   readonly emptySlot: 'firstInRow' | 'nothing'
   /** Both sides complete the Gauntlet: official tiebreakers then Thanos, or Thanos outright. */
   readonly ties: 'tiebreakersThenThanos' | 'thanosWins'
-  /** Which of Thanos's cards count: all (Shamus's clarification) or only scoring/Avengers cards. */
+  /** Which of Thanos's cards count: all (the BGG clarification) or only scoring/Avengers cards. */
   readonly countedCards: 'all' | 'scoringOnly'
   /** Maximum tokens in Thanos's stack; the oldest beyond it go back to the supply. */
   readonly stackCap: number | null

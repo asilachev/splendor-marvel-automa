@@ -44,8 +44,10 @@ change to a rule or ruling updates the docs in the same PR.
   - `src/engine/` is plain TypeScript: no React, DOM, `Date.now()` or `Math.random()`.
   - All randomness comes from the seeded RNG.
   - Game state is a pure function of `(seed, settings, events)`.
-- **Credit** Marc André and Space Cowboys (game), Dukefanblue2005 (automa) and Shamus (Marvel
-  re-theme) wherever credits appear.
+- **Credit** Marc André and Space Cowboys (game) and Dukefanblue2005 (automa) wherever credits
+  appear. **Never name the author of the Marvel re-theme**, in the app, docs, commits or posts: asked
+  directly, they replied "I prefer not to be credited. I don't own any of the IP" (#90). Cite their
+  BGG clarifications as "BGG clarification", with the link.
 - **Visibility.** The repo is **public**, by the owner's decision, and so is its landing page on
   GitHub Pages (`site/`, #61).
   - Never commit the copyrighted PDFs. They live in the `reference-docs` release, which the owner

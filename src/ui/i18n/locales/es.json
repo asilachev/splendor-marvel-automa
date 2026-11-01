@@ -128,7 +128,7 @@
     "countedOptions": {
       "all": {
         "label": "TODAS",
-        "hint": "aclaración de Shamus"
+        "hint": "aclaración en BGG"
       },
       "scoringOnly": {
         "label": "PUNTOS / VENGADORES",
@@ -137,7 +137,7 @@
     },
     "countedTip": {
       "title": "Qué cartas cuentan",
-      "body": "El PDF aparta sus cartas sin puntos ni símbolos de Vengadores, lo que rompe su propia regla de color. Shamus aclaró en BGG (2021): conservar cualquier carta de un color que necesite, así que en la práctica cuentan todos los colores."
+      "body": "El PDF aparta sus cartas sin puntos ni símbolos de Vengadores, lo que rompe su propia regla de color. En BGG se aclaró (2021): conservar cualquier carta de un color que necesite, así que en la práctica cuentan todos los colores."
     },
     "card12": "Carta 12 · devolución en la fase 3",
     "card12Options": {
@@ -241,7 +241,7 @@
     "question": "¿QUÉ GEMA TIENE?",
     "questionEmpty": "¿QUÉ GEMA TIENE LA PRIMERA CARTA DE LA FILA {row}?",
     "substitutionTipTitle": "Sustitución de color",
-    "substitutionTip": "{allCount, select, true {Si ya tiene una carta de ese color, toma la primera carta de la misma fila (de izquierda a derecha) de un color que le falte; si no la hay, la carta original. Cuentan todas sus cartas (aclaración de Shamus).} other {Si ya tiene una carta de ese color, toma la primera carta de la misma fila (de izquierda a derecha) de un color que le falte; si no la hay, la carta original. Solo cuentan sus cartas con puntos o símbolos de Vengadores.}}",
+    "substitutionTip": "{allCount, select, true {Si ya tiene una carta de ese color, toma la primera carta de la misma fila (de izquierda a derecha) de un color que le falte; si no la hay, la carta original. Cuentan todas sus cartas (aclaración en BGG).} other {Si ya tiene una carta de ese color, toma la primera carta de la misma fila (de izquierda a derecha) de un color que le falte; si no la hay, la carta original. Solo cuentan sus cartas con puntos o símbolos de Vengadores.}}",
     "colourLabel": "Color de la carta de {slot}",
     "colourLabelEmpty": "Color de la primera carta de la fila {row}",
     "rowEmpty": "La fila {row} también está vacía: no toma ni devuelve nada",
@@ -358,7 +358,7 @@
     "wakeSub": "durante la partida, para que el móvil no se bloquee",
     "rulingsTitle": "DECISIONES DE ESTA PARTIDA",
     "rulingLength": "{cap, select, none {{lengths} rondas por fase} other {{lengths} rondas por fase · límite de {cap} fichas}}",
-    "rulingCounted": "{all, select, true {Cartas de Thanos que cuentan: todas (aclaración de Shamus)} other {Cartas de Thanos que cuentan: solo con puntos o Vengadores}}",
+    "rulingCounted": "{all, select, true {Cartas de Thanos que cuentan: todas (aclaración en BGG)} other {Cartas de Thanos que cuentan: solo con puntos o Vengadores}}",
     "rulingCard12": "Carta 12, devolución en la fase 3: {n}",
     "rulingEmpty": "{firstInRow, select, true {Hueco vacío: primera carta de la fila} other {Hueco vacío: no toma nada}}",
     "rulingTies": "{thanosWins, select, true {Ambos completan el Guantelete: gana Thanos} other {Ambos completan el Guantelete: desempates, luego Thanos}}"
@@ -442,11 +442,6 @@
       "before": "diseñado por",
       "after": "en BoardGameGeek."
     },
-    "retheme": {
-      "name": "Versión Marvel del automa",
-      "before": "de",
-      "after": "en BoardGameGeek."
-    },
     "fonts": {
       "name": "Tipografías",
       "text": "Bangers Cyrillic — © 2011 Vernon Adams (Bangers, licencia SIL Open Font License 1.1; extensión cirílica de 2016). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1)."
@@ -455,7 +450,7 @@
     "notices": [
       "Splendor y el logotipo de Splendor son marcas de Space Cowboys (Asmodee). Reglas del juego e ilustraciones de la caja © 2020 Space Cowboys.",
       "MARVEL, el logotipo de MARVEL y todos los personajes y nombres relacionados son ™ y © MARVEL.",
-      "Los logotipos y el reverso de las cartas del automa (ilustración de la caja © Space Cowboys y © MARVEL, diseño de la carta de Shamus) se usan solo de forma personal y no comercial.",
+      "Los logotipos y el reverso de las cartas del automa (ilustración de la caja © Space Cowboys y © MARVEL) se usan solo de forma personal y no comercial.",
       "Herramienta no oficial hecha por fans, sin relación con Space Cowboys, Asmodee ni Marvel ni avalada por ellos. Necesitas el juego físico para jugar."
     ]
   }
