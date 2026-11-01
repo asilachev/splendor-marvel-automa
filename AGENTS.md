@@ -71,6 +71,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run dev` | Start the dev server (add `-- --host` to open it on a phone on the same Wi-Fi) |
 | `npm test` | Run all tests once (Vitest). The `engine` project runs on Node, the `ui` project on jsdom |
 | `npm run test:watch` | Run tests in watch mode |
+| `npm run e2e` | Build, then run the end-to-end smoke test in `e2e/` with Playwright: a game on a 390×844 touch screen against `vite preview` (needs Google Chrome; `CHROME_PATH` picks another, nothing is downloaded). Options after `--` go to `playwright test`, e.g. `--headed` |
 | `npm run lint` | Run Oxlint; warnings fail |
 | `npm run format` / `format:check` | Format, or check formatting, with Prettier (code and config only; Markdown is excluded) |
 | `npm run typecheck` | `tsc -b`, strict |
@@ -83,7 +84,9 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
 
 CI (`.github/workflows/ci.yml`) runs `lint`, `format:check`, `typecheck`, `test` and `build` on every PR
-and on every push to `master`. Run the same commands before pushing. `.github/workflows/docker.yml`
+and on every push to `master`, and `e2e` in a second job with the runner's Google Chrome. When `e2e`
+fails, the Playwright report, with the trace, is uploaded as the run's `playwright-report` artifact.
+Run the same commands before pushing. `.github/workflows/docker.yml`
 builds the image on PRs and publishes it to GHCR from `master`. `.github/workflows/pages.yml` builds
 the landing page on PRs and deploys it to GitHub Pages from `master`. `vercel.ts` configures the
 other way to host the app, Vercel's Git integration; keep its caching and security headers in step
@@ -102,6 +105,7 @@ src/
     pwa/         install card and iOS install sheet, splash, update and offline toasts
     state/       persistence, useGame, prefs, wake lock
   test/     shared test setup
+e2e/        Playwright smoke test on a phone viewport, against the production build (npm run e2e)
 public/     static files: favicon, PWA icons (renders of scripts/gen-logo.mjs)
 site/       landing page for GitHub Pages: an HTML template, CSS and locales/{en,ru,sr,es,de}.json, rendered by scripts/build-site.mjs
 scripts/    repo tooling (logo/icon generator, guide screenshots, landing page build)
@@ -132,9 +136,9 @@ GitHub Issues hold the plan, organised with milestones and labels: `engine`, `ui
    keep the history clean.
 4. **Open a PR** whose body says `Closes #<n>`. Summarise what changed, how it was tested, and any rule
    decisions with links to the docs.
-5. **CI must be green.** It runs lint, format check, typecheck, tests and build. **Squash-merge** into
-   `master`, then delete the branch. The squash commit uses the PR title as its subject and a short
-   summary as its body, with no trailers.
+5. **CI must be green.** It runs lint, format check, typecheck, tests, build and the e2e smoke test.
+   **Squash-merge** into `master`, then delete the branch. The squash commit uses the PR title as its
+   subject and a short summary as its body, with no trailers.
 6. **Track new work** you discover as a new issue. Don't widen the PR you're working on.
 
 ### Definition of done
