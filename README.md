@@ -68,7 +68,8 @@ points, and checks the Infinity Gauntlet for both sides. The
 - **Automa rules.** [`docs/automa.md`](docs/automa.md) has:
   - the full card list, checked against the PDF;
   - clarifications from BGG;
-  - the rulings the app uses for gaps in the PDF.
+  - the rulings the app uses for gaps in the PDF;
+  - a simulation of how the settings change Thanos's tokens and timing.
 - **App design.** [`docs/design.md`](docs/design.md).
 
 ## Credits
@@ -162,9 +163,11 @@ iPhone, follow the sheet: Share → *Add to Home Screen*.
 npm ci
 npm run dev        # http://localhost:5173 (use `npm run dev -- --host` to open it on your phone)
 npm test           # Vitest
+npm run e2e        # end-to-end smoke test on a phone viewport (Playwright, in your Google Chrome)
 npm run build      # production build in dist/
 npm run site:shots # the app in four more languages, for the landing page
 npm run site       # landing page in _site/, five languages (deployed to GitHub Pages from master)
+npm run sim        # Thanos alone, 10,000 games per settings preset (docs/automa.md → Simulation)
 ```
 
 Built with Vite, React and TypeScript, with a pure TypeScript automa engine in `src/engine`.
