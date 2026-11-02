@@ -1,7 +1,7 @@
 // Assembles the GitHub Pages landing page into _site/, once per language (#61, #69):
 //
 //   _site/index.html          English, from the template site/index.html and site/locales/en.json
-//   _site/{ru,sr,es,de}/      the other languages
+//   _site/{es,de,ru,sr}/      the other languages
 //   _site/screenshots/<lang>/ the app in that language: English from docs/guide/screenshots,
 //                             the others from .screenshots/<lang> (npm run site:shots)
 //
@@ -19,13 +19,13 @@ const out = `${root}_site/`
 const SITE_URL = 'https://thanos.silachev.com/'
 const STORAGE_KEY = 'thanos-site:lang'
 
-/** The app's languages, in the app's order; English lives at the root. */
+/** The app's languages, in the app's order (EN, ES, DE, RU, SR, #103); English lives at the root. */
 const LANGS = [
   { code: 'en', name: 'English', tag: 'en', locale: 'en_GB' },
-  { code: 'ru', name: 'Русский', tag: 'ru', locale: 'ru_RU' },
-  { code: 'sr', name: 'Српски', tag: 'sr-Cyrl', locale: 'sr_RS' },
   { code: 'es', name: 'Español', tag: 'es', locale: 'es_ES' },
   { code: 'de', name: 'Deutsch', tag: 'de', locale: 'de_DE' },
+  { code: 'ru', name: 'Русский', tag: 'ru', locale: 'ru_RU' },
+  { code: 'sr', name: 'Српски', tag: 'sr-Cyrl', locale: 'sr_RS' },
 ]
 const dirOf = (code) => (code === 'en' ? '' : `${code}/`)
 

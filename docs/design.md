@@ -159,7 +159,7 @@ still called Thanos (owner's decision).
 ## Landing page (#61, #66, #69)
 
 `site/` is a static page on GitHub Pages, in the app's five languages:
-https://thanos.silachev.com/ (English), then `ru/`, `sr/`, `es/` and `de/`.
+https://thanos.silachev.com/ (English), then `es/`, `de/`, `ru/` and `sr/`.
 
 - **Domain:** a GitHub Pages custom domain (a CNAME to `asilachev.github.io`, HTTPS enforced);
   the old `asilachev.github.io/splendor-marvel-automa/` address redirects to it. The owner's copy of
@@ -262,14 +262,15 @@ Movement only when it means something, and then short and smooth.
 
 ## Languages (#54)
 
-- **Languages:** English, Russian, Serbian (Cyrillic script, #57), Spanish and German. The browser's language
-  is used on first launch. The picker is the globe button at the top of Home and the Language row in
-  the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen readers and
-  hyphenation use the right language.
+- **Languages:** English, Spanish, German, Russian and Serbian (Cyrillic script, #57). The app's
+  selector and the landing page list them in this order, the owner's choice (#103). The browser's
+  language is used on first launch. The picker is the globe button at the top of Home and the
+  Language row in the Menu, and the choice is saved in prefs. `<html lang>` follows it, so screen
+  readers and hyphenation use the right language.
 - **A language in the link (#85):** `?lang=ru` picks Russian and saves it, as if picked in the app;
   the address bar then drops the parameter. The landing page's "Open the app" uses it. Unsupported
   values are ignored. Without a saved choice the app keeps following the browser's language.
-- **Translation files:** `src/ui/i18n/locales/{en,ru,sr,es,de}.json`, one per language, in ICU
+- **Translation files:** `src/ui/i18n/locales/{en,es,de,ru,sr}.json`, one per language, in ICU
   message syntax: `{round}`, `select` and `plural` with `#` (#58). English is bundled as the
   fallback, and each other file loads only when its language is chosen, as its own chunk precached
   for offline use. Code calls `t('home.continue', { round })` with keys typed from `en.json`. Tests

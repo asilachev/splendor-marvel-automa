@@ -373,6 +373,13 @@ describe('languages (#54, #58)', () => {
     expect(document.documentElement.lang).toBe('en')
     await user.click(screen.getByRole('button', { name: 'Language: English' }))
     const sheet = screen.getByRole('dialog', { name: 'LANGUAGE' })
+    // In the owner's order (#103).
+    const picker = within(sheet).getByRole('group', { name: 'Language' })
+    expect(
+      within(picker)
+        .getAllByRole('button')
+        .map((b) => b.textContent?.slice(0, 2)),
+    ).toEqual(['EN', 'ES', 'DE', 'RU', 'SR'])
     await user.click(within(sheet).getByRole('button', { name: /^DE/ }))
     expect(screen.queryByRole('dialog')).toBeNull()
     expect(await screen.findByRole('button', { name: 'DEIN ERSTES SPIEL' })).toBeInTheDocument()
