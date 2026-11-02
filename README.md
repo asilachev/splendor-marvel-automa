@@ -12,10 +12,10 @@ stay on the table. The app replaces the automa deck, the token placement board a
 bookkeeping.
 
 **[Project page](https://thanos.silachev.com/)**: a short tour with
-screenshots, in English, [Русский](https://thanos.silachev.com/ru/),
-[Српски](https://thanos.silachev.com/sr/),
-[Español](https://thanos.silachev.com/es/) and
-[Deutsch](https://thanos.silachev.com/de/).
+screenshots, in English, [Español](https://thanos.silachev.com/es/),
+[Deutsch](https://thanos.silachev.com/de/),
+[Русский](https://thanos.silachev.com/ru/) and
+[Српски](https://thanos.silachev.com/sr/).
 
 > **Status:** in development. Work is planned in
 > [issues](https://github.com/asilachev/splendor-marvel-automa/issues) and
@@ -43,7 +43,7 @@ screenshots, in English, [Русский](https://thanos.silachev.com/ru/),
   and per difficulty.
 - **Lets you skip logging your cards:** tick "I completed the Gauntlet" in the round you do instead.
 - **Plays the PDF's hard variant:** Thanos also claims the Locations, and you don't.
-- **Speaks five languages:** English, Русский, Српски, Español and Deutsch. It follows your phone's
+- **Speaks five languages:** English, Español, Deutsch, Русский and Српски. It follows your phone's
   language, and the globe button on Home switches it.
 - **Needs no card data.** When a card is recruited you tap its colour, points and Avengers tags. There
   is no card database and no game art.

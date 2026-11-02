@@ -50,7 +50,7 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      # The app in Russian, Serbian, Spanish and German, with the runner's Google Chrome.
+      # The app in Spanish, German, Russian and Serbian, with the runner's Google Chrome.
       - run: npm run site:shots
         env:
           CHROME_PATH: /usr/bin/google-chrome

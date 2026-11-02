@@ -5,10 +5,12 @@ Every text in the app lives here, in one file per language:
 | File | Language |
 | --- | --- |
 | `en.json` | English: the source, bundled with the app, and the fallback for missing texts |
-| `ru.json` | Русский |
-| `sr.json` | Српски (Cyrillic script) |
 | `es.json` | Español |
 | `de.json` | Deutsch |
+| `ru.json` | Русский |
+| `sr.json` | Српски (Cyrillic script) |
+
+The app lists them in this order: EN, ES, DE, RU, SR (#103).
 
 The app loads only the file for the chosen language, so each file is one self-contained translation.
 

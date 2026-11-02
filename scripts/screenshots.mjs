@@ -7,7 +7,7 @@
 // use another Chromium). Game states come from the engine with fixed seeds, so reruns match.
 //
 // Options, e.g. `npm run screenshots -- --lang ru,de --only 04,06`:
-//   --lang ru,sr,es,de   the app's languages (default en); texts and buttons come from their files
+//   --lang es,de,ru,sr   the app's languages (default en); texts and buttons come from their files
 //   --only 04,06-recruit shots whose names start with these
 //   --out <dir>          where to write, with a folder per language when there are several
 //                        (default docs/guide/screenshots for English, .screenshots/<lang> otherwise)
@@ -32,7 +32,7 @@ const { values: opt } = parseArgs({
 })
 const LANGS = opt.lang.split(',').map((lang) => lang.trim())
 /** BCP 47 tags, as in LANGS in src/ui/i18n/index.ts. */
-const TAGS = { en: 'en-GB', ru: 'ru', sr: 'sr-Cyrl', es: 'es', de: 'de' }
+const TAGS = { en: 'en-GB', es: 'es', de: 'de', ru: 'ru', sr: 'sr-Cyrl' }
 for (const lang of LANGS) if (!(lang in TAGS)) throw new Error(`Unknown language ${lang}`)
 /** English goes to the guide's folder unless --out says otherwise. */
 const isGuide = (lang) => !opt.out && lang === 'en'

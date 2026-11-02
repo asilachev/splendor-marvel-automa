@@ -10,8 +10,9 @@ import { typeset, typesetAll } from './typography.ts'
  */
 
 /** The app's languages. Serbian is written in Cyrillic, which the Bangers font covers (#57). */
-export type Lang = 'en' | 'ru' | 'sr' | 'es' | 'de'
+export type Lang = 'en' | 'es' | 'de' | 'ru' | 'sr'
 
+/** The languages in the order the selector lists them, the owner's: EN, ES, DE, RU, SR (#103). */
 export const LANGS: readonly {
   readonly code: Lang
   /** The language's own name, for the picker. */
@@ -20,20 +21,20 @@ export const LANGS: readonly {
   readonly tag: string
 }[] = [
   { code: 'en', name: 'English', tag: 'en' },
-  { code: 'ru', name: 'Русский', tag: 'ru' },
-  { code: 'sr', name: 'Српски', tag: 'sr-Cyrl' },
   { code: 'es', name: 'Español', tag: 'es' },
   { code: 'de', name: 'Deutsch', tag: 'de' },
+  { code: 'ru', name: 'Русский', tag: 'ru' },
+  { code: 'sr', name: 'Српски', tag: 'sr-Cyrl' },
 ]
 
 export type Catalog = typeof en
 
 /** One file per language, connected on demand. Each must have every key English has. */
 const LOADERS: Readonly<Record<Exclude<Lang, 'en'>, () => Promise<{ default: Catalog }>>> = {
-  ru: () => import('./locales/ru.json'),
-  sr: () => import('./locales/sr.json'),
   es: () => import('./locales/es.json'),
   de: () => import('./locales/de.json'),
+  ru: () => import('./locales/ru.json'),
+  sr: () => import('./locales/sr.json'),
 }
 
 const loaded = new Map<Lang, Catalog>([['en', en]])

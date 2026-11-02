@@ -17,7 +17,7 @@ import ru from './locales/ru.json'
 import sr from './locales/sr.json'
 
 /** The language files, typed as English: a missing key fails the typecheck here too. */
-const FILES: Record<Lang, Catalog> = { en, ru, sr, es, de }
+const FILES: Record<Lang, Catalog> = { en, es, de, ru, sr }
 const T = Object.fromEntries(
   (Object.keys(FILES) as Lang[]).map((l) => [l, createTranslator(l, FILES[l])]),
 ) as Record<Lang, ReturnType<typeof createTranslator>>
@@ -63,8 +63,12 @@ describe('language files (#54, #58)', () => {
     expect(detectLang(['fr', 'it'])).toBe('en')
   })
 
+  it('lists the languages as EN, ES, DE, RU, SR (#103)', () => {
+    expect(LANGS.map((l) => l.code)).toEqual(['en', 'es', 'de', 'ru', 'sr'])
+  })
+
   it('names every language in itself', () => {
-    expect(LANGS.map((l) => l.name)).toEqual(['English', 'Русский', 'Српски', 'Español', 'Deutsch'])
+    expect(LANGS.map((l) => l.name)).toEqual(['English', 'Español', 'Deutsch', 'Русский', 'Српски'])
     expect(LANGS.find((l) => l.code === 'sr')?.tag).toBe('sr-Cyrl')
   })
 
