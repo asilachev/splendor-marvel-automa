@@ -150,8 +150,8 @@
     },
     "store": {
       "kicker": "Где купить",
-      "name": "Магазины Asmodee",
-      "more": "Поиск магазинов в Европе и Америке"
+      "name": "Лавка Игр",
+      "more": "Английское издание — русского у игры нет"
     },
     "bgg": {
       "kicker": "Отзывы и предложения",
@@ -169,7 +169,7 @@
   },
   "credits": {
     "title": "Авторы",
-    "game": "<strong>Splendor Marvel</strong>: игра Марка Андре, издатель — <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Магазины ищите в <a href=\"{{links.store}}\">каталоге Asmodee</a>.",
+    "game": "<strong>Splendor Marvel</strong>: игра Марка Андре, издатель — <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Английское издание ищите в <a href=\"{{links.store}}\">«Лавке Игр»</a>.",
     "automa": "<strong>Соло-автома</strong>: автор — <a href=\"{{links.automa}}\">Dukefanblue2005</a> на BoardGameGeek.",
     "fonts": "<strong>Шрифты</strong>: Bangers Cyrillic — © 2011 Vernon Adams (Bangers, лицензия SIL Open Font License 1.1; кириллическое расширение 2016 года). Inter — © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor и логотип Splendor — товарные знаки Space Cowboys (Asmodee). MARVEL, логотип MARVEL и все связанные персонажи и названия — ™ и © MARVEL. На скриншотах — логотипы Splendor и MARVEL и рубашка карт автомы; они принадлежат своим владельцам.",

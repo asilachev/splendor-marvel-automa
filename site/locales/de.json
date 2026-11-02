@@ -147,8 +147,8 @@
     },
     "store": {
       "kicker": "Wo kaufen",
-      "name": "Asmodee-Händlersuche",
-      "more": "Finde einen Laden in deiner Nähe"
+      "name": "Brettspiel-Paradies",
+      "more": "Onlineshop mit der deutschen Ausgabe"
     },
     "bgg": {
       "kicker": "Bewertungen und Angebote",
@@ -166,7 +166,7 @@
   },
   "credits": {
     "title": "Mitwirkende",
-    "game": "<strong>Splendor Marvel</strong>: Spiel von Marc André, erschienen bei <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Einen Laden findest du mit der <a href=\"{{links.store}}\">Asmodee-Händlersuche</a>.",
+    "game": "<strong>Splendor Marvel</strong>: Spiel von Marc André, erschienen bei <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Die deutsche Ausgabe findest du zum Beispiel bei <a href=\"{{links.store}}\">Brettspiel-Paradies</a>.",
     "automa": "<strong>Solo-Automa</strong>: entworfen von <a href=\"{{links.automa}}\">Dukefanblue2005</a> auf BoardGameGeek.",
     "fonts": "<strong>Schriften</strong>: Bangers Cyrillic, © 2011 Vernon Adams (Bangers, SIL Open Font License 1.1; kyrillische Erweiterung von 2016). Inter, © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor und das Splendor-Logo sind Marken von Space Cowboys (Asmodee). MARVEL, das MARVEL-Logo und alle zugehörigen Figuren und Namen sind ™ &amp; © MARVEL. Die Screenshots zeigen die Logos von Splendor und MARVEL und die Rückseite der Automa-Karten, die ihren Inhabern gehören.",
