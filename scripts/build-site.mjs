@@ -29,8 +29,22 @@ const LANGS = [
 ]
 const dirOf = (code) => (code === 'en' ? '' : `${code}/`)
 
-/** Asmodee's store locator has country pages for some of our languages; the rest get the default. */
-const STORE = { de: 'de/', es: 'es/' }
+/**
+ * Where to buy, per page (#105): a shop that sells the game to readers of that language, picked by
+ * the owner. Each page names its shop in site/locales/<lang>.json (get.store, credits.game).
+ */
+const STORE = {
+  // Asmodee's store locator: shops in the US, plus Amazon, Target and Walmart.
+  en: 'https://storelocator.asmodee.com/',
+  // The Spanish edition.
+  es: 'https://dracotienda.com/juegos-de-tablero/26408-splendor-marvel-castellano.html',
+  // The German edition.
+  de: 'https://www.brettspiel-paradies.de/Splendor-Marvel',
+  // There is no Russian or Serbian edition; these shops sell the English one.
+  ru: 'https://www.lavkaigr.ru/shop/family/splendor-marvel/',
+  sr: 'https://games4you.rs/drustvene-edukativne-igre/splendor-marvel',
+}
+for (const { code } of LANGS) if (!STORE[code]) throw new Error(`No shop for ${code} in STORE`)
 const links = (code) => ({
   // The owner's copy of the app, on Vercel (#83). It opens in this page's language, and keeps it
   // as the app's choice (#85).
@@ -38,7 +52,7 @@ const links = (code) => ({
   github: 'https://github.com/asilachev/splendor-marvel-automa',
   guide: 'https://github.com/asilachev/splendor-marvel-automa/blob/master/docs/guide/README.md',
   publisher: 'https://www.spacecowboys-games.com/game/splendor-marvel/',
-  store: `https://storelocator.asmodee.com/${STORE[code] ?? ''}`,
+  store: STORE[code],
   bgg: 'https://boardgamegeek.com/boardgame/293296/splendor-marvel',
   automa: 'https://boardgamegeek.com/filepage/201926',
 })

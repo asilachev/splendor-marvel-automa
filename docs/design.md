@@ -182,8 +182,8 @@ https://thanos.silachev.com/ (English), then `es/`, `de/`, `ru/` and `sr/`.
   - "Open the app" carries the page's language (`?lang=ru`), so the app opens in it and keeps it
     (#85). The landing page and the app are separate sites, so this link is how the choice
     travels.
-  - The guide is English only, so its link says so in other languages. The store locator opens
-    Asmodee's German and Spanish pages for `de` and `es`.
+  - The guide is English only, so its link says so in other languages. "Where to buy" names a
+    shop for the page's language (see Get the game).
 
 - **Look:**
   - The app's visual language: gold, Bangers and Inter, hard shadows.
@@ -206,10 +206,24 @@ https://thanos.silachev.com/ (English), then `es/`, `de/`, `ru/` and `sr/`.
   - the panels sit side by side from 720 px and stack on phones.
 - **Get the game.** Three link cards:
   - the publisher's page (Space Cowboys);
-  - where to buy (Asmodee's store locator);
+  - where to buy: a shop for the page's language, named, with the edition it sells (#105);
   - the BoardGameGeek page.
 
-  The credits link the publisher and the store locator too.
+  The credits link the publisher and the same shop too.
+- **Shops (#105),** picked by the owner. Splendor Marvel has no Russian or Serbian edition, so those
+  pages point to the English one:
+
+  | Page | Shop | Sells |
+  | --- | --- | --- |
+  | EN | Asmodee's store locator | finds shops in the US, plus Amazon, Target and Walmart |
+  | ES | Dracotienda | the Spanish edition |
+  | DE | Brettspiel-Paradies | the German edition |
+  | RU | Лавка Игр | the English edition; Mosigra, Hobby Games, Igroved and GaGa don't sell the game |
+  | SR | Games4You | the English edition, in shops in Belgrade and online |
+
+  The links are `STORE` in `scripts/build-site.mjs`, which fails if a language has none. The names
+  and texts are `get.store` and `credits.game` in `site/locales/<lang>.json`. When a shop stops
+  selling the game, replace it in both places.
 - **Cursor.** Links, buttons and the language menu show the standard pointer. The owner preferred it
   to the cartoon glove tried in #66 (#71).
 - **States:**

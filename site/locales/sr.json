@@ -144,8 +144,8 @@
     },
     "store": {
       "kicker": "Где купити",
-      "name": "Asmodee продавнице",
-      "more": "Претрага продавница у Европи и Америци"
+      "name": "Games4You",
+      "more": "Енглеско издање, продавнице широм Београда"
     },
     "bgg": {
       "kicker": "Рецензије и понуде",
@@ -163,7 +163,7 @@
   },
   "credits": {
     "title": "Аутори",
-    "game": "<strong>Splendor Marvel</strong>: игра Марка Андреа, издавач <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Продавнице потражите у <a href=\"{{links.store}}\">Asmodee претрази продавница</a>.",
+    "game": "<strong>Splendor Marvel</strong>: игра Марка Андреа, издавач <a href=\"{{links.publisher}}\">Space Cowboys</a> (2020). Енглеско издање потражите у продавницама <a href=\"{{links.store}}\">Games4You</a>.",
     "automa": "<strong>Соло аутома</strong>: аутор <a href=\"{{links.automa}}\">Dukefanblue2005</a> на BoardGameGeek-у.",
     "fonts": "<strong>Фонтови</strong>: Bangers Cyrillic – © 2011 Vernon Adams (Bangers, лиценца SIL Open Font License 1.1; ћирилично проширење из 2016). Inter – © 2016 The Inter Project Authors (SIL Open Font License 1.1).",
     "trademarks": "Splendor и лого Splendor су жигови компаније Space Cowboys (Asmodee). MARVEL, лого MARVEL и сви повезани ликови и имена су ™ и © MARVEL. Снимци екрана приказују логотипе Splendor и MARVEL и полеђину карата аутоме, који припадају својим власницима.",
