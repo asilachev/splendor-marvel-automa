@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/assets/logo.svg" width="112" height="112" alt="Logo: five coloured gems on a gold ring around a green gem">
+  <img src="docs/assets/logo.svg" width="112" height="112" alt="Logo: a black comic-book T on a gold halftone tile">
 </p>
 
 <h1 align="center">Splendor Marvel: Solo Automa companion</h1>

@@ -1,18 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Solo automa logo">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Thanos Automa logo">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#232a5c"/>
-      <stop offset="1" stop-color="#0b0d1a"/>
+    <linearGradient id="tag" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd25a"/>
+      <stop offset="1" stop-color="#ffc533"/>
     </linearGradient>
   </defs>
-  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
-  <g transform="translate(64 64) scale(1) translate(-64 -64)">
-  <circle cx="64" cy="64" r="38" fill="none" stroke="#f2c14e" stroke-width="3.5"/>
-  <circle cx="64" cy="26" r="11" fill="#9b5de5" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="61" cy="23" r="2.2" fill="#fff" fill-opacity=".55"/>
-  <polygon points="112.1,52.3 106.1,62.6 94.1,62.6 88.1,52.3 94.1,41.9 106.1,41.9" fill="#f7d046" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="97.1" cy="49.3" r="2.2" fill="#fff" fill-opacity=".55"/>
-  <rect x="76.3" y="84.7" width="20" height="20" rx="3" fill="#3a86ff" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="83.3" cy="91.7" r="2.2" fill="#fff" fill-opacity=".55"/>
-  <polygon points="41.7,83.2 52.9,102.7 30.4,102.7" fill="#ef233c" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="40.2" cy="93.7" r="2.2" fill="#fff" fill-opacity=".55"/>
-  <polygon points="27.9,39.3 31.5,43.5 37.1,43.1 36.6,48.6 40.9,52.3 36.6,55.9 37.1,61.4 31.5,61 27.9,65.3 24.2,61 18.7,61.4 19.1,55.9 14.9,52.3 19.1,48.6 18.7,43.1 24.2,43.5" fill="#fb8500" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="24.9" cy="49.3" r="2.2" fill="#fff" fill-opacity=".55"/>
-  <polygon points="64,50 78,64 64,78 50,64" fill="#2dc653" stroke="#0b0d1a" stroke-width="3" stroke-linejoin="round"/><circle cx="61.5" cy="60" r="2.2" fill="#fff" fill-opacity=".55"/>
+  <rect width="128" height="128" rx="28" fill="url(#tag)"/>
+  <g>
+    <path d="M61.49 101.74L41.33 104.88Q42.56 98.72 43.85 92.62Q45.14 86.51 46.26 80.58Q50.51 59.3 53.2 39.81Q51.97 39.58 50.62 39.53Q49.28 39.47 48.05 39.58Q45.36 39.81 42.78 38.91Q42.9 38.02 42.9 36.95Q42.9 35.89 42.9 34.77Q42.9 33.54 42.9 32.36Q42.9 31.18 43.01 30.06Q43.12 28.83 43.12 27.43Q43.12 26.03 43.23 24.58Q46.14 24.8 49.06 24.91Q51.97 25.02 54.88 25.02Q63.17 25.02 70.73 24.46Q78.29 23.9 84.67 23.12L83.44 29.17L82.43 34.43Q81.87 37.34 81.42 39.02Q80.19 39.36 78.96 39.58Q77.73 39.81 76.5 39.92Q75.26 40.03 73.98 40.26Q72.69 40.48 71.46 40.7Q69.78 48.99 68.71 55.04Q67.65 61.09 66.81 66.63Q65.97 72.18 64.85 78.78Q62.94 90.1 61.49 101.74Z" fill="#c7860a" transform="translate(5 5)"/>
+    <path d="M61.49 101.74L41.33 104.88Q42.56 98.72 43.85 92.62Q45.14 86.51 46.26 80.58Q50.51 59.3 53.2 39.81Q51.97 39.58 50.62 39.53Q49.28 39.47 48.05 39.58Q45.36 39.81 42.78 38.91Q42.9 38.02 42.9 36.95Q42.9 35.89 42.9 34.77Q42.9 33.54 42.9 32.36Q42.9 31.18 43.01 30.06Q43.12 28.83 43.12 27.43Q43.12 26.03 43.23 24.58Q46.14 24.8 49.06 24.91Q51.97 25.02 54.88 25.02Q63.17 25.02 70.73 24.46Q78.29 23.9 84.67 23.12L83.44 29.17L82.43 34.43Q81.87 37.34 81.42 39.02Q80.19 39.36 78.96 39.58Q77.73 39.81 76.5 39.92Q75.26 40.03 73.98 40.26Q72.69 40.48 71.46 40.7Q69.78 48.99 68.71 55.04Q67.65 61.09 66.81 66.63Q65.97 72.18 64.85 78.78Q62.94 90.1 61.49 101.74Z" fill="#0f0b1a"/>
   </g>
 </svg>
