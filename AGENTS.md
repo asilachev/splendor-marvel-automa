@@ -83,6 +83,7 @@ You need Node 22 or later (see `.nvmrc`). Use npm.
 | `npm run screenshots` | Build, then capture the guide screenshots into `docs/guide/screenshots/` (needs Google Chrome; fails unless every PNG is 780×1688). Options after `--`: `--lang ru`, `--only 04,06`, `--out <dir>`, `--width 360` |
 | `npm run site:shots` | Build, then capture the app in Spanish, German, Russian and Serbian for the landing page into `.screenshots/` (not committed; needs Google Chrome) |
 | `npm run site` | Render the landing page in five languages into `_site/` from `site/index.html` and `site/locales/*.json`, with the screenshots, fonts and icons. `npx vite preview --outDir _site` serves it |
+| `npm run icons` | Redraw the icon from `scripts/gen-logo.mjs`: `docs/assets/logo.svg`, `public/favicon.svg` and the PWA PNGs (needs Google Chrome; `CHROME_PATH` picks another) |
 | `npm run reference` | Download the reference PDFs (rulebook, automa) into `docs/reference/` from the `reference-docs` release |
 | `npm run sim` | Simulate Thanos playing alone on the engine and print Markdown tables per settings preset (see [`docs/automa.md`](docs/automa.md#simulation)). Options after `--`: `--runs N` (default 10,000 games), `--seed S` (default 1); the same options print the same tables |
 
